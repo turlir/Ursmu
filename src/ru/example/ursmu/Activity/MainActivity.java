@@ -218,7 +218,7 @@ public class MainActivity extends SherlockFragmentActivity {
                 .setSmallIcon(R.drawable.ic_launcher)
                         //.setDefaults(Notification.DEFAULT_ALL)
                 .setContentIntent(contentIntent);
-        Notification notification = builder.getNotification();
+        Notification notification = builder.build();
         notification.contentIntent = contentIntent;
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
