@@ -61,7 +61,7 @@ public class EducationItem implements Parcelable {
 
 
     public EducationItem(int dayIndex, int para, String predmet, String prepod, String aud) {  //json
-        Log.d("URSMULOG", "dayIndex=" + dayIndex + "para=" + para);
+        //Log.d("URSMULOG", "dayIndex=" + dayIndex + "para=" + para);
         mDayNumber = dayIndex;
         mNumberPar = para;
         mPredmet = predmet;
