@@ -1,6 +1,5 @@
 package ru.ursmu.application.Realization;
 
-import android.util.Log;
 import ru.ursmu.application.Abstraction.IDownloadBehavior;
 
 import java.io.IOException;
