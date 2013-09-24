@@ -30,6 +30,7 @@ import java.util.TimerTask;
 public class MainActivity extends SherlockFragmentActivity {
     private static final String STATE_BTN_1 = "SATE_BTN_1";
     private static final String STATE_BTN_2 = "SATE_BTN_2";
+    private static final String NOTIFICATION_ACTION = "NOTIFICATION_ACTION";
     private int mImageNumber = 1;
     private Timer mTimer;
 
@@ -70,6 +71,14 @@ public class MainActivity extends SherlockFragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        Intent i = getIntent();
+        if (i != null) {
+            if (i.getAction() != null) {
+                if (i.getAction().equals(NOTIFICATION_ACTION)) {
+                    startUpdateDialog();
+                }
+            }
+        }
         if (savedInstanceState != null) {
             mImageNumber = savedInstanceState.getInt(LOGO_NUMBER);
             displayLogo();
@@ -178,7 +187,7 @@ public class MainActivity extends SherlockFragmentActivity {
 
     @Override
     protected void onNewIntent(Intent intent) {
-        if (intent.getAction().equals("NOTIFICATION_ACTION")) {
+        if (intent.getAction().equals(NOTIFICATION_ACTION)) {
             startUpdateDialog();
             //mTimer.cancel();
         }
