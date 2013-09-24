@@ -144,6 +144,7 @@ public class GroupDataBasing extends IDatabasingBehavior {
         if (mUIN == null || !gro.equals(mLastGroup)) {
             mLastGroup = gro;
             mUIN = getUINCurrentGroup();
+            Log.d("URSMULOG", "getUINCurrentGroup" + mUIN);
         }
 
         return getGroupSchedule(limit, mUIN);
@@ -166,11 +167,12 @@ public class GroupDataBasing extends IDatabasingBehavior {
                     new String[]{gro});
             int uin_index = c.getColumnIndexOrThrow("UIN");
             c.moveToFirst();
-            Long uin = c.getLong(uin_index);
+            //Long uin = c.getLong(uin_index);
+            mUIN = c.getLong(uin_index);
             c.close();
 
-            mDataBase.delete("ScheduleCommon", "UIN=?", new String[]{String.valueOf(uin)});
-            mDataBase.delete("ScheduleDays", "GroupID=?", new String[]{String.valueOf(uin)});
+            mDataBase.delete("ScheduleCommon", "UIN=?", new String[]{String.valueOf(mUIN)});
+            mDataBase.delete("ScheduleDays", "GroupID=?", new String[]{String.valueOf(mUIN)});
         }
         add(q);
     }
