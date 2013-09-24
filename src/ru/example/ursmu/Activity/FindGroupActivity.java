@@ -27,7 +27,7 @@ public class FindGroupActivity extends SherlockListActivity {
         public void sendComplete(Object[] data) {
             changeIndicatorVisible(View.INVISIBLE);
             postProcessing((String[]) data);
-            ServiceHelper.removeCallback(mRequestId);
+            //ServiceHelper.removeCallback(mRequestId);
         }
 
         @Override

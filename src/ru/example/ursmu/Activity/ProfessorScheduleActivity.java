@@ -188,7 +188,7 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
     protected void onPause() {
         super.onPause();
         if (mRequestId != null) {
-            ServiceHelper.removeCallback(mRequestId);
+            //ServiceHelper.removeCallback(mRequestId);
         }
     }
 

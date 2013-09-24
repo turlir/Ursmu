@@ -54,7 +54,7 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
         public void sendComplete(Object[] data) {
             changeIndicatorVisible(View.INVISIBLE);
             postProcessing((String[]) data);
-            ServiceHelper.removeCallback(mRequestId);
+            //ServiceHelper.removeCallback(mRequestId);
         }
 
         @Override

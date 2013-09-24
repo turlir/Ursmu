@@ -54,7 +54,7 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
                     changeIndicatorVisible(View.INVISIBLE);
                     mViewPager.setVisibility(View.VISIBLE);
                     current(null);
-                    ServiceHelper.removeCallback(mRequestId);
+                    //ServiceHelper.removeCallback(mRequestId);
                 }
             }
         }
