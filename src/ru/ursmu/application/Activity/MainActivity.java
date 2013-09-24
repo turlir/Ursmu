@@ -218,7 +218,7 @@ public class MainActivity extends SherlockFragmentActivity {
     private void createNotification() {
         Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        notificationIntent.setAction("NOTIFICATION_ACTION");
+        notificationIntent.setAction(NOTIFICATION_ACTION);
 
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
 
