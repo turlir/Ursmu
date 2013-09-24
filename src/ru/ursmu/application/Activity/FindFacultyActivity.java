@@ -63,7 +63,45 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
             changeIndicatorVisible(View.VISIBLE);
         }
     };
-    //private Cursor mCursor;
+
+
+    //<editor-fold desc="SearchSuggestion">
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        Toast.makeText(getApplicationContext(), "Выберите элемент из списка", Toast.LENGTH_SHORT).show();
+        return false;
+    }
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if (newText.length() < 6) {
+            ScheduleGroup prof = new ScheduleGroup(newText, false); //Upper Case
+            Cursor c = prof.getDataBasingBehavior(getApplicationContext()).get();
+
+            SuggestionsAdapter adapter = new SuggestionsAdapter(getSupportActionBar().getThemedContext(), c, "GroupName", R.drawable.white_social_group);
+            mSearchView.setSuggestionsAdapter(adapter);
+            return true;
+        } else {
+            Toast.makeText(getApplicationContext(), "А по короче?", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+    @Override
+    public boolean onSuggestionSelect(int position) {
+        return false;
+    }
+    @Override
+    public boolean onSuggestionClick(int position) {
+        String groupName = ((SuggestionsAdapter) mSearchView.getSuggestionsAdapter()).getString(position);
+        Log.d("URSMULOG onSuggestionClick", groupName);
+        mSearchView.clearFocus();
+
+        Intent intent = new Intent(this, GroupScheduleActivity.class);
+        intent.putExtra(ServiceHelper.GROUP, groupName);
+        intent.putExtra("IS_HARD", false);
+        startActivity(intent);
+        return true;
+    }
+    //</editor-fold>
 
 
     @Override
@@ -126,44 +164,6 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
         getListView().setOnItemClickListener(facultyClickListener);
     }
 
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        Toast.makeText(getApplicationContext(), "Выберите элемент из списка", Toast.LENGTH_SHORT).show();
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        if (newText.length() < 6) {
-            ScheduleGroup prof = new ScheduleGroup(newText, false); //Upper Case
-            Cursor c = prof.getDataBasingBehavior(getApplicationContext()).get();
-
-            SuggestionsAdapter adapter = new SuggestionsAdapter(getSupportActionBar().getThemedContext(), c, "GroupName", R.drawable.white_social_group);
-            mSearchView.setSuggestionsAdapter(adapter);
-            return true;
-        } else {
-            Toast.makeText(getApplicationContext(), "А по короче?", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-    }
-
-    @Override
-    public boolean onSuggestionSelect(int position) {
-        return false;
-    }
-
-    @Override
-    public boolean onSuggestionClick(int position) {
-        String groupName = ((SuggestionsAdapter) mSearchView.getSuggestionsAdapter()).getString(position);
-        Log.d("URSMULOG onSuggestionClick", groupName);
-        mSearchView.clearFocus();
-
-        Intent intent = new Intent(this, GroupScheduleActivity.class);
-        intent.putExtra(ServiceHelper.GROUP, groupName);
-        intent.putExtra("IS_HARD", false);
-        startActivity(intent);
-        return true;
-    }
 
 
 }

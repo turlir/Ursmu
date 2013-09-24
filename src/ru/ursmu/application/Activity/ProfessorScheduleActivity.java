@@ -111,7 +111,7 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
     };
 
 
-    //<editor-fold desc="SearchCallback">
+    //<editor-fold desc="SearchSuggestion">
     @Override
     public boolean onQueryTextSubmit(String query) {
         Toast.makeText(getApplicationContext(), "Выбрите элемент из списка", Toast.LENGTH_SHORT).show();
