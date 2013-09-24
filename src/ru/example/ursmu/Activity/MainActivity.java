@@ -28,6 +28,8 @@ import java.util.TimerTask;
   */
 
 public class MainActivity extends SherlockFragmentActivity {
+    private static final String STATE_BTN_1 = "SATE_BTN_1";
+    private static final String STATE_BTN_2 = "SATE_BTN_2";
     private int mImageNumber = 1;
     private Timer mTimer;
 
@@ -79,15 +81,15 @@ public class MainActivity extends SherlockFragmentActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean("SATE_BTN_1", findViewById(R.id.button_groups).isEnabled());
-        outState.putBoolean("SATE_BTN_2", findViewById(R.id.button_prof).isEnabled());
+        outState.putBoolean(STATE_BTN_1, findViewById(R.id.button_groups).isEnabled());
+        outState.putBoolean(STATE_BTN_2, findViewById(R.id.button_prof).isEnabled());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        findViewById(R.id.button_groups).setEnabled(savedInstanceState.getBoolean("SATE_BTN_1"));
-        findViewById(R.id.button_prof).setEnabled(savedInstanceState.getBoolean("SATE_BTN_2"));
+        findViewById(R.id.button_groups).setEnabled(savedInstanceState.getBoolean(STATE_BTN_1));
+        findViewById(R.id.button_prof).setEnabled(savedInstanceState.getBoolean(STATE_BTN_2));
     }
 
     @Override
