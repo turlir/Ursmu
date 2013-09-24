@@ -6,10 +6,6 @@ import android.os.Parcelable;
 import android.util.Log;
 
 public class EducationItem implements Parcelable {
-
-
-    //private static String mKurs;
-    //private String mFaculty;
     private String mGroupName;
 
     private int mDayNumber;
@@ -28,8 +24,6 @@ public class EducationItem implements Parcelable {
     private static int groupName_in = 0;
     private static int dayNumber_in = 0;
     public static boolean lastPredict;
-    //private static int faculty_id = 0;
-    //private static int kurs_id = 0;
 
     public EducationItem(Cursor cursor, boolean f) {        //db
         if (f) {

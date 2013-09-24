@@ -12,12 +12,9 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class ServiceHelper {
-    //public static final String URI_INTENT = "URI_INTENT";
-    //public static final String PARAM_INTENT = "PARAM_INTENT";
     public static final String IS_DB = "IS_DB";
     public static final String CALLBACK = "CALLBACK";
     public static final String TRANSFER_OBJECT = "TRANSFER_OBJECT";
-    public static final String INTENT_FKG = "INTENT_FKG";
 
     public static final String FACULTY = "FACULTY";
     public static final String KURS = "KURS";
@@ -76,10 +73,6 @@ public class ServiceHelper {
         Intent intent = new Intent(mActivity, UrsmuService.class);
 
         intent.putExtra(CALLBACK, rec);
-        //intent.putExtra(TRANSFER_OBJECT, object);
-
-        //ArrayList<IUrsmuDBObject> list = new ArrayList<IUrsmuDBObject>(1);
-        //list.add(object);
         intent.putExtra(TRANSFER_OBJECT, object);
 
         intent.putExtra(IS_DB, 2);

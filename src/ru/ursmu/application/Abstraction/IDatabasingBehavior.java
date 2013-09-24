@@ -1,7 +1,6 @@
 package ru.ursmu.application.Abstraction;
 
 import android.database.Cursor;
-import ru.ursmu.application.JsonObject.EducationItem;
 
 import java.util.ArrayList;
 
