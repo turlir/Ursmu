@@ -9,9 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import ru.example.ursmu.R;
 import ru.example.ursmu.JsonObject.EducationItem;
+import ru.example.ursmu.R;
 
+import java.lang.ref.WeakReference;
 import java.util.Calendar;
 
 public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
@@ -37,7 +38,7 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
     private static int[] mAlarmEndHour = new int[]{10, 12, 14, 16, 17, 19, 20};
 
     private static int[] mAlarmEndMin = new int[]{30, 20, 10, 0, 30, 0, 30};
-    private static int mCurrentIconPair;
+    private static WeakReference<Integer> mCurrentIconPair;
 
     private static final Calendar mCalendar = Calendar.getInstance();
 
@@ -95,50 +96,28 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
 
     private int getIcon(int numberPair) {
         //Log.d("URSMULOG", "getIcon()");
-        if (mCurrentIconPair != 0) {
-            if (mCurrentIconPair == numberPair) {
-                return 1;
-            } else {
-                return 0;
+
+        if (mCurrentIconPair != null)
+            if (mCurrentIconPair.get() != 0) {
+                if (mCurrentIconPair.get() == numberPair) {
+                    return 1;
+                } else {
+                    return 0;
+                }
             }
-        }
 
 
         int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
         int minute = mCalendar.get(Calendar.MINUTE);
         int i2 = hour * 60 + minute;
-        int n = numberPair - 1;
-
-        //crazy!
-
-/*        if (hour == mAlarmStartHour[n]) {
-            if (minute >= mAlarmStartMin[n]) {
-                return 1;
-            } else {
-                return 0;
-            }
-        } else {
-            if (hour > mAlarmStartHour[n]) {
-                if (hour == mAlarmEndHour[n]) {
-                    if (minute <= mAlarmEndMin[n]) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                } else {
-                    if (hour < mAlarmEndHour[n]) {
-                        return 1;
-                    }
-                }
-            }
-        }*/
+        Integer n = numberPair - 1;
 
         int i1 = mAlarmStartHour[n] * 60 + mAlarmStartMin[n];
         int i3 = mAlarmEndHour[n] * 60 + mAlarmEndMin[n];
 
         if (i2 >= i1 && i2 <= i3) {
             Log.d("URSMULOG", i2 + " >= " + i1 + " && " + i2 + " <= " + i3 + " n=" + n);
-            mCurrentIconPair = numberPair;
+            mCurrentIconPair = new WeakReference<Integer>(numberPair);
             return 1;
         }
 
@@ -163,7 +142,6 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
         public TextView teacher;
         public TextView room;
         public TextView time;
-        //public ImageView flag;
         public View flag;
     }
 }
