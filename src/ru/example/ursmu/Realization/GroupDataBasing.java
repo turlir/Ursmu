@@ -93,7 +93,7 @@ public class GroupDataBasing extends IDatabasingBehavior {
 
 
         for (EducationItem item : temp) {
-            Log.d("URSMULOG", "add " + item.getDayOfTheWeek());
+            //Log.d("URSMULOG", "add " + item.getDayOfTheWeek());
             day.bindLong(2, id);
             day.bindString(3, item.getmPredmet());
             day.bindString(4, item.getProfessor());
