@@ -16,7 +16,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 import ru.example.ursmu.Abstraction.UniversalCallback;
 import ru.example.ursmu.JsonObject.EducationItem;
-import ru.example.ursmu.R;
+import ru.ursmu.application.R;
 import ru.example.ursmu.Realization.ProfessorSchedule;
 import ru.example.ursmu.Realization.ScheduleGroupFactory;
 

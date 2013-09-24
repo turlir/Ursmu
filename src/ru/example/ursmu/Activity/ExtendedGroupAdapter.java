@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import ru.example.ursmu.R;
+import ru.ursmu.application.R;
 
 public class ExtendedGroupAdapter extends ArrayAdapter<String> {
     Context mContext;

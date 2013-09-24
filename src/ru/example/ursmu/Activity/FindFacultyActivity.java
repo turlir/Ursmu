@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.widget.SearchView;
-import ru.example.ursmu.R;
+import ru.ursmu.application.R;
 import ru.example.ursmu.Abstraction.UniversalCallback;
 import ru.example.ursmu.JsonObject.Faculty;
 import ru.example.ursmu.Realization.FacultyFactory;

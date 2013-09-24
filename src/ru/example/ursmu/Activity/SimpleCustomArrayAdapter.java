@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import ru.example.ursmu.R;
+import ru.ursmu.application.R;
 
 public class SimpleCustomArrayAdapter<T> extends ArrayAdapter<String> {
     private int mResID;

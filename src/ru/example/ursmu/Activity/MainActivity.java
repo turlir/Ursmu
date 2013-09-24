@@ -17,7 +17,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
 import ru.example.ursmu.Abstraction.UniversalCallback;
-import ru.example.ursmu.R;
+import ru.ursmu.application.R;
 
 import java.util.Random;
 import java.util.Timer;

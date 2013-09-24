@@ -11,7 +11,7 @@ import ru.example.ursmu.Abstraction.IUrsmuObject;
 import ru.example.ursmu.Abstraction.UniversalCallback;
 import ru.example.ursmu.JsonObject.ListItem;
 import ru.example.ursmu.Realization.UrsmuNews;
-import ru.example.ursmu.R;
+import ru.ursmu.application.R;
 
 import java.util.ArrayList;
 import java.util.Collections;

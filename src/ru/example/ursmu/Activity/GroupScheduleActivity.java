@@ -11,7 +11,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import ru.example.ursmu.R;
+import ru.ursmu.application.R;
 import ru.example.ursmu.Abstraction.IUrsmuDBObject;
 import ru.example.ursmu.Abstraction.UniversalCallback;
 import ru.example.ursmu.JsonObject.EducationItem;

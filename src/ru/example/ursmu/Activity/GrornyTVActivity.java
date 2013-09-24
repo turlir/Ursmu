@@ -13,7 +13,7 @@ import com.actionbarsherlock.view.MenuItem;
 import ru.example.ursmu.Abstraction.UniversalCallback;
 import ru.example.ursmu.JsonObject.ListItem;
 import ru.example.ursmu.Realization.GornyVestiFactory;
-import ru.example.ursmu.R;
+import ru.ursmu.application.R;
 
 import java.util.ArrayList;
 import java.util.Collections;

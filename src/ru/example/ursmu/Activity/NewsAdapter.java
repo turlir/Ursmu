@@ -16,7 +16,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import ru.example.ursmu.JsonObject.ListItem;
-import ru.example.ursmu.R;
+import ru.ursmu.application.R;
 
 import java.util.ArrayList;
 
