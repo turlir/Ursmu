@@ -3,7 +3,6 @@ package ru.example.ursmu.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +40,7 @@ public class SuggestionsAdapter extends CursorAdapter {
             }
             text.setText(cursor.getString(textIndex));
             image.setImageDrawable(mContext.getResources().getDrawable(mImageRes));
-            Log.d("URSMULOG", image.getDrawable().getIntrinsicWidth() + "x" + image.getDrawable().getIntrinsicWidth());
+            //Log.d("URSMULOG", image.getDrawable().getIntrinsicWidth() + "x" + image.getDrawable().getIntrinsicWidth());
         }
     }
 

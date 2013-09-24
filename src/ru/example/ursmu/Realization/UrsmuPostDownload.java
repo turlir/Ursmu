@@ -46,7 +46,7 @@ public class UrsmuPostDownload implements IDownloadBehavior {
             while ((c = isr.read()) != -1) {
                 //data.append((char) c);
                 sb.append((char) c);
-                Log.d("URSMULOG", "add char");
+                //Log.d("URSMULOG", "add char");
             }
             //resultString = new String(data.toString());
             resultString = sb.toString();

@@ -94,7 +94,7 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
     }
 
     private int getIcon(int numberPair) {
-        Log.d("URSMULOG", "getIcon()");
+        //Log.d("URSMULOG", "getIcon()");
         if (mCurrentIconPair != 0) {
             if (mCurrentIconPair == numberPair) {
                 return 1;
