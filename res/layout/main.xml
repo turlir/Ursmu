@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+    <LinearLayout android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+
+                  android:orientation="vertical">
+        <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="125dp"
+                android:id="@+id/LogoLayout" android:orientation="vertical" android:background="@drawable/img1">
+
+            <!--            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="fill_parent"
+                                android:id="@+id/image_header" android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true" android:src="@drawable/gerb_ursmu"
+                                android:visibility="invisible"/>-->
+
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="80dp" android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
+                android:id="@+id/group_one">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ваше расписание"
+                    android:id="@+id/textView" android:textSize="22sp"
+                    android:typeface="serif"/>
+            <!--Всегда под рукой-->
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/new_social_group"
+                    android:text="Группа"
+                    android:id="@+id/button_groups"
+                    android:onClick="scheduleGroup"
+                    style="@style/ButtonAppTheme"
+                    android:typeface="monospace" android:layout_alignLeft="@+id/textView"
+                    android:layout_below="@+id/textView"/>
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Профессор"
+                    android:id="@+id/button_prof"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/button_groups"
+                    android:drawableLeft="@drawable/new_social_person"
+                    style="@style/ButtonAppTheme"
+                    android:typeface="monospace"
+                    android:onClick="scheduleProf"
+                    />
+        </RelativeLayout>
+
+        <View
+                android:id="@+id/line"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="#7fa87f"
+                />
+        <RelativeLayout android:layout_width="fill_parent" android:layout_height="80dp" android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp" android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp" android:id="@+id/group_two">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:text="Наши новости" android:id="@+id/textView1" android:textSize="22sp"
+                      android:typeface="serif"/>
+            <Button style="@style/ButtonAppTheme" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/news_icon" android:text="События" android:id="@+id/event"
+                    android:typeface="monospace" android:layout_alignLeft="@+id/textView1"
+                    android:layout_below="@+id/textView1" android:onClick="event"/>
+            <Button style="@style/ButtonAppTheme" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Горный ТВ" android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/event" android:drawableLeft="@drawable/video_camera"
+                    android:typeface="monospace" android:id="@+id/tv" android:onClick="tv"/>
+        </RelativeLayout>
+        <RelativeLayout android:layout_width="fill_parent" android:layout_height="80dp" android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp" android:layout_marginTop="8dp"
+                        android:id="@+id/footer">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:text="При поддержке" android:id="@+id/support_text_view" android:textSize="22sp"
+                      android:typeface="serif"/>
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView" android:layout_alignLeft="@+id/support_text_view"
+                    android:layout_below="@+id/support_text_view" android:src="@drawable/izyum"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp" android:background="@drawable/multi_events_card"
+        >
+
+
+    <ImageView android:layout_width="10dp" android:layout_height="fill_parent"
+               android:background="#99cc00" android:id="@+id/viewColor_sc" android:adjustViewBounds="true"
+               android:scaleType="fitStart"
+               android:layout_alignBottom="@+id/relativeLayout" android:visibility="invisible"/>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/linearLayout" android:layout_marginLeft="16dp"
+            android:layout_marginTop="4dp">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9:00-10:50"
+                android:id="@+id/time_schedule" android:textSize="18sp" android:textColor="@android:color/black"
+                />
+        <!--        <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/icon_schedule" android:layout_gravity="center_horizontal"
+                         android:layout_marginTop="8dp"/>-->
+    </LinearLayout>
+
+
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" android:layout_toRightOf="@+id/linearLayout"
+            android:layout_alignTop="@+id/linearLayout" android:layout_marginRight="16dp"
+            android:id="@+id/relativeLayout">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:id="@+id/schedule_name" android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="16dp" android:textSize="22sp" android:singleLine="true"
+                android:textColor="@android:color/black"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:id="@+id/schedule_professor"
+                android:layout_below="@+id/schedule_name"
+                android:textSize="18sp" android:layout_marginLeft="8dp" android:textColor="@android:color/black"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:id="@+id/schedule_aud"
+                android:layout_below="@+id/schedule_professor" android:textSize="18sp" android:layout_marginLeft="8dp"
+                android:textColor="@android:color/black" android:textStyle="italic"/>
+    </RelativeLayout>
+
+
+</RelativeLayout>

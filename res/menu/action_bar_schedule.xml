@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--    <item android:id="@+id/schedule_group_search"
+              android:showAsAction="always"
+              android:title="Найти"
+              android:icon="@drawable/action_search"
+                />-->
+
+    <!--    <item android:id="@+id/schedule_group_share"
+              android:showAsAction="always"
+              android:title="Рассказать"
+              android:actionProviderClass="com.actionbarsherlock.widget.ShareActionProvider"/>-->
+
+    <item android:id="@+id/schedule_group_update"
+          android:title="Обновить"
+          android:icon="@drawable/navigation_refresh"
+
+          android:showAsAction="ifRoom"/>
+
+</menu>

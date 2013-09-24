@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="ru.example.ursmu"
+          android:versionCode="2"
+          android:versionName="1.0">
+    <uses-sdk
+            android:targetSdkVersion="15"
+            android:minSdkVersion="8"/>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+
+    <supports-screens
+            android:xlargeScreens="false"/>
+
+    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher"
+                 android:theme="@style/Theme.Sherlock.Light.DarkActionBar">
+        <activity android:name="ru.example.ursmu.Activity.MainActivity"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name="ru.example.ursmu.Activity.FindFacultyActivity" android:label="Выберите факультет"/>
+        <activity android:name="ru.example.ursmu.Activity.FindKursActivity" android:label="Выберите курс"/>
+        <activity android:name="ru.example.ursmu.Activity.FindGroupActivity" android:label="Выберите группу"/>
+        <activity android:name="ru.example.ursmu.Activity.GroupScheduleActivity" android:label="Группа"/>
+        <activity android:name="ru.example.ursmu.Activity.ProfessorScheduleActivity" android:label="Профессор"/>
+        <activity android:name="ru.example.ursmu.Activity.NewsActivity" android:label="Новости УГГУ"/>
+        <activity android:name="ru.example.ursmu.Activity.GrornyTVActivity" android:label="Горные Вести"/>-
+
+        <service android:name="ru.example.ursmu.Activity.UrsmuService"/>
+    </application>
+</manifest>
