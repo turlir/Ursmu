@@ -14,9 +14,9 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
-import ru.example.ursmu.R;
 import ru.example.ursmu.Abstraction.UniversalCallback;
 import ru.example.ursmu.JsonObject.EducationItem;
+import ru.example.ursmu.R;
 import ru.example.ursmu.Realization.ProfessorSchedule;
 import ru.example.ursmu.Realization.ScheduleGroupFactory;
 
@@ -255,10 +255,10 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
                 }
                 return true;
             case R.id.schedule_prof_item_alarm:
-                //EducationItem edtem = adapter.getItem(info.position);
-                ListAdapter adat = mPages.get(mViewPager.getCurrentItem()).getAdapter();
-                int numberPairClick = ((EducationItem) adat.getItem(info.position)).getNumberPar();
-                Toast.makeText(getApplicationContext(), String.valueOf(numberPairClick), Toast.LENGTH_SHORT).show();
+                ListAdapter temp = mPages.get(mViewPager.getCurrentItem()).getAdapter();
+                ScheduleAdapter adapter = (ScheduleAdapter) temp;
+                adapter.setAlarm(info.position);
+                Log.d("URSMULOG", "onContextItemSelected R.id.schedule_prof_item_alarm" + info.position);
                 return true;
             default:
                 return super.onContextItemSelected(item);
