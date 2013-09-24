@@ -161,7 +161,7 @@ public class MainActivity extends SherlockFragmentActivity {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setAction(Intent.ACTION_SEND);
         i.setType("text/plain");
-        i.putExtra(Intent.EXTRA_TEXT, " Good Android ursmu application )");
+        i.putExtra(Intent.EXTRA_TEXT, " Расписание и новости УГГУ в одном Android приложении https://play.google.com/store/apps/details?id=ru.ursmu.application");
         return i;
     }
 
