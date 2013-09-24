@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
+import com.nostra13.universalimageloader.cache.disc.impl.TotalSizeLimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -50,7 +50,7 @@ public class NewsAdapter extends ArrayAdapter<ListItem> {
                 .threadPriority(Thread.NORM_PRIORITY - 1) // default
                 .memoryCache(new UsingFreqLimitedMemoryCache(memory_cache_size)) // default
                 .memoryCacheSize(memory_cache_size)
-                .discCache(new UnlimitedDiscCache(context.getCacheDir()))
+                .discCache(new TotalSizeLimitedDiscCache(getContext().getCacheDir(), memory_cache_size * 5))
                 .discCacheSize(memory_cache_size * 5)
                 .discCacheFileCount(10)
                 .discCacheFileNameGenerator(new HashCodeFileNameGenerator()) // default
