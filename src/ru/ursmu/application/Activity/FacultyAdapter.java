@@ -2,6 +2,7 @@ package ru.ursmu.application.Activity;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ public class FacultyAdapter extends ArrayAdapter<Faculty> {
             String color = item.getColor();
 
             String temp = item.getFullName();
-            String name = (temp.isEmpty() ? item.getOriginalName() : temp);
+            String name = (TextUtils.isEmpty(temp) ? item.getOriginalName() : temp);
             temp = null;
 
             ImageView fc = (ImageView) v.findViewById(R.id.faculty_color);

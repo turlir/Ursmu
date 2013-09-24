@@ -3,6 +3,7 @@ package ru.ursmu.application.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -146,7 +147,7 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
                 //String normalProfessor = adapter.getItem(info.position).getNormalProfessor();
                 ListAdapter ada = mPages.get(mViewPager.getCurrentItem()).getAdapter();
                 String normalProfessor = ((EducationItem) ada.getItem(info.position)).getNormalProfessor();
-                if (!normalProfessor.isEmpty()) {
+                if (!TextUtils.isEmpty(normalProfessor)) {
                     Intent i = new Intent(this, ProfessorScheduleActivity.class);
                     i.putExtra("PROFESSOR", normalProfessor);
                     startActivity(i);

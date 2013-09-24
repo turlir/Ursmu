@@ -2,9 +2,11 @@ package ru.ursmu.application.Activity;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
@@ -201,20 +203,23 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.professor_action_bar, menu);
-        mSearchView = new SearchView(getSupportActionBar().getThemedContext());
-        mSearchView.setQueryHint("Поиск преподавателя");
-        mSearchView.setOnQueryTextListener(this);
-        mSearchView.setOnSuggestionListener(this);
-        mSearchView.setEnabled(light);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
+            Log.d("URSMULOG", "SearchView yes");
+            getSupportMenuInflater().inflate(R.menu.professor_action_bar, menu);
+            mSearchView = new SearchView(getSupportActionBar().getThemedContext());
+            mSearchView.setQueryHint("Поиск преподавателя");
+            mSearchView.setOnQueryTextListener(this);
+            mSearchView.setOnSuggestionListener(this);
+            mSearchView.setEnabled(light);
 
 
-        menu.add("Search")
-                .setIcon(!light ? R.drawable.ic_search_inverse : R.drawable.abs__ic_search)
-                .setActionView(mSearchView)
-                .setEnabled(light)
-                .setShowAsAction(com.actionbarsherlock.view.MenuItem.SHOW_AS_ACTION_IF_ROOM
-                        | com.actionbarsherlock.view.MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+            menu.add("Поиск")
+                    .setIcon(!light ? R.drawable.ic_search_inverse : R.drawable.abs__ic_search)
+                    .setActionView(mSearchView)
+                    .setEnabled(light)
+                    .setShowAsAction(com.actionbarsherlock.view.MenuItem.SHOW_AS_ACTION_IF_ROOM
+                            | com.actionbarsherlock.view.MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+        }
         return true;
     }
 
@@ -245,7 +250,7 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
                 //EducationItem etem = adapter.getItem(info.position);
                 ListAdapter ada = mPages.get(mViewPager.getCurrentItem()).getAdapter();
                 String groupName = ((EducationItem) ada.getItem(info.position)).getGroupName();
-                if (!groupName.isEmpty()) {
+                if (!TextUtils.isEmpty(groupName)) {
                     Intent i = new Intent(getApplicationContext(), GroupScheduleActivity.class);
                     i.putExtra(ServiceHelper.GROUP, groupName);
                     i.putExtra("IS_HARD", false);

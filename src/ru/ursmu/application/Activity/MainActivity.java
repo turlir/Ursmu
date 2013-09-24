@@ -10,6 +10,7 @@ import android.os.Message;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -173,7 +174,7 @@ public class MainActivity extends SherlockFragmentActivity {
         }
 
 
-        if (helper.getPreference(ServiceHelper.GROUP).isEmpty()) {
+        if (TextUtils.isEmpty(helper.getPreference(ServiceHelper.GROUP))) {
             Intent i = new Intent(this, FindFacultyActivity.class);
             startActivity(i);
         } else {

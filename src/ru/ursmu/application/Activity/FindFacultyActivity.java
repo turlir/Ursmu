@@ -2,6 +2,7 @@ package ru.ursmu.application.Activity;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,9 +13,9 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.widget.SearchView;
-import ru.ursmu.application.R;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.JsonObject.Faculty;
+import ru.ursmu.application.R;
 import ru.ursmu.application.Realization.FacultyFactory;
 import ru.ursmu.application.Realization.FacultyList;
 import ru.ursmu.application.Realization.ScheduleGroup;
@@ -84,17 +85,20 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        mSearchView = new SearchView(getSupportActionBar().getThemedContext());
-        mSearchView.setQueryHint("Поиск группы");
-        mSearchView.setOnQueryTextListener(this);
-        mSearchView.setOnSuggestionListener(this);
-        mSearchView.setEnabled(mLigth);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
+            Log.d("URSMULOG", "SearchView yes");
+            mSearchView = new SearchView(getSupportActionBar().getThemedContext());
+            mSearchView.setQueryHint("Поиск группы");
+            mSearchView.setOnQueryTextListener(this);
+            mSearchView.setOnSuggestionListener(this);
+            mSearchView.setEnabled(mLigth);
 
-        menu.add("Search")
-                .setIcon(!mLigth ? R.drawable.ic_search_inverse : R.drawable.abs__ic_search)
-                .setActionView(mSearchView)
-                .setEnabled(mLigth)
-                .setShowAsAction(com.actionbarsherlock.view.MenuItem.SHOW_AS_ACTION_IF_ROOM | com.actionbarsherlock.view.MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+            menu.add("Поиск")
+                    .setIcon(!mLigth ? R.drawable.ic_search_inverse : R.drawable.abs__ic_search)
+                    .setActionView(mSearchView)
+                    .setEnabled(mLigth)
+                    .setShowAsAction(com.actionbarsherlock.view.MenuItem.SHOW_AS_ACTION_IF_ROOM | com.actionbarsherlock.view.MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+        }
 
         return true;
     }
