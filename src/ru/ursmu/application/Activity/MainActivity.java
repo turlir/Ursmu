@@ -227,7 +227,7 @@ public class MainActivity extends SherlockFragmentActivity {
                 .setContentText("Сохраните расписание ваших друзей и профессоров")
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.ic_launcher)
-                        //.setDefaults(Notification.DEFAULT_ALL)
+                .setDefaults(Notification.DEFAULT_ALL)
                 .setContentIntent(contentIntent);
         Notification notification = builder.build();
         notification.contentIntent = contentIntent;
