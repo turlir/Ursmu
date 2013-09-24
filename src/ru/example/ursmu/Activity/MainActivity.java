@@ -50,6 +50,8 @@ public class MainActivity extends SherlockFragmentActivity {
         public void sendError(String notify) {
             Toast.makeText(getApplicationContext(), "Обновление завершено с ошибкой",
                     Toast.LENGTH_LONG).show();
+            findViewById(R.id.button_groups).setEnabled(true);
+            findViewById(R.id.button_prof).setEnabled(true);
         }
 
         @Override
