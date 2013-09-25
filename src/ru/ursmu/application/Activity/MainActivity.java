@@ -24,10 +24,6 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
- /*
- Main branch
-  */
-
 public class MainActivity extends SherlockFragmentActivity {
     private static final String STATE_BTN_1 = "SATE_BTN_1";
     private static final String STATE_BTN_2 = "SATE_BTN_2";

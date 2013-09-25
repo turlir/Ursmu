@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+        <!--First Market Version-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="ru.ursmu.application"
           android:versionCode="2"
