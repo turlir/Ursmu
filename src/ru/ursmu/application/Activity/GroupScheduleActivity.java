@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class GroupScheduleActivity extends SherlockActivity implements ActionBar.OnNavigationListener {
-    //private ServiceHelper mHelper;
     private IUrsmuDBObject mObject;
     private ProgressBar mBar;
     private TextView footerText;
