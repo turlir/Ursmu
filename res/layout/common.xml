@@ -22,8 +22,8 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="Вы можете вопспользоваться оффлайн поиском"
             android:id="@+id/common_help" android:layout_centerHorizontal="true"
             android:layout_below="@+id/commonProgressBar" android:textSize="18sp"
-            android:visibility="invisible"/>
+            android:visibility="invisible" android:gravity="center_horizontal" android:linksClickable="true"/>
 </RelativeLayout>
