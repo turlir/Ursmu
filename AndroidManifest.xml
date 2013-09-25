@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-        <!--First Market Version-->
+<!--First Market Version-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="ru.ursmu.application"
           android:versionCode="2"
           android:versionName="1.0">
     <uses-sdk
             android:targetSdkVersion="15"
-            android:minSdkVersion="7"/>
+            android:minSdkVersion="9"/>
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.NFC"/>
+
+    <uses-feature android:name="android.hardware.nfc" android:required="false"/>
 
     <supports-screens
             android:xlargeScreens="false"/>
@@ -25,13 +28,27 @@
             </intent-filter>
         </activity>
 
-        <activity android:screenOrientation="portrait" android:name="ru.ursmu.application.Activity.FindFacultyActivity" android:label="Выберите факультет"/>
-        <activity android:screenOrientation="portrait" android:name="ru.ursmu.application.Activity.FindKursActivity" android:label="Выберите курс"/>
-        <activity android:screenOrientation="portrait" android:name="ru.ursmu.application.Activity.FindGroupActivity" android:label="Выберите группу"/>
-        <activity android:screenOrientation="portrait" android:name="ru.ursmu.application.Activity.GroupScheduleActivity" android:label="Группа"/>
-        <activity android:screenOrientation="portrait" android:name="ru.ursmu.application.Activity.ProfessorScheduleActivity" android:label="Профессор"/>
-        <activity android:screenOrientation="portrait" android:name="ru.ursmu.application.Activity.NewsActivity" android:label="Новости УГГУ"/>
-        <activity android:screenOrientation="portrait" android:name="ru.ursmu.application.Activity.GrornyTVActivity" android:label="Горные Вести"/>-
+        <activity android:screenOrientation="portrait" android:name="ru.ursmu.application.Activity.FindFacultyActivity"
+                  android:label="Выберите факультет"/>
+        <activity android:screenOrientation="portrait" android:name="ru.ursmu.application.Activity.FindKursActivity"
+                  android:label="Выберите курс"/>
+        <activity android:screenOrientation="portrait" android:name="ru.ursmu.application.Activity.FindGroupActivity"
+                  android:label="Выберите группу"/>
+
+        <activity android:screenOrientation="portrait"
+                  android:name="ru.ursmu.application.Activity.GroupScheduleActivity" android:label="Группа">
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:screenOrientation="portrait"
+                  android:name="ru.ursmu.application.Activity.ProfessorScheduleActivity" android:label="Профессор"/>
+        <activity android:screenOrientation="portrait" android:name="ru.ursmu.application.Activity.NewsActivity"
+                  android:label="Новости УГГУ"/>
+        <activity android:screenOrientation="portrait" android:name="ru.ursmu.application.Activity.GrornyTVActivity"
+                  android:label="Горные Вести"/>-
 
         <service android:name="ru.ursmu.application.Activity.UrsmuService"/>
     </application>
