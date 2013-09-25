@@ -43,6 +43,7 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
             changeIndicatorVisible(View.INVISIBLE);
             Toast.makeText(getApplicationContext(), "Обновление завершено с ошибкой",
                     Toast.LENGTH_LONG).show();
+            changeDescText(null);
         }
 
         @Override
@@ -232,8 +233,13 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
                 startActivity(i);
                 return true;
             case R.id.global_update:
+                if (mBar == null) {
+                    mBar = (ProgressBar) findViewById(R.id.schedule_prof_bar);
+                }
                 if (mBar.getVisibility() != View.VISIBLE) {
                     startUpdateDialog();
+                }  else {
+                    Toast.makeText(getApplicationContext(),"Дождитесь окончания операции", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             default:
