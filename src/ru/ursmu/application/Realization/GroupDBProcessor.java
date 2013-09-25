@@ -57,16 +57,15 @@ public class GroupDBProcessor extends AbstractProcessor {
 
                     next.getDataBasingBehavior(mContext).add(q);
                 }
+
+                object.setCheck(mContext);
+                super.sendComplete(new String[]{});
             }
         } catch (IOException e) {
             sendFailure(e.getMessage());
         } catch (JSONException e) {
             sendFailure(e.getMessage());
         }
-
-
-        object.setCheck(mContext);
-        super.sendComplete(new String[]{});
         return null;
     }
 
