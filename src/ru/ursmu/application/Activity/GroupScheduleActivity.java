@@ -61,7 +61,7 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         }
 
         @Override
-        public void sendStart() {
+        public void sendStart(long id) {
             changeIndicatorVisible(View.VISIBLE);
         }
     };

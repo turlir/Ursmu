@@ -36,7 +36,7 @@ public class GrornyTVActivity extends SherlockActivity {
         }
 
         @Override
-        public void sendStart() {
+        public void sendStart(long id) {
             changeIndicatorVisible(View.VISIBLE);
         }
     };

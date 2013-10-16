@@ -32,8 +32,13 @@ public class GroupDBProcessor extends AbstractProcessor {
         Log.d("URSMULOG", "GroupDBProcessor start");
 
         sendStart();
-
-        GroupDataBasing dbAgent = GroupDataBasing.getInstance(mContext, null, null, null);
+        try {
+            Thread.sleep(15000);
+            super.sendComplete(new String[]{});
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        /*GroupDataBasing dbAgent = GroupDataBasing.getInstance(mContext, null, null, null);
         object.clearDB(dbAgent);
         dbAgent.close();
 
@@ -65,7 +70,7 @@ public class GroupDBProcessor extends AbstractProcessor {
             sendFailure(e.getMessage());
         } catch (JSONException e) {
             sendFailure(e.getMessage());
-        }
+        }*/
         return null;
     }
 

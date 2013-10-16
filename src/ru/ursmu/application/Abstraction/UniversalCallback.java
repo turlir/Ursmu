@@ -5,5 +5,5 @@ public interface UniversalCallback {
 
     public void sendComplete(Object[] data);
 
-    public void sendStart();
+    public void sendStart(long id);
 }

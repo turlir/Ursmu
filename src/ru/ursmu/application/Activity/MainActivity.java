@@ -61,7 +61,7 @@ public class MainActivity extends SherlockFragmentActivity {
 
 
         @Override
-        public void sendStart() {
+        public void sendStart(long id) {
             findViewById(R.id.button_groups).setEnabled(false);
             findViewById(R.id.button_prof).setEnabled(false);
         }
