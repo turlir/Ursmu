@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -207,8 +208,9 @@ public class MainActivity extends SherlockFragmentActivity {
     }
 
     public void tv(View v) {
-        Intent i = new Intent(this, GrornyTVActivity.class);
-        startActivity(i);
+        Uri address = Uri.parse("https://www.youtube.com/user/TheUrsmu?feature=watch");
+        Intent open_link = new Intent(Intent.ACTION_VIEW, address);
+        startActivity(open_link);
         mTimer.cancel();
     }
 
