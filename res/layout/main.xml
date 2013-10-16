@@ -89,7 +89,7 @@
                         android:id="@+id/footer" android:orientation="vertical">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                       android:text="При поддержке УГГУ" android:id="@+id/support_text_view" android:textSize="22sp"
-                      android:typeface="serif"/>
+                      android:typeface="serif" android:layout_marginBottom="4dp"/>
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
