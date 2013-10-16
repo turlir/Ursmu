@@ -46,7 +46,7 @@ public class MainActivity extends SherlockFragmentActivity {
     private UniversalCallback mHandlerDialog = new UniversalCallback() {
         @Override
         public void sendError(String notify) {
-            Toast.makeText(getApplicationContext(), "Обновление завершено с ошибкой",
+            Toast.makeText(getApplicationContext(), "Обновление завершено с ошибкой " + notify,
                     Toast.LENGTH_LONG).show();
             findViewById(R.id.button_groups).setEnabled(true);
             findViewById(R.id.button_prof).setEnabled(true);

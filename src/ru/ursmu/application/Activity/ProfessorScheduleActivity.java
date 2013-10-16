@@ -41,7 +41,7 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
         @Override
         public void sendError(String notify) {
             changeIndicatorVisible(View.INVISIBLE);
-            Toast.makeText(getApplicationContext(), "Обновление завершено с ошибкой",
+            Toast.makeText(getApplicationContext(), "Обновление завершено с ошибкой " + notify,
                     Toast.LENGTH_LONG).show();
             changeDescText(null);
         }
