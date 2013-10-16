@@ -129,7 +129,7 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
         int minute = mAlarmStartMin[position];
 
         Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
-        i.putExtra(AlarmClock.EXTRA_MESSAGE, "Мне к " + position + " паре");
+        i.putExtra(AlarmClock.EXTRA_MESSAGE, "Мне к " + position +1  + " паре");
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         i.putExtra(AlarmClock.EXTRA_HOUR, hour);
         i.putExtra(AlarmClock.EXTRA_MINUTES, minute);
