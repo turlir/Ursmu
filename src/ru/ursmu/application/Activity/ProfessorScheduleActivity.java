@@ -298,16 +298,20 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
     }
 
     public void previous(View v) {
-        mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
+        if (mViewPager!= null)
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
     }
 
     public void next(View v) {
-        mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+        if (mViewPager != null)
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
     }
 
     public void current(View v) {
-        mViewPager.setCurrentItem(0, true);
-        changeFooter(mViewPager.getCurrentItem());
+        if (mViewPager!=null) {
+            mViewPager.setCurrentItem(0, true);
+            changeFooter(mViewPager.getCurrentItem());
+        }
     }
 
     private void changeFooter(int i) {
