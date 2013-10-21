@@ -19,8 +19,8 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.JsonObject.EducationItem;
-import ru.ursmu.application.R;
 import ru.ursmu.application.Realization.ScheduleGroup;
+import ru.ursmu.beta.application.R;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
