@@ -17,7 +17,6 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import ru.ursmu.application.Abstraction.IUrsmuDBObject;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.JsonObject.EducationItem;
 import ru.ursmu.application.R;
@@ -28,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class GroupScheduleActivity extends SherlockActivity implements ActionBar.OnNavigationListener, NfcAdapter.CreateNdefMessageCallback {
-    private IUrsmuDBObject mObject;
+    private ScheduleGroup mObject;
     private ProgressBar mBar;
     private TextView footerText;
 
@@ -86,7 +85,6 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         }
     };
     private ServiceHelper mHelper;
-    private NfcAdapter mNfcAdapter;
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
@@ -121,11 +119,7 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         list_navigation[0] = "Поиск";
         list_navigation[1] = group;
 
-        if (faculty == null) {
-            mObject = new ScheduleGroup(group, isHard);
-        } else {
-            mObject = new ScheduleGroup(faculty, kurs, group, isHard);
-        }
+        mObject = new ScheduleGroup(faculty, kurs, group, isHard);
 
         mRequestId = mHelper.getUrsmuDBObject(mObject, mHandler);
 
@@ -139,7 +133,7 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         bar.setSelectedNavigationItem(1);
 
-        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        NfcAdapter mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (mNfcAdapter != null) {
             Log.d("URSMULOG", "NFC support yes" + mObject.getUri() + mObject.getParameters());
             mNfcAdapter.setNdefPushMessageCallback(this, this);

@@ -15,11 +15,11 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.widget.SearchView;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.JsonObject.Faculty;
-import ru.ursmu.application.R;
 import ru.ursmu.application.Realization.FacultyFactory;
 import ru.ursmu.application.Realization.FacultyList;
 import ru.ursmu.application.Realization.ScheduleGroup;
 import ru.ursmu.application.Realization.ScheduleGroupFactory;
+import ru.ursmu.beta.application.R;
 
 public class FindFacultyActivity extends SherlockListActivity implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
     ServiceHelper mHelper;
@@ -71,6 +71,7 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
         Toast.makeText(getApplicationContext(), "Выберите элемент из списка", Toast.LENGTH_SHORT).show();
         return false;
     }
+
     @Override
     public boolean onQueryTextChange(String newText) {
         if (newText.length() < 6) {
@@ -85,21 +86,32 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
             return false;
         }
     }
+
     @Override
     public boolean onSuggestionSelect(int position) {
         return false;
     }
+
     @Override
     public boolean onSuggestionClick(int position) {
-        String groupName = ((SuggestionsAdapter) mSearchView.getSuggestionsAdapter()).getString(position);
-        Log.d("URSMULOG onSuggestionClick", groupName);
-        mSearchView.clearFocus();
+        Cursor local_cursor = mSearchView.getSuggestionsAdapter().getCursor();
 
-        Intent intent = new Intent(this, GroupScheduleActivity.class);
-        intent.putExtra(ServiceHelper.GROUP, groupName);
-        intent.putExtra("IS_HARD", false);
-        startActivity(intent);
-        return true;
+        if (local_cursor.moveToPosition(position)) {
+            String groupName = local_cursor.getString(local_cursor.getColumnIndexOrThrow(ServiceHelper.GROUP));
+            String faculty = local_cursor.getString(local_cursor.getColumnIndexOrThrow(ServiceHelper.FACULTY));
+            String kurs = local_cursor.getString(local_cursor.getColumnIndexOrThrow(ServiceHelper.KURS));
+            Log.d("URSMULOG onSuggestionClick", groupName + faculty + kurs);
+            mSearchView.clearFocus();
+
+            Intent intent = new Intent(this, GroupScheduleActivity.class);
+            intent.putExtra(ServiceHelper.FACULTY, faculty);
+            intent.putExtra(ServiceHelper.KURS, kurs);
+            intent.putExtra(ServiceHelper.GROUP, groupName);
+            intent.putExtra("IS_HARD", false);
+            startActivity(intent);
+            return true;
+        } else
+            return false;
     }
     //</editor-fold>
 
@@ -112,9 +124,6 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
         mRequestId = mHelper.getUrsmuObject(new FacultyList(), mHandler);
 
         ScheduleGroupFactory object = new ScheduleGroupFactory();
-/*        if (!(mLigth = object.check(getApplicationContext()))) {
-            //mSearchView.setEnabled(mLigth);
-        }*/
 
         mLigth = object.check(getApplicationContext());
 
@@ -163,7 +172,6 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
         setListAdapter(new FacultyAdapter(getApplicationContext(), R.layout.faculty_adapter, mFaculty));
         getListView().setOnItemClickListener(facultyClickListener);
     }
-
 
 
 }

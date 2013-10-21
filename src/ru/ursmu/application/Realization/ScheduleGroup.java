@@ -18,14 +18,14 @@ public class ScheduleGroup implements IUrsmuDBObject, IUrsmuObject {
     public String mFaculty;
     public String mKurs;
     public String mGroup;
-    public String param;
+    public String mParam;
     private boolean mHard;
 
     public ScheduleGroup(String fak, String kur, String gro, boolean isHard) {
         mFaculty = fak;
         mKurs = kur;
         mGroup = gro;
-        param = "task=rasp" + "&fak=" + Encode(mFaculty) + "&kurs=" + mKurs + "&group=" + Encode(mGroup);
+        mParam = "task=rasp" + "&fak=" + Encode(mFaculty) + "&kurs=" + mKurs + "&group=" + Encode(mGroup);
         mHard = isHard;
         //mContext = context;
     }
@@ -54,7 +54,7 @@ public class ScheduleGroup implements IUrsmuDBObject, IUrsmuObject {
 
     @Override
     public String getParameters() {
-        return param;
+        return mParam;
     }
 
     @Override
@@ -91,7 +91,7 @@ public class ScheduleGroup implements IUrsmuDBObject, IUrsmuObject {
         dest.writeString(mFaculty);
         dest.writeString(mKurs);
         dest.writeString(mGroup);
-        dest.writeString(param);
+        dest.writeString(mParam);
         dest.writeByte((byte) (mHard ? 1 : 0));
     }
 
@@ -111,7 +111,7 @@ public class ScheduleGroup implements IUrsmuDBObject, IUrsmuObject {
         mFaculty = parcel.readString();
         mKurs = parcel.readString();
         mGroup = parcel.readString();
-        param = parcel.readString();
+        mParam = parcel.readString();
         mHard = parcel.readByte() == 1;
     }
 
