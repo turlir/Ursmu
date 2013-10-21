@@ -1,10 +1,11 @@
 package ru.ursmu.application.Realization;
 
-import ru.ursmu.application.Abstraction.IParserBehavior;
-import ru.ursmu.application.JsonObject.EducationItem;
+import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import ru.ursmu.application.Abstraction.IParserBehavior;
+import ru.ursmu.application.JsonObject.EducationItem;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +40,9 @@ public class ScheduleParser extends IParserBehavior<EducationItem> {
                     e.printStackTrace();
                 }
                 EducationItem[] items = parseObject(array_day, q, i);
-                Collections.addAll(coll, items);
+                if (items != null) {
+                    Collections.addAll(coll, items);
+                }
             }
         }
         return coll;
@@ -49,32 +52,37 @@ public class ScheduleParser extends IParserBehavior<EducationItem> {
         try {
             switch (item.length()) {
                 case 3:
+                    Log.d("URSMULOG", "parseObject 3");
                     return new EducationItem[]{
                             new EducationItem(day, para + 1, item.getString(0), item.getString(1), item.getString(2))
                     };
 
                 case 2:
+                    Log.d("URSMULOG", "parseObject 2");
                     return new EducationItem[]{
                             new EducationItem(day, para + 1, item.getString(0), item.getString(1), "")
                     };
                 case 6:
+                    Log.d("URSMULOG", "parseObject 6");
                     //подряд - две пары одновременно
                     return new EducationItem[]{
                             new EducationItem(day, para + 1, item.getString(0), item.getString(1), item.getString(2)),
                             new EducationItem(day, para + 1, item.getString(3), item.getString(4), item.getString(5))
                     };
                 case 5:
+                    Log.d("URSMULOG", "parseObject 5");
                     return new EducationItem[]{
                             new EducationItem(day, para + 1, item.getString(0), item.getString(2), item.getString(4))
                     };
-                default:
-                    return new EducationItem[]{new EducationItem(0, 0, "", "", "")};
+                /*default:
+                    Log.d("URSMULOG", "parseObject default");
+                    return new EducationItem[]{new EducationItem(0, 0, "", "", "")};*/
             }
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
         }
-
+        return null;
     }
 
 }
