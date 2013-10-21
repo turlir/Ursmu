@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import ru.ursmu.application.JsonObject.EducationItem;
-import ru.ursmu.application.R;
+import ru.ursmu.beta.application.R;
 
 import java.lang.ref.WeakReference;
 import java.util.Calendar;
