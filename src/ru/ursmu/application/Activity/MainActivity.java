@@ -1,15 +1,11 @@
 package ru.ursmu.application.Activity;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
@@ -205,27 +201,6 @@ public class MainActivity extends SherlockFragmentActivity {
         Intent i = new Intent(this, GrornyTVActivity.class);
         startActivity(i);
         mTimer.cancel();
-    }
-
-    private void createNotification() {
-        Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        notificationIntent.setAction(NOTIFICATION_ACTION);
-
-        PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext())
-                .setContentTitle("Совет")
-                .setContentText("Сохраните расписание ваших друзей и профессоров")
-                .setAutoCancel(true)
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setContentIntent(contentIntent);
-        Notification notification = builder.build();
-        notification.contentIntent = contentIntent;
-
-        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        manager.notify(1, notification);
     }
 
     public void scheduleProf(View v) {
