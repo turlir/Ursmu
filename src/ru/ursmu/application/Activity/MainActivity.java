@@ -18,7 +18,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
 import ru.ursmu.application.Abstraction.UniversalCallback;
-import ru.ursmu.application.R;
+import ru.ursmu.beta.application.R;
 
 import java.util.Random;
 import java.util.Timer;
@@ -164,10 +164,10 @@ public class MainActivity extends SherlockFragmentActivity {
 
     public void scheduleGroup(View v) {
         ServiceHelper helper = ServiceHelper.getInstance(getApplicationContext());
-        if (helper.getBooleanPreference("FIRST_RUN")) {
+ /*       if (helper.getBooleanPreference("FIRST_RUN")) {
             createNotification();
             helper.setBooleanPreferences("FIRST_RUN", false);
-        }
+        }*/
 
 
         if (TextUtils.isEmpty(helper.getPreference(ServiceHelper.GROUP))) {
