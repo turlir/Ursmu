@@ -164,11 +164,6 @@ public class MainActivity extends SherlockFragmentActivity {
 
     public void scheduleGroup(View v) {
         ServiceHelper helper = ServiceHelper.getInstance(getApplicationContext());
- /*       if (helper.getBooleanPreference("FIRST_RUN")) {
-            createNotification();
-            helper.setBooleanPreferences("FIRST_RUN", false);
-        }*/
-
 
         if (TextUtils.isEmpty(helper.getPreference(ServiceHelper.GROUP))) {
             Intent i = new Intent(this, FindFacultyActivity.class);
