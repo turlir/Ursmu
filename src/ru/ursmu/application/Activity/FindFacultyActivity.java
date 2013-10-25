@@ -74,7 +74,7 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if (newText.length() < 6) {
+        if (newText.length() < 7) {
             ScheduleGroup prof = new ScheduleGroup(newText, false); //Upper Case
             Cursor c = prof.getDataBasingBehavior(getApplicationContext()).get();
 
