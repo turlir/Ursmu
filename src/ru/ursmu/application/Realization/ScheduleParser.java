@@ -52,18 +52,15 @@ public class ScheduleParser extends IParserBehavior<EducationItem> {
         try {
             switch (item.length()) {
                 case 3:
-                    Log.d("URSMULOG", "parseObject 3");
                     return new EducationItem[]{
                             new EducationItem(day, para + 1, item.getString(0), item.getString(1), item.getString(2))
                     };
 
                 case 2:
-                    Log.d("URSMULOG", "parseObject 2");
                     return new EducationItem[]{
                             new EducationItem(day, para + 1, item.getString(0), item.getString(1), "")
                     };
                 case 6:
-                    Log.d("URSMULOG", "parseObject 6");
                     //подряд - две пары одновременно
                     return new EducationItem[]{
                             new EducationItem(day, para + 1, item.getString(0), item.getString(1), item.getString(2)),
@@ -74,9 +71,6 @@ public class ScheduleParser extends IParserBehavior<EducationItem> {
                     return new EducationItem[]{
                             new EducationItem(day, para + 1, item.getString(0), item.getString(2), item.getString(4))
                     };
-                /*default:
-                    Log.d("URSMULOG", "parseObject default");
-                    return new EducationItem[]{new EducationItem(0, 0, "", "", "")};*/
             }
         } catch (JSONException e) {
             e.printStackTrace();
