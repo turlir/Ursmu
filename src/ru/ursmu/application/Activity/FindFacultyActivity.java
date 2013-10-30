@@ -19,7 +19,7 @@ import ru.ursmu.application.Realization.FacultyFactory;
 import ru.ursmu.application.Realization.FacultyList;
 import ru.ursmu.application.Realization.ScheduleGroup;
 import ru.ursmu.application.Realization.ScheduleGroupFactory;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 public class FindFacultyActivity extends SherlockListActivity implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
     ServiceHelper mHelper;
@@ -74,7 +74,7 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if (newText.length() < 7) {
+        if (newText.length() < 6) {
             ScheduleGroup prof = new ScheduleGroup(newText, false); //Upper Case
             Cursor c = prof.getDataBasingBehavior(getApplicationContext()).get();
 
@@ -94,24 +94,15 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
 
     @Override
     public boolean onSuggestionClick(int position) {
-        Cursor local_cursor = mSearchView.getSuggestionsAdapter().getCursor();
+        String groupName = ((SuggestionsAdapter) mSearchView.getSuggestionsAdapter()).getString(position);
+        Log.d("URSMULOG onSuggestionClick", groupName);
+        mSearchView.clearFocus();
 
-        if (local_cursor.moveToPosition(position)) {
-            String groupName = local_cursor.getString(local_cursor.getColumnIndexOrThrow(ServiceHelper.GROUP));
-            String faculty = local_cursor.getString(local_cursor.getColumnIndexOrThrow(ServiceHelper.FACULTY));
-            String kurs = local_cursor.getString(local_cursor.getColumnIndexOrThrow(ServiceHelper.KURS));
-            Log.d("URSMULOG onSuggestionClick", groupName + faculty + kurs);
-            mSearchView.clearFocus();
-
-            Intent intent = new Intent(this, GroupScheduleActivity.class);
-            intent.putExtra(ServiceHelper.FACULTY, faculty);
-            intent.putExtra(ServiceHelper.KURS, kurs);
-            intent.putExtra(ServiceHelper.GROUP, groupName);
-            intent.putExtra("IS_HARD", false);
-            startActivity(intent);
-            return true;
-        } else
-            return false;
+        Intent intent = new Intent(this, GroupScheduleActivity.class);
+        intent.putExtra(ServiceHelper.GROUP, groupName);
+        intent.putExtra("IS_HARD", false);
+        startActivity(intent);
+        return true;
     }
     //</editor-fold>
 
@@ -124,6 +115,9 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
         mRequestId = mHelper.getUrsmuObject(new FacultyList(), mHandler);
 
         ScheduleGroupFactory object = new ScheduleGroupFactory();
+/*        if (!(mLigth = object.check(getApplicationContext()))) {
+            //mSearchView.setEnabled(mLigth);
+        }*/
 
         mLigth = object.check(getApplicationContext());
 
