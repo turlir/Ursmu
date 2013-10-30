@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.text.TextUtils;
 import android.util.Log;
 import ru.ursmu.application.Abstraction.IDatabasingBehavior;
 import ru.ursmu.application.Activity.DataBaseHelper;
@@ -16,7 +17,7 @@ import java.util.UUID;
 public class GroupDataBasing extends IDatabasingBehavior {
 
 
-    String fac, kur, gro;
+    String mFaculty, mKurs, mGroup;
 
     private static Context mContext;
     private static SQLiteStatement common;
@@ -45,11 +46,9 @@ public class GroupDataBasing extends IDatabasingBehavior {
             query_limit.append("ScheduleDays.numerPair,");
             query_limit.append("ScheduleDays.DayIndex");
             query_limit.append(" FROM ScheduleCommon, ScheduleDays WHERE (ScheduleCommon.UIN = ScheduleDays.GroupID)");
-
             query_limit.append("AND (ScheduleCommon.UIN = ");
             query_limit.append("?");
             query_limit.append(")");
-
             query_limit.append("AND (ScheduleDays.DayIndex = ");
             query_limit.append("?");
             query_limit.append(")");
@@ -58,7 +57,7 @@ public class GroupDataBasing extends IDatabasingBehavior {
             mQueryLimit = query_limit.toString();
 
             StringBuilder query_non_limit = new StringBuilder();
-            query_non_limit.append("SELECT ScheduleCommon.GroupName, ScheduleCommon._id");
+            query_non_limit.append("SELECT ScheduleCommon.GroupName, ScheduleCommon._id, ScheduleCommon.FACULTY, ScheduleCommon.KURS");
             query_non_limit.append(" FROM ScheduleCommon");
             query_non_limit.append(" WHERE ");
             query_non_limit.append(" (ScheduleCommon.GroupName LIKE ?)");
@@ -70,10 +69,10 @@ public class GroupDataBasing extends IDatabasingBehavior {
         return new GroupDataBasing(f, k, g);
     }
 
-    private GroupDataBasing(String f, String k, String g) {
-        fac = f;
-        kur = k;
-        gro = g;
+    private GroupDataBasing(String faculty, String kurs, String group) {
+            mGroup = group;
+            mFaculty = faculty;
+            mKurs = kurs;
     }
 
     @Override
@@ -81,13 +80,13 @@ public class GroupDataBasing extends IDatabasingBehavior {
         ArrayList<EducationItem> temp = (ArrayList<EducationItem>) week;
         Long id = Math.abs(UUID.randomUUID().getLeastSignificantBits());
 
-        Log.d("URSMULOG", fac + " " + kur + " " + gro);
+        Log.d("URSMULOG", mFaculty + " " + mKurs + " " + mGroup);
 
         mDataBase.beginTransaction();
 
-        common.bindString(2, fac);
-        common.bindString(3, kur);
-        common.bindString(4, gro);
+        common.bindString(2, mFaculty);
+        common.bindString(3, mKurs);
+        common.bindString(4, mGroup);
         common.bindLong(5, id);
         common.executeInsert();
 
@@ -133,7 +132,7 @@ public class GroupDataBasing extends IDatabasingBehavior {
 
     @Override
     public Cursor get() {
-        return mDataBase.rawQuery(mQueryNonLimit, new String[]{"%" + gro + "%"});
+        return mDataBase.rawQuery(mQueryNonLimit, new String[]{"%" + mGroup + "%"});
     }
 
     private static Long mUIN = null;
@@ -141,8 +140,8 @@ public class GroupDataBasing extends IDatabasingBehavior {
 
     @Override
     public Object[] get(int limit) {
-        if (mUIN == null || !gro.equals(mLastGroup)) {
-            mLastGroup = gro;
+        if (mUIN == null || !mGroup.equals(mLastGroup)) {
+            mLastGroup = mGroup;
             mUIN = getUINCurrentGroup();
             Log.d("URSMULOG", "getUINCurrentGroup" + mUIN);
         }
@@ -152,7 +151,7 @@ public class GroupDataBasing extends IDatabasingBehavior {
 
     private Long getUINCurrentGroup() {
         Cursor c = mDataBase.rawQuery("SELECT ScheduleCommon.UIN FROM ScheduleCommon WHERE (ScheduleCommon.GroupName = ?)",
-                new String[]{gro});
+                new String[]{mGroup});
         int uin_index = c.getColumnIndex("UIN");
         c.moveToFirst();
         Long uin = c.getLong(uin_index);
@@ -164,11 +163,9 @@ public class GroupDataBasing extends IDatabasingBehavior {
     public void update(ArrayList<Object> q) {
         if (check()) {
             Cursor c = mDataBase.rawQuery("SELECT ScheduleCommon.UIN FROM ScheduleCommon WHERE (ScheduleCommon.GroupName = ?)",
-                    new String[]{gro});
-            int uin_index = c.getColumnIndexOrThrow("UIN");
+                    new String[]{mGroup});
             c.moveToFirst();
-            //Long uin = c.getLong(uin_index);
-            mUIN = c.getLong(uin_index);
+            mUIN = c.getLong(c.getColumnIndexOrThrow("UIN"));
             c.close();
 
             mDataBase.delete("ScheduleCommon", "UIN=?", new String[]{String.valueOf(mUIN)});
@@ -179,7 +176,7 @@ public class GroupDataBasing extends IDatabasingBehavior {
 
     @Override
     public boolean check() {
-        Cursor c = mDataBase.rawQuery("SELECT COUNT(ScheduleCommon.UIN) FROM ScheduleCommon WHERE (ScheduleCommon.GroupName = '" + gro + "')", null);
+        Cursor c = mDataBase.rawQuery("SELECT COUNT(ScheduleCommon.UIN) FROM ScheduleCommon WHERE (ScheduleCommon.GroupName = '" + mGroup + "')", null);
         c.moveToFirst();
         int count = c.getInt(0);
         c.close();

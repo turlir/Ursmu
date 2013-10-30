@@ -10,8 +10,7 @@ public class FacultyFactory {
             "Геологии и геофизики",
             "Гражданской защиты",
             "Среднего профессионального образования",
-            "Заочного обучения",
-            "ФСПОЗ"};
+            "Заочного обучения"};
 
     static String[] mShortName = new String[]{"гмф",
             "гтф",
@@ -19,17 +18,9 @@ public class FacultyFactory {
             "фгиг",
             "фгз",
             "фспо",
-            "фзо",
-            "фспоз"};
+            "фзо"};
 
-    static String[] mColor = new String[]{"#007ab2",      // гмф
-            "#a12331",        //гтф
-            "#c3952a",        //иэф
-            "#00a871",        //фгиг
-            "#387b45",        //фгз
-            "#9e6544",        //фспо
-            "#907534",        //фзо
-            "#9e6544"};       //фспоз
+    static String[] mColor = new String[]{"#007ab2", "#a12331", "#c3952a", "#00a871", "#387b45", "#9e6544", "#907534", "#FFFFFF"};
 
 //    public static Faculty create(String value) {
 //        Faculty f = null;
@@ -63,7 +54,7 @@ public class FacultyFactory {
 //    }
 
     public static Faculty create(String value) {
-        if ((mFullName.length + mShortName.length + mColor.length) % 3 != 0)  //exception common white color
+        if ((mFullName.length + mShortName.length + (mColor.length - 1)) % 3 != 0)  //exception common white color
             throw new IllegalArgumentException("(mFullName.length + mShortName.length + (mColor.length - 1)) % 3 != 0");
         String v = value.toLowerCase();
         for (int i = 0; i < mShortName.length; i++) {

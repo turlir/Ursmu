@@ -1,9 +1,14 @@
 package ru.ursmu.application.Activity;
 
 import android.content.Intent;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcEvent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -12,18 +17,17 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import ru.ursmu.application.R;
-import ru.ursmu.application.Abstraction.IUrsmuDBObject;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.JsonObject.EducationItem;
 import ru.ursmu.application.Realization.ScheduleGroup;
+import ru.ursmu.beta.application.R;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class GroupScheduleActivity extends SherlockActivity implements ActionBar.OnNavigationListener {
-    //private ServiceHelper mHelper;
-    private IUrsmuDBObject mObject;
+public class GroupScheduleActivity extends SherlockActivity implements ActionBar.OnNavigationListener, NfcAdapter.CreateNdefMessageCallback {
+    private ScheduleGroup mObject;
     private ProgressBar mBar;
     private TextView footerText;
 
@@ -115,11 +119,7 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         list_navigation[0] = "Поиск";
         list_navigation[1] = group;
 
-        if (faculty == null) {
-            mObject = new ScheduleGroup(group, isHard);
-        } else {
-            mObject = new ScheduleGroup(faculty, kurs, group, isHard);
-        }
+        mObject = new ScheduleGroup(faculty, kurs, group, isHard);
 
         mRequestId = mHelper.getUrsmuDBObject(mObject, mHandler);
 
@@ -132,19 +132,30 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         bar.setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         bar.setSelectedNavigationItem(1);
+
+        NfcAdapter mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (mNfcAdapter != null) {
+            Log.d("URSMULOG", "NFC support yes" + mObject.getUri() + mObject.getParameters());
+            mNfcAdapter.setNdefPushMessageCallback(this, this);
+        }
+    }
+
+    @Override
+    public NdefMessage createNdefMessage(NfcEvent event) {
+        return new NdefMessage(new NdefRecord[]{
+                new NdefRecord(
+                        NdefRecord.TNF_ABSOLUTE_URI,
+                        (mObject.getUri() + mObject.getParameters()).getBytes(Charset.forName("UTF-8")),
+                        new byte[0], new byte[0])
+        });
     }
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
-        /*ArrayAdapter<EducationItem> adapter = (ArrayAdapter<EducationItem>)
-                mPages.get(mViewPager.getCurrentItem()).getAdapter();*/
-
-
         switch (item.getItemId()) {
             case R.id.schedule_item_professor:
-                //String normalProfessor = adapter.getItem(info.position).getNormalProfessor();
                 ListAdapter ada = mPages.get(mViewPager.getCurrentItem()).getAdapter();
                 String normalProfessor = ((EducationItem) ada.getItem(info.position)).getNormalProfessor();
                 if (!TextUtils.isEmpty(normalProfessor)) {
@@ -175,10 +186,6 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.action_bar_schedule, menu);
-        //MenuItem item = menu.findItem(R.id.schedule_group_share);
-/*        ShareActionProvider provider = (ShareActionProvider) item.getActionProvider();
-        provider.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
-        provider.setShareIntent(createShareIntent());*/
         return true;
     }
 
@@ -220,6 +227,7 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         Toast.makeText(getApplicationContext(), notify, Toast.LENGTH_LONG).show();
     }
 
+
     protected void changeIndicatorVisible(int visibility) {
         if (mBar == null) {
             mBar = (ProgressBar) findViewById(R.id.schedule_bar);
@@ -229,7 +237,6 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
             mBar = null;
         }
     }
-
 
     private void changeFooter(int i) {
         if (footerText == null) {
@@ -250,5 +257,4 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
     private String generationLinkSchedule() {
         return mObject.getUri() + "#" + mObject.getParameters();
     }
-
 }

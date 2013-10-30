@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">УГГУ</string>
+    <string name="app_name">УГГУ beta</string>
     <string name="offline_search_help">Вы можете воспользоваться оффлайн поиском</string>
 </resources>

@@ -1,8 +1,5 @@
 package ru.ursmu.application.Activity;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,7 +7,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
@@ -19,7 +15,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
 import ru.ursmu.application.Abstraction.UniversalCallback;
-import ru.ursmu.application.R;
+import ru.ursmu.beta.application.R;
 
 import java.util.Random;
 import java.util.Timer;
@@ -165,11 +161,6 @@ public class MainActivity extends SherlockFragmentActivity {
 
     public void scheduleGroup(View v) {
         ServiceHelper helper = ServiceHelper.getInstance(getApplicationContext());
-        if (helper.getBooleanPreference("FIRST_RUN")) {
-            createNotification();
-            helper.setBooleanPreferences("FIRST_RUN", false);
-        }
-
 
         if (TextUtils.isEmpty(helper.getPreference(ServiceHelper.GROUP))) {
             Intent i = new Intent(this, FindFacultyActivity.class);
@@ -212,27 +203,6 @@ public class MainActivity extends SherlockFragmentActivity {
         Intent open_link = new Intent(Intent.ACTION_VIEW, address);
         startActivity(open_link);
         mTimer.cancel();
-    }
-
-    private void createNotification() {
-        Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        notificationIntent.setAction(NOTIFICATION_ACTION);
-
-        PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext())
-                .setContentTitle("Совет")
-                .setContentText("Сохраните расписание ваших друзей и профессоров")
-                .setAutoCancel(true)
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setContentIntent(contentIntent);
-        Notification notification = builder.build();
-        notification.contentIntent = contentIntent;
-
-        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        manager.notify(1, notification);
     }
 
     public void scheduleProf(View v) {

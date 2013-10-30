@@ -55,7 +55,7 @@ public class ProfessorSchedule implements IUrsmuDBObject {
         }
 
         //uri = (String[]) uris.toArray(new String[0]);
-        param = (String[]) params.toArray(new String[0]);
+        mParam = (String[]) params.toArray(new String[0]);
 
         Log.d("URSMULOG", "process ProfessorSchedule END");
     }*/
@@ -100,7 +100,7 @@ public class ProfessorSchedule implements IUrsmuDBObject {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mProfessor);
         //dest.writeString(uri);
-        //dest.writeStringArray(param);
+        //dest.writeStringArray(mParam);
     }
 
     public static final Parcelable.Creator<IUrsmuDBObject> CREATOR = new Parcelable.Creator<IUrsmuDBObject>() {
@@ -116,6 +116,6 @@ public class ProfessorSchedule implements IUrsmuDBObject {
     private ProfessorSchedule(Parcel parcel) {
         mProfessor = parcel.readString();
         //uri = parcel.readString();
-        //parcel.readStringArray(param);
+        //parcel.readStringArray(mParam);
     }
 }
