@@ -20,7 +20,7 @@ public class UrsmuPostDownload implements IDownloadBehavior {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         connection.setRequestMethod("POST");
-        connection.setRequestProperty("User-Agent", "Android/2.0");
+        connection.setRequestProperty("User-Agent", "Android/2.6");
         connection.setRequestProperty("Content-Language", "ru-RU");
         connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         connection.setRequestProperty("X-Requested-With", "XMLHttpRequest");
