@@ -11,7 +11,7 @@ import ru.ursmu.application.Abstraction.IUrsmuObject;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.JsonObject.ListItem;
 import ru.ursmu.application.Realization.UrsmuNews;
-import ru.ursmu.application.R;
+import ru.ursmu.beta.application.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +36,7 @@ public class NewsActivity extends SherlockActivity {
         }
 
         @Override
-        public void sendStart() {
+        public void sendStart(long id) {
             changeIndicatorVisible(View.VISIBLE);
         }
     };

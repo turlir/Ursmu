@@ -13,7 +13,7 @@ import com.actionbarsherlock.view.MenuItem;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.JsonObject.ListItem;
 import ru.ursmu.application.Realization.GornyVestiFactory;
-import ru.ursmu.application.R;
+import ru.ursmu.beta.application.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +36,7 @@ public class GrornyTVActivity extends SherlockActivity {
         }
 
         @Override
-        public void sendStart() {
+        public void sendStart(long id) {
             changeIndicatorVisible(View.VISIBLE);
         }
     };

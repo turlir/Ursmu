@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import ru.ursmu.application.JsonObject.RomanNumeral;
-import ru.ursmu.application.R;
+import ru.ursmu.beta.application.R;
 
 public class RomanAdapter extends ArrayAdapter<String> {
     Context mContext;

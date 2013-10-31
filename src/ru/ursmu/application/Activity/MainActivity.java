@@ -15,7 +15,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
 import ru.ursmu.application.Abstraction.UniversalCallback;
-import ru.ursmu.application.R;
+import ru.ursmu.beta.application.R;
 
 import java.util.Random;
 import java.util.Timer;
@@ -57,7 +57,7 @@ public class MainActivity extends SherlockFragmentActivity {
 
 
         @Override
-        public void sendStart() {
+        public void sendStart(long id) {
             findViewById(R.id.button_groups).setEnabled(false);
             findViewById(R.id.button_prof).setEnabled(false);
         }
