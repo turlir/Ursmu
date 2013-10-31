@@ -84,18 +84,18 @@
                     android:layout_alignTop="@+id/event" android:drawableLeft="@drawable/video_camera"
                     android:typeface="monospace" android:id="@+id/tv" android:onClick="tv"/>
         </RelativeLayout>
-        <RelativeLayout android:layout_width="fill_parent" android:layout_height="80dp" android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp" android:layout_marginTop="8dp"
-                        android:id="@+id/footer">
+        <LinearLayout android:layout_width="fill_parent" android:layout_height="200dp" android:layout_marginLeft="16dp"
+                      android:layout_marginRight="16dp" android:layout_marginTop="8dp"
+                      android:id="@+id/footer" android:orientation="vertical">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      android:text="При поддержке" android:id="@+id/support_text_view" android:textSize="22sp"
-                      android:typeface="serif"/>
+                      android:text="При поддержке УГГУ" android:id="@+id/support_text_view" android:textSize="22sp"
+                      android:typeface="serif" android:layout_marginBottom="4dp"/>
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageView" android:layout_alignLeft="@+id/support_text_view"
-                    android:layout_below="@+id/support_text_view" android:src="@drawable/izyum"/>
-        </RelativeLayout>
+                    android:id="@+id/imageView" android:src="@drawable/twi_logo"
+                    android:layout_gravity="center_horizontal"/>
+        </LinearLayout>
 
     </LinearLayout>
 
