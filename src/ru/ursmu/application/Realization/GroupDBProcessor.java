@@ -32,6 +32,7 @@ public class GroupDBProcessor extends AbstractProcessor {
         Log.d("URSMULOG", "GroupDBProcessor start");
 
         sendStart();
+
         GroupDataBasing dbAgent = GroupDataBasing.getInstance(mContext, null, null, null);
         object.clearDB(dbAgent);
         dbAgent.close();

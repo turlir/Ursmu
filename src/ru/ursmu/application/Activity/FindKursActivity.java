@@ -29,7 +29,7 @@ public class FindKursActivity extends SherlockListActivity {
         }
 
         @Override
-        public void sendStart(long id) {
+        public void sendStart() {
             changeIndicatorVisible(View.INVISIBLE);
         }
     };

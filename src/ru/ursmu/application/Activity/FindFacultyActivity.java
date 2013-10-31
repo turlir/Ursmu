@@ -59,7 +59,7 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
         }
 
         @Override
-        public void sendStart(long id) {
+        public void sendStart() {
             changeIndicatorVisible(View.VISIBLE);
         }
     };

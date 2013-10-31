@@ -31,7 +31,7 @@ public class FindGroupActivity extends SherlockListActivity {
         }
 
         @Override
-        public void sendStart(long id) {
+        public void sendStart() {
             changeIndicatorVisible(View.INVISIBLE);
         }
 

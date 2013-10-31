@@ -1,7 +1,6 @@
 package ru.ursmu.application.Activity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -42,7 +41,7 @@ public class MainActivity extends SherlockFragmentActivity {
     private UniversalCallback mHandlerDialog = new UniversalCallback() {
         @Override
         public void sendError(String notify) {
-            Toast.makeText(getApplicationContext(), "Обновление завершено с ошибкой " + notify,
+            Toast.makeText(getApplicationContext(), "Обновление завершено с ошибкой",
                     Toast.LENGTH_LONG).show();
             findViewById(R.id.button_groups).setEnabled(true);
             findViewById(R.id.button_prof).setEnabled(true);
@@ -57,7 +56,7 @@ public class MainActivity extends SherlockFragmentActivity {
 
 
         @Override
-        public void sendStart(long id) {
+        public void sendStart() {
             findViewById(R.id.button_groups).setEnabled(false);
             findViewById(R.id.button_prof).setEnabled(false);
         }
@@ -199,9 +198,8 @@ public class MainActivity extends SherlockFragmentActivity {
     }
 
     public void tv(View v) {
-        Uri address = Uri.parse("https://www.youtube.com/user/TheUrsmu?feature=watch");
-        Intent open_link = new Intent(Intent.ACTION_VIEW, address);
-        startActivity(open_link);
+        Intent i = new Intent(this, GrornyTVActivity.class);
+        startActivity(i);
         mTimer.cancel();
     }
 

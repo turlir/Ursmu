@@ -35,16 +35,15 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
     private TextView footerText;
     private boolean light = false;
     private SearchView mSearchView;
-    private static Long mRequestId;
+    private Long mRequestId;
 
     private UniversalCallback mHandlerDialog = new UniversalCallback() {
         @Override
         public void sendError(String notify) {
             changeIndicatorVisible(View.INVISIBLE);
-            Toast.makeText(getApplicationContext(), "Обновление завершено с ошибкой " + notify,
+            Toast.makeText(getApplicationContext(), "Обновление завершено с ошибкой",
                     Toast.LENGTH_LONG).show();
             changeDescText(null);
-            mRequestId = null;
         }
 
         @Override
@@ -58,10 +57,9 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
         }
 
         @Override
-        public void sendStart(long id) {
+        public void sendStart() {
             changeIndicatorVisible(View.VISIBLE);
             changeDescText("Выполняется обновление");
-            mRequestId = id;
         }
     };
 
@@ -92,8 +90,7 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
         }
 
         @Override
-        public void sendStart(long id) {
-            mRequestId = id;
+        public void sendStart() {
             changeIndicatorVisible(View.VISIBLE);
             changeDescText(null);
         }

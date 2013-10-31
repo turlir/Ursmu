@@ -144,7 +144,7 @@ public class ServiceHelper {
                         callback.sendError(data.getString("ERROR_NOTIF"));
                         break;
                     case DOWNLOAD_START:
-                        callback.sendStart(id);
+                        callback.sendStart();
                 }
 
             }
@@ -174,7 +174,7 @@ public class ServiceHelper {
                         callback.sendError(data.getString("ERROR_NOTIF"));
                         break;
                     case DOWNLOAD_START:
-                        callback.sendStart(id);
+                        callback.sendStart();
                 }
 
             }

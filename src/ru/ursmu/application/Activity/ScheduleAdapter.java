@@ -30,14 +30,15 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
                     "14:30-16:00",
                     "16:10-17:30",
                     "17:40-19:00",
-                    "19:10-20:30"};
+                    "19:10-20:30",
+                    "20:40-22:10"};
 
-    private static int[] mAlarmStartHour = new int[]{9, 10, 12, 14, 16, 17, 19};
-    private static int[] mAlarmStartMin = new int[]{0, 50, 40, 30, 10, 40, 10};
+    private static int[] mAlarmStartHour = new int[]{9, 10, 12, 14, 16, 17, 19, 20};
+    private static int[] mAlarmStartMin = new int[]{0, 50, 40, 30, 10, 40, 10, 40};
 
-    private static int[] mAlarmEndHour = new int[]{10, 12, 14, 16, 17, 19, 20};
+    private static int[] mAlarmEndHour = new int[]{10, 12, 14, 16, 17, 19, 20, 22};
 
-    private static int[] mAlarmEndMin = new int[]{30, 20, 10, 0, 30, 0, 30};
+    private static int[] mAlarmEndMin = new int[]{30, 20, 10, 0, 30, 0, 30, 10};
     private static WeakReference<Integer> mCurrentIconPair;
 
     private static final Calendar mCalendar = Calendar.getInstance();
@@ -70,6 +71,7 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
         }
 
         EducationItem item = getItem(position);
+        Log.d("URSMULOG", "item.getNumberPar() " + item.getNumberPar());
         holder.nametv.setText(item.getmPredmet());
         if (!isProfessor) {
             holder.teacher.setText(item.getProfessor());
@@ -87,8 +89,11 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
     }
 
     private String getTime(int numberPair) {
-        if (numberPair <= mAlarm.length) {
-            return mAlarm[numberPair - 1];
+        Log.d("URSMULOG", "getTime(" + numberPair + ")");
+        int n = numberPair - 1;
+        if (n < mAlarm.length ) {
+            Log.d("URSMULOG", "return" + mAlarm[n]);
+            return mAlarm[n];
         } else {
             return "Surprise!";
         }
@@ -106,19 +111,20 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
                 }
             }
 
+        int n = numberPair - 1;
+        if (n  < mAlarm.length) {
+            int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
+            int minute = mCalendar.get(Calendar.MINUTE);
+            int i2 = hour * 60 + minute;
 
-        int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
-        int minute = mCalendar.get(Calendar.MINUTE);
-        int i2 = hour * 60 + minute;
-        Integer n = numberPair - 1;
+            int i1 = mAlarmStartHour[n] * 60 + mAlarmStartMin[n];
+            int i3 = mAlarmEndHour[n] * 60 + mAlarmEndMin[n];
 
-        int i1 = mAlarmStartHour[n] * 60 + mAlarmStartMin[n];
-        int i3 = mAlarmEndHour[n] * 60 + mAlarmEndMin[n];
-
-        if (i2 >= i1 && i2 <= i3) {
-            Log.d("URSMULOG", i2 + " >= " + i1 + " && " + i2 + " <= " + i3 + " n=" + n);
-            mCurrentIconPair = new WeakReference<Integer>(numberPair);
-            return 1;
+            if (i2 >= i1 && i2 <= i3) {
+                Log.d("URSMULOG", i2 + " >= " + i1 + " && " + i2 + " <= " + i3 + " n=" + n);
+                mCurrentIconPair = new WeakReference<Integer>(numberPair);
+                return 1;
+            }
         }
 
         return 0;
@@ -129,7 +135,7 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
         int minute = mAlarmStartMin[position];
 
         Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
-        i.putExtra(AlarmClock.EXTRA_MESSAGE, "Мне к " + position + " паре");
+        i.putExtra(AlarmClock.EXTRA_MESSAGE, "Мне к " + (position + 1) + " паре");
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         i.putExtra(AlarmClock.EXTRA_HOUR, hour);
         i.putExtra(AlarmClock.EXTRA_MINUTES, minute);
