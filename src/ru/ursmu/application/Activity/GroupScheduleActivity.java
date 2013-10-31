@@ -223,8 +223,4 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         int n = ((ScheduleAdapter) mPagerAdapter.getItem(i).getAdapter()).getItem(0).getDayOfTheWeek();
         footerText.setText(EducationItem.DayOfTheWeek[n]);
     }
-
-    private String generationLinkSchedule() {
-        return mObject.getUri() + "#" + mObject.getParameters();
-    }
 }
