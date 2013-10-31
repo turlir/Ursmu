@@ -1,14 +1,9 @@
 package ru.ursmu.application.Activity;
 
 import android.content.Intent;
-import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
-import android.nfc.NfcAdapter;
-import android.nfc.NfcEvent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -22,11 +17,10 @@ import ru.ursmu.application.JsonObject.EducationItem;
 import ru.ursmu.application.Realization.ScheduleGroup;
 import ru.ursmu.beta.application.R;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class GroupScheduleActivity extends SherlockActivity implements ActionBar.OnNavigationListener, NfcAdapter.CreateNdefMessageCallback {
+public class GroupScheduleActivity extends SherlockActivity implements ActionBar.OnNavigationListener {
     private ScheduleGroup mObject;
     private ProgressBar mBar;
     private TextView footerText;
@@ -132,22 +126,6 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         bar.setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         bar.setSelectedNavigationItem(1);
-
-        NfcAdapter mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        if (mNfcAdapter != null) {
-            Log.d("URSMULOG", "NFC support yes" + mObject.getUri() + mObject.getParameters());
-            mNfcAdapter.setNdefPushMessageCallback(this, this);
-        }
-    }
-
-    @Override
-    public NdefMessage createNdefMessage(NfcEvent event) {
-        return new NdefMessage(new NdefRecord[]{
-                new NdefRecord(
-                        NdefRecord.TNF_ABSOLUTE_URI,
-                        (mObject.getUri() + mObject.getParameters()).getBytes(Charset.forName("UTF-8")),
-                        new byte[0], new byte[0])
-        });
     }
 
     @Override
@@ -244,14 +222,6 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         }
         int n = ((ScheduleAdapter) mPagerAdapter.getItem(i).getAdapter()).getItem(0).getDayOfTheWeek();
         footerText.setText(EducationItem.DayOfTheWeek[n]);
-    }
-
-    private Intent createShareIntent() {
-        Intent i = new Intent(Intent.ACTION_SEND);
-        i.setAction(Intent.ACTION_SEND);
-        i.setType("text/plain");
-        i.putExtra(Intent.EXTRA_TEXT, "Моё расписание на сайте УГГУ " + generationLinkSchedule());
-        return i;
     }
 
     private String generationLinkSchedule() {
