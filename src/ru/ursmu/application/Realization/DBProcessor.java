@@ -1,10 +1,12 @@
 package ru.ursmu.application.Realization;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Parcelable;
 import android.os.ResultReceiver;
 import android.util.Log;
 import ru.ursmu.application.Abstraction.*;
+import ru.ursmu.application.Activity.UrsmuService;
 
 import java.util.ArrayList;
 
@@ -80,6 +82,7 @@ public class DBProcessor extends AbstractProcessor {
             super.sendComplete(day);
         }
         db_agent.close();
+        mContext.stopService(new Intent(mContext, UrsmuService.class));
         Log.d("URSMULOG", "DBProcessor stop");
 
     }

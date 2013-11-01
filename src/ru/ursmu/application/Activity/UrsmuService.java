@@ -66,4 +66,11 @@ public class UrsmuService extends Service {    //hands new Thread
         //return super.onStartCommand(intent, flags, startId);
         return Service.START_NOT_STICKY;
     }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();    //To change body of overridden methods use File | Settings | File Templates.
+        Log.d("URSMULOG", "UrsmuService onDestroy");
+    }
 }
