@@ -255,9 +255,14 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
             case R.id.schedule_prof_item_group:
                 //EducationItem etem = adapter.getItem(info.position);
                 ListAdapter ada = mPages.get(mViewPager.getCurrentItem()).getAdapter();
-                String groupName = ((EducationItem) ada.getItem(info.position)).getGroupName();
-                if (!TextUtils.isEmpty(groupName)) {
+                EducationItem selected = ((EducationItem) ada.getItem(info.position));
+                String groupName = selected.getGroupName();
+                String faculty = selected.getFaculty();
+                String kurs = selected.getKurs();
+                if (!TextUtils.isEmpty(groupName) && !TextUtils.isEmpty(faculty) && !TextUtils.isEmpty(kurs)) {
                     Intent i = new Intent(getApplicationContext(), GroupScheduleActivity.class);
+                    i.putExtra(ServiceHelper.FACULTY, faculty);
+                    i.putExtra(ServiceHelper.KURS, kurs);
                     i.putExtra(ServiceHelper.GROUP, groupName);
                     i.putExtra("IS_HARD", false);
                     startActivity(i);

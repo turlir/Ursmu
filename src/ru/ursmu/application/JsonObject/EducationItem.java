@@ -7,6 +7,8 @@ import android.util.Log;
 
 public class EducationItem implements Parcelable {
     private String mGroupName;
+    private String mFaculty;
+    private String mKurs;
 
     private int mDayNumber;
     private String mPredmet = "";
@@ -21,16 +23,24 @@ public class EducationItem implements Parcelable {
     private static int teacher_in = 0;
     private static int audition_in = 0;
     private static int numberPair_in = 0;
-    private static int groupName_in = 0;
     private static int dayNumber_in = 0;
+
+    private static int groupName_in = 0;
+    private static int faculty_in = 0;
+    private static int kurs_in = 0;
+
     public static boolean lastPredict;
 
     public EducationItem(Cursor cursor, boolean f) {        //db
         if (f) {
-            if (groupName_in == 0) {
+            if (groupName_in == 0 || faculty_in == 0 || kurs_in == 0) {
                 groupName_in = cursor.getColumnIndex("GroupName");
+                faculty_in = cursor.getColumnIndex("FACULTY");
+                kurs_in = cursor.getColumnIndex("KURS");
             }
             mGroupName = cursor.getString(groupName_in);
+            mFaculty = cursor.getString(faculty_in);
+            mKurs = cursor.getString(kurs_in);
         }
 
         if (teacher_in == 0 || lastPredict != f) {
@@ -90,6 +100,14 @@ public class EducationItem implements Parcelable {
 
     public String getGroupName() {
         return mGroupName;
+    }
+
+    public  String getFaculty() {
+       return mFaculty;
+    }
+
+    public  String getKurs() {
+        return mKurs;
     }
 
 

@@ -94,15 +94,26 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
 
     @Override
     public boolean onSuggestionClick(int position) {
-        String groupName = ((SuggestionsAdapter) mSearchView.getSuggestionsAdapter()).getString(position);
-        Log.d("URSMULOG onSuggestionClick", groupName);
-        mSearchView.clearFocus();
+        //String groupName = ((SuggestionsAdapter) mSearchView.getSuggestionsAdapter()).getString(position);
+        Cursor all_item = mSearchView.getSuggestionsAdapter().getCursor();
+        if (all_item.moveToPosition(position)) {
+            String fac = all_item.getString(all_item.getColumnIndexOrThrow("FACULTY"));
+            String kurs = all_item.getString(all_item.getColumnIndexOrThrow("KURS"));
+            String gro = all_item.getString(all_item.getColumnIndexOrThrow("GroupName"));
 
-        Intent intent = new Intent(this, GroupScheduleActivity.class);
-        intent.putExtra(ServiceHelper.GROUP, groupName);
-        intent.putExtra("IS_HARD", false);
-        startActivity(intent);
-        return true;
+            Intent i = new Intent(this, GroupScheduleActivity.class);
+            i.putExtra("IS_HARD", false);
+            i.putExtra(ServiceHelper.FACULTY, fac);
+            i.putExtra(ServiceHelper.KURS, kurs);
+            i.putExtra(ServiceHelper.GROUP, gro);
+            startActivity(i);
+
+            Log.d("URSMULOG onSuggestionClick", String.valueOf(position));
+            mSearchView.clearFocus();
+
+            return true;
+        }
+        return false;
     }
     //</editor-fold>
 
