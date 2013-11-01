@@ -103,26 +103,6 @@ public class ServiceHelper {
         return req_id;
     }
 
-    public Long getGroupObjects(IGroupUrsmuObject<IUrsmuObject> objects, final UniversalCallback toActivity) {
-
-        long req_id = getnerationID();
-
-        addListener(req_id, toActivity);
-
-        ResultReceiver rec = generationNormalCallback();
-
-        Intent intent = new Intent(mActivity, UrsmuService.class);
-
-        intent.putExtra(CALLBACK, rec);
-        intent.putExtra(TRANSFER_OBJECT, objects);
-        intent.putExtra(IS_DB, 4);
-        intent.putExtra(REQUEST_ID, req_id);
-
-        mActivity.startService(intent);
-
-        return req_id;
-    }
-
     private ResultReceiver generationNormalCallback() {
         Log.d("URSMULOG", "ServiceHelper generationNormalCallback");
         //proxy

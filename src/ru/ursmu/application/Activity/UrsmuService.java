@@ -53,15 +53,7 @@ public class UrsmuService extends Service {    //hands new Thread
 
             AbstractProcessor processor = new GroupDBProcessor(to, callback, id, getApplicationContext());
             processor.execute();
-        } else if (type == 4) {
-            Log.d("URSMULOG", "UrsmuService type 4");
-            ResultReceiver callback = intent.getParcelableExtra(ServiceHelper.CALLBACK);
-            long id = intent.getLongExtra(ServiceHelper.REQUEST_ID, 0);
-            IGroupUrsmuObject<IUrsmuObject> to = intent.getParcelableExtra(ServiceHelper.TRANSFER_OBJECT);
-            AbstractProcessor processor = new NormalProcessor(to, callback, id);
-            processor.execute();
         }
-
 
         //return super.onStartCommand(intent, flags, startId);
         return Service.START_NOT_STICKY;
