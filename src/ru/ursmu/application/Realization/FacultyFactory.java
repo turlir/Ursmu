@@ -13,7 +13,7 @@ public class FacultyFactory {
             "Среднего профессионального образования",
             "Заочного обучения",
             "ФСПО заочники",
-           // "Институт Сокращенной подготовки"
+            "Институт Сокращенной подготовки"
     };
 
     static String[] mShortName = new String[]{
@@ -25,7 +25,7 @@ public class FacultyFactory {
             "фспо",
             "фзо",
             "фспоз",
-           // "исп"
+            "исп"
     };
 
     static String[] mColor = new String[]{
@@ -37,7 +37,7 @@ public class FacultyFactory {
             "#9e6544",
             "#907534",
             "#9e6544",
-           // "#bd62b3"
+            "#bd62b3"
     };
 
     public static Faculty create(String value) {
@@ -53,9 +53,5 @@ public class FacultyFactory {
         return new Faculty(value, value, "#ffffff");
     }
 
-
-    public static String toShortName(int full) {
-        return mShortName[full];
-    }
 
 }
