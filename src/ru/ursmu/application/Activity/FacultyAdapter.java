@@ -36,9 +36,7 @@ public class FacultyAdapter extends ArrayAdapter<Faculty> {
         if (item != null) {
             String color = item.getColor();
 
-            String temp = item.getFullName();
-            String name = (TextUtils.isEmpty(temp) ? item.getOriginalName() : temp);
-            temp = null;
+            String name =  item.getFullName();
 
             ImageView fc = (ImageView) v.findViewById(R.id.faculty_color);
             fc.setBackgroundColor(Color.parseColor(color));

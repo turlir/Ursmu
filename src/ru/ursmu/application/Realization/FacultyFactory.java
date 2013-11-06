@@ -4,7 +4,8 @@ import ru.ursmu.application.JsonObject.Faculty;
 
 public class FacultyFactory {
 
-    static String[] mFullName = new String[]{"Горно-Механический",
+    static String[] mFullName = new String[]{
+            "Горно-Механический",
             "Горно-технологический",
             "Инженерно-экономический",
             "Геологии и геофизики",
@@ -12,9 +13,11 @@ public class FacultyFactory {
             "Среднего профессионального образования",
             "Заочного обучения",
             "ФСПО заочники",
-            "Институт Сокращенной подготовки"};
+           // "Институт Сокращенной подготовки"
+    };
 
-    static String[] mShortName = new String[]{"гмф",
+    static String[] mShortName = new String[]{
+            "гмф",
             "гтф",
             "иэф",
             "фгиг",
@@ -22,9 +25,11 @@ public class FacultyFactory {
             "фспо",
             "фзо",
             "фспоз",
-            "исп"};
+           // "исп"
+    };
 
-    static String[] mColor = new String[]{"#007ab2",
+    static String[] mColor = new String[]{
+            "#007ab2",
             "#a12331",
             "#c3952a",
             "#00a871",
@@ -32,7 +37,8 @@ public class FacultyFactory {
             "#9e6544",
             "#907534",
             "#9e6544",
-            "#bd62b3"};
+           // "#bd62b3"
+    };
 
     public static Faculty create(String value) {
         if ((mFullName.length + mShortName.length + mColor.length) % 3 != 0)  //exception common white color
@@ -44,7 +50,7 @@ public class FacultyFactory {
             }
         }
 
-        return new Faculty("", value, "#ffffff");
+        return new Faculty(value, value, "#ffffff");
     }
 
 
