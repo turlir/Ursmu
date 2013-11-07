@@ -1,6 +1,7 @@
 package ru.ursmu.application.Activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -183,6 +184,12 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
                 mObject.setHard(true);
                 mHelper.getUrsmuDBObject(mObject, mHandler);
                 return true;
+            case R.id.schedule_group_site:
+                if (mObject != null) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://rasp.ursmu.ru/#" + mObject.getParameters()));
+                    startActivity(browserIntent);
+                    return true;
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }

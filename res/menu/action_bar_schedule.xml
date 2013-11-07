@@ -17,4 +17,10 @@
 
           android:showAsAction="ifRoom"/>
 
+    <item
+            android:id="@+id/schedule_group_site"
+            android:title="На сайт"
+            android:showAsAction="never"
+            />
+
 </menu>
