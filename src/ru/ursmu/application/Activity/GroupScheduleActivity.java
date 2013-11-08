@@ -214,15 +214,21 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
     }
 
     public void previous(View v) {
-        mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
+        if (mViewPager != null) {
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
+        }
     }
 
     public void next(View v) {
-        mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+        if (mViewPager != null) {
+            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+        }
     }
 
     public void current(View v) {
-        mViewPager.setCurrentItem(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2, true);
+        if (mViewPager != null) {
+            mViewPager.setCurrentItem(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2, true);
+        }
     }
 
     @Override
