@@ -10,7 +10,7 @@ import ru.ursmu.application.Abstraction.IUrsmuDBObject;
 public class ProfessorSchedule implements IUrsmuDBObject {
 
     String mProfessor;
-    //String uri = "http://rasp.ursmu.ru/";
+    //String URI = "http://rasp.ursmu.ru/";
 
     public ProfessorSchedule(String prof) {
         mProfessor = prof;
@@ -54,7 +54,7 @@ public class ProfessorSchedule implements IUrsmuDBObject {
             e.printStackTrace();
         }
 
-        //uri = (String[]) uris.toArray(new String[0]);
+        //URI = (String[]) uris.toArray(new String[0]);
         mParam = (String[]) params.toArray(new String[0]);
 
         Log.d("URSMULOG", "process ProfessorSchedule END");
@@ -99,7 +99,7 @@ public class ProfessorSchedule implements IUrsmuDBObject {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mProfessor);
-        //dest.writeString(uri);
+        //dest.writeString(URI);
         //dest.writeStringArray(mParam);
     }
 
@@ -115,7 +115,7 @@ public class ProfessorSchedule implements IUrsmuDBObject {
 
     private ProfessorSchedule(Parcel parcel) {
         mProfessor = parcel.readString();
-        //uri = parcel.readString();
+        //URI = parcel.readString();
         //parcel.readStringArray(mParam);
     }
 }

@@ -165,7 +165,25 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.action_bar_schedule, menu);
+        MenuItem item = menu.findItem(R.id.schedule_group_button);
+        com.actionbarsherlock.widget.ShareActionProvider provider = (com.actionbarsherlock.widget.ShareActionProvider) item.getActionProvider();
+        provider.setShareHistoryFileName(com.actionbarsherlock.widget.ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
+        provider.setShareIntent(createShareIntent());
+
         return true;
+    }
+
+    private Intent createShareIntent() {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setAction(Intent.ACTION_SEND);
+        i.setType("text/plain");
+        String text;
+        if (mObject != null) {
+            text = "Мое распиание на сайте УГГУ " + mObject.getUri() + "#" + mObject.getParameters();
+        } else
+            text = "Мое распиание на сайте УГГУ http://rasp.ursmu.ru";
+        i.putExtra(Intent.EXTRA_TEXT, text);
+        return i;
     }
 
     @Override
@@ -186,7 +204,7 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
                 return true;
             case R.id.schedule_group_site:
                 if (mObject != null) {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://rasp.ursmu.ru/#" + mObject.getParameters()));
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mObject.getUri() + "#" + mObject.getParameters()));
                     startActivity(browserIntent);
                     return true;
                 }

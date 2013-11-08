@@ -17,6 +17,11 @@
 
           android:showAsAction="ifRoom"/>
 
+    <item android:id="@+id/schedule_group_button"
+          android:showAsAction="always"
+          android:title="Рассказать"
+          android:actionProviderClass="com.actionbarsherlock.widget.ShareActionProvider"/>
+
     <item
             android:id="@+id/schedule_group_site"
             android:title="На сайт"
