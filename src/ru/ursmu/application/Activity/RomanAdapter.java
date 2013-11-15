@@ -1,7 +1,6 @@
 package ru.ursmu.application.Activity;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,12 +30,15 @@ public class RomanAdapter extends ArrayAdapter<String> {
             v = inflater.inflate(mResId, null);
         }
 
-        String item = new RomanNumeral(Integer.parseInt(getItem(position))).toString();
-
-        if (!TextUtils.isEmpty(item)) {
-            TextView textRoman = (TextView) v.findViewById(R.id.kursItem);
-            textRoman.setText(item);
+        String item = null;
+        try {
+            item = new RomanNumeral(Integer.parseInt(getItem(position))).toString();
+        } catch (NumberFormatException e) {
+            item = getItem(position);
         }
+
+        TextView textRoman = (TextView) v.findViewById(R.id.kursItem);
+        textRoman.setText(item);
 
 
         return v;
