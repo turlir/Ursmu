@@ -13,6 +13,8 @@ import ru.ursmu.application.JsonObject.EducationItem;
 import ru.ursmu.beta.application.R;
 
 import java.lang.ref.WeakReference;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Calendar;
 
 public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
@@ -20,35 +22,32 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
 
     private Context mContext;
     private int mResID;
-    //private EducationItem[] mWeek;
     private boolean isProfessor;
 
-    private static String[] mAlarm = new String[]
-            {"9:00-10:30",
-                    "10:50-12:20",
-                    "12:40-14:10",
-                    "14:30-16:00",
-                    "16:10-17:30",
-                    "17:40-19:00",
-                    "19:10-20:30",
-                    "20:40-22:10"};
+    private static final double[] start = new double[]{9.00,  10.50, 12.40, 14.30, 16.10, 17.40, 19.10, 20.40};
+    private static final double[] end = new double[]  {10.30, 12.20, 14.10, 16.00, 17.30, 19.00, 20.30, 22.10};
 
-    private static int[] mAlarmStartHour = new int[]{9, 10, 12, 14, 16, 17, 19, 20};
-    private static int[] mAlarmStartMin = new int[]{0, 50, 40, 30, 10, 40, 10, 40};
-
-    private static int[] mAlarmEndHour = new int[]{10, 12, 14, 16, 17, 19, 20, 22};
-
-    private static int[] mAlarmEndMin = new int[]{30, 20, 10, 0, 30, 0, 30, 10};
     private static WeakReference<Integer> mCurrentIconPair;
 
-    private static final Calendar mCalendar = Calendar.getInstance();
+    private static final Calendar mCalendar;
+    private static final DecimalFormat mDecimalFormatter;
+
+    static {
+        mDecimalFormatter = new DecimalFormat("00.00");
+        DecimalFormatSymbols custom = new DecimalFormatSymbols();
+        custom.setDecimalSeparator(':');
+        mDecimalFormatter.setDecimalFormatSymbols(custom);
+        mDecimalFormatter.setGroupingSize(2);
+
+        mCalendar = Calendar.getInstance();
+    }
 
     public ScheduleAdapter(Context context, int layout, EducationItem[] data, boolean isProf) {
         super(context, layout, data);
-        //mWeek = data;
         mContext = context;
         mResID = layout;
         isProfessor = isProf;
+
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -62,8 +61,8 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
             holder.nametv = (TextView) view.findViewById(R.id.schedule_name);
             holder.teacher = (TextView) view.findViewById(R.id.schedule_professor);
             holder.room = (TextView) view.findViewById(R.id.schedule_aud);
-            holder.time = (TextView) view.findViewById(R.id.time_schedule);
-            //holder.flag = (ImageView) view.findViewById(R.id.icon_schedule);
+            holder.timeStart = (TextView) view.findViewById(R.id.time_schedule_start);
+            holder.timeStop = (TextView) view.findViewById(R.id.time_schedule_stop);
             holder.flag = view.findViewById(R.id.viewColor_sc);
             view.setTag(holder);
         } else {
@@ -72,67 +71,80 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
 
         EducationItem item = getItem(position);
         Log.d("URSMULOG", "item.getNumberPar() " + item.getNumberPar());
-        holder.nametv.setText(item.getmPredmet());
+        holder.nametv.setText(item.getPredmet());
         if (!isProfessor) {
             holder.teacher.setText(item.getProfessor());
         } else {
             holder.teacher.setText(item.getGroupName());
         }
         holder.room.setText(item.getAud());
-        holder.time.setText(getTime(item.getNumberPar()));
-        if (getIcon(item.getNumberPar()) != 0) {
+        holder.timeStart.setText(getTime(item.getNumberPar(), true));
+        holder.timeStop.setText(getTime(item.getNumberPar(), false));
+        if (getIcon(item.getNumberPar())) {
             holder.flag.setVisibility(View.VISIBLE);
-            //holder.flag.setImageDrawable(mContext.getResources().getDrawable(R.drawable.time));
+        } else {
+            holder.flag.setVisibility(View.INVISIBLE);
         }
 
         return view;
     }
 
-    private String getTime(int numberPair) {
+    private String getTime(int numberPair, boolean f) {
         Log.d("URSMULOG", "getTime(" + numberPair + ")");
         int n = numberPair - 1;
-        if (n < mAlarm.length ) {
-            Log.d("URSMULOG", "return" + mAlarm[n]);
-            return mAlarm[n];
+        String s;
+        Double t;
+        if (f) {
+            if (n < start.length) {
+                t = start[n];
+                s = mDecimalFormatter.format(t);
+                return s;
+            }
         } else {
-            return "Surprise!";
+            if (n < end.length) {
+                t = end[n];
+                s = mDecimalFormatter.format(t);
+                return s;
+            }
         }
+        s = "Surprise";
+        return s;
     }
 
-    private int getIcon(int numberPair) {
-        //Log.d("URSMULOG", "getIcon()");
-
+    private boolean getIcon(int numberPair) {
         if (mCurrentIconPair != null)
             if (mCurrentIconPair.get() != 0) {
                 if (mCurrentIconPair.get() == numberPair) {
-                    return 1;
+                    return true;
                 } else {
-                    return 0;
+                    return false;
                 }
             }
 
         int n = numberPair - 1;
-        if (n  < mAlarm.length) {
+        if (n < start.length && n < end.length) {
             int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
             int minute = mCalendar.get(Calendar.MINUTE);
             int i2 = hour * 60 + minute;
-
-            int i1 = mAlarmStartHour[n] * 60 + mAlarmStartMin[n];
-            int i3 = mAlarmEndHour[n] * 60 + mAlarmEndMin[n];
+            double b = start[n];
+            double e = end[n];
+            int i1 = (int) b * 60 + (int) (b - (int) b);
+            int i3 = (int) e * 60 + (int) (e - (int) e);
 
             if (i2 >= i1 && i2 <= i3) {
                 Log.d("URSMULOG", i2 + " >= " + i1 + " && " + i2 + " <= " + i3 + " n=" + n);
                 mCurrentIconPair = new WeakReference<Integer>(numberPair);
-                return 1;
+                return true;
             }
         }
 
-        return 0;
+        return false;
     }
 
     public void setAlarm(int position) {
-        int hour = mAlarmStartHour[position] - 1;
-        int minute = mAlarmStartMin[position];
+        double b = start[position];
+        int hour = (int) b - 1;
+        int minute = (int) ((b - (int)b) * 100); //0.4 * 100
 
         Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
         i.putExtra(AlarmClock.EXTRA_MESSAGE, "Мне к " + (position + 1) + " паре");
@@ -147,7 +159,8 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
         public TextView nametv;
         public TextView teacher;
         public TextView room;
-        public TextView time;
+        public TextView timeStart;
+        public TextView timeStop;
         public View flag;
     }
 }

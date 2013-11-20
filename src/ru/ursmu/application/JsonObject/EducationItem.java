@@ -78,7 +78,7 @@ public class EducationItem implements Parcelable {
         return mDayNumber;
     }
 
-    public String getmPredmet() {
+    public String getPredmet() {
         return mPredmet;
     }
 

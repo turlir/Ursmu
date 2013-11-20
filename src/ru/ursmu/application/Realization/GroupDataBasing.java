@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import android.text.TextUtils;
 import android.util.Log;
 import ru.ursmu.application.Abstraction.IDatabasingBehavior;
 import ru.ursmu.application.Activity.DataBaseHelper;
@@ -94,7 +93,7 @@ public class GroupDataBasing extends IDatabasingBehavior {
         for (EducationItem item : temp) {
             //Log.d("URSMULOG", "add " + item.getDayOfTheWeek());
             day.bindLong(2, id);
-            day.bindString(3, item.getmPredmet());
+            day.bindString(3, item.getPredmet());
             day.bindString(4, item.getProfessor());
             day.bindString(5, item.getAud());
             day.bindLong(6, item.getDayOfTheWeek());

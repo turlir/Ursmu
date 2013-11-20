@@ -42,7 +42,6 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         public void sendComplete(Object[] data) {
             if (data != null) {
                 ListView list_view = new ListView(getApplicationContext());
-                list_view.setDividerHeight(0);
                 ArrayAdapter<EducationItem> list_adapter = new ScheduleAdapter(getApplicationContext(),
                         R.layout.schedule_adapter, (EducationItem[]) data, false);
                 list_view.setAdapter(list_adapter);
