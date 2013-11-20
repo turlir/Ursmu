@@ -117,6 +117,17 @@ public class MainActivity extends SherlockFragmentActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.about:
+                Intent i = new Intent(this, AboutActivity.class);
+                startActivity(i);
+                return true;
+            default:  return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         if (mTimer != null) {

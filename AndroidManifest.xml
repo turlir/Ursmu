@@ -44,6 +44,7 @@
                   android:name="ru.ursmu.application.Activity.ProfessorScheduleActivity" android:label="Профессор"/>
         <activity android:screenOrientation="portrait" android:name="ru.ursmu.application.Activity.NewsActivity"
                   android:label="Новости УГГУ"/>
+        <activity android:name="ru.ursmu.application.Activity.AboutActivity"/>
 
         <service android:name="ru.ursmu.application.Activity.UrsmuService"/>
     </application>

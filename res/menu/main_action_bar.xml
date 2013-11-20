@@ -4,4 +4,10 @@
           android:title="Рассказать"
           android:actionProviderClass="com.actionbarsherlock.widget.ShareActionProvider"/>
 
+    <item
+            android:id="@+id/about"
+            android:title="О приложении"
+            android:showAsAction="never"
+            />
+
 </menu>
