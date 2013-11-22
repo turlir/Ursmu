@@ -20,40 +20,7 @@ public class ScheduleGroupFactory implements IGroupDBUrsmuObject<ScheduleGroup> 
 
     }
 
-    @Override
-    public ArrayList<ScheduleGroup> factory() throws Exception {
 
-        Log.d("URSMULOG", "process ProfessorSchedule START");
-        UrsmuPostDownload d_agent = new UrsmuPostDownload();
-        JsonArrayParser p_agent = new JsonArrayParser();
-
-        ArrayList<ScheduleGroup> group_schedule_object = new ArrayList<ScheduleGroup>();
-
-        FacultyList f_list = new FacultyList();
-        KursList k_list;
-        GroupList g_list;
-        ScheduleGroup sch_group;
-        String one = f_list.getUri();
-        String two = f_list.getParameters();
-
-
-        String[] data = p_agent.parse(d_agent.Download(one, two));
-
-        for (int i = 0; i < data.length; i++) {
-            k_list = new KursList(data[i]);
-            String[] data_two = p_agent.parse(d_agent.Download(k_list.getUri(), k_list.getParameters()));
-            for (int q = 0; q < data_two.length; q++) {
-                g_list = new GroupList(data[i], data_two[q]);
-                String[] data_three = p_agent.parse(d_agent.Download(g_list.getUri(), g_list.getParameters()));
-                for (int z = 0; z < data_three.length; z++) {
-                    sch_group = new ScheduleGroup(data[i], data_two[q], data_three[z], false);
-                    group_schedule_object.add(sch_group);
-                }
-            }
-        }
-
-        return group_schedule_object;
-    }
 
     UrsmuPostDownload downloadBehavior = new UrsmuPostDownload();
     JsonArrayParser parseBehavior = new JsonArrayParser();

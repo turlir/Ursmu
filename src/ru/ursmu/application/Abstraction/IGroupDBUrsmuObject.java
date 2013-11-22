@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public interface IGroupDBUrsmuObject<T extends IUrsmuDBObject> extends Parcelable {        //factory db object; only add
 
-    public ArrayList<T> factory() throws Exception;
+
 
     public void clearDB(IDatabasingBehavior dbAgent);
 
