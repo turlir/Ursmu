@@ -4,7 +4,7 @@ import ru.ursmu.application.JsonObject.Faculty;
 
 public class FacultyFactory {
 
-    static String[] mFullName = new String[]{
+    public static String[] mFullName = new String[]{
             "Горно-Механический",
             "Горно-технологический",
             "Инженерно-экономический",
@@ -16,7 +16,7 @@ public class FacultyFactory {
             "Институт Сокращенной подготовки"
     };
 
-    static String[] mShortName = new String[]{
+    public static String[] mShortName = new String[]{
             "гмф",
             "гтф",
             "иэф",
@@ -28,7 +28,7 @@ public class FacultyFactory {
             "исп"
     };
 
-    static String[] mColor = new String[]{
+    public static String[] mColor = new String[]{
             "#007ab2",
             "#a12331",
             "#c3952a",
