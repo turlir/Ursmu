@@ -69,9 +69,9 @@ public class GroupDataBasing extends IDatabasingBehavior {
     }
 
     private GroupDataBasing(String faculty, String kurs, String group) {
-            mGroup = group;
-            mFaculty = faculty;
-            mKurs = kurs;
+        mGroup = group;
+        mFaculty = faculty;
+        mKurs = kurs;
     }
 
     @Override
@@ -175,11 +175,14 @@ public class GroupDataBasing extends IDatabasingBehavior {
 
     @Override
     public boolean check() {
-        Cursor c = mDataBase.rawQuery("SELECT COUNT(ScheduleCommon.UIN) FROM ScheduleCommon WHERE (ScheduleCommon.GroupName = '" + mGroup + "')", null);
-        c.moveToFirst();
-        int count = c.getInt(0);
-        c.close();
-        return (count > 0);
+        Cursor c = mDataBase.rawQuery("SELECT COUNT(ScheduleCommon.UIN) FROM ScheduleCommon WHERE (ScheduleCommon.GroupName = '" + mGroup + "')", new String[]{});
+        if (c!=null) {
+            c.moveToFirst();
+            int count = c.getInt(0);
+            c.close();
+            return (count > 0);
+        } else
+            return false;
     }
 
     @Override
