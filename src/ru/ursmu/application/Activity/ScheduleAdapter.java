@@ -12,7 +12,6 @@ import android.widget.TextView;
 import ru.ursmu.application.JsonObject.EducationItem;
 import ru.ursmu.beta.application.R;
 
-import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Calendar;
@@ -24,10 +23,10 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
     private int mResID;
     private boolean isProfessor;
 
-    private static final double[] start = new double[]{9.00,  10.50, 12.40, 14.30, 16.10, 17.40, 19.10, 20.40};
-    private static final double[] end = new double[]  {10.30, 12.20, 14.10, 16.00, 17.30, 19.00, 20.30, 22.10};
+    protected static final double[] start = new double[]{9.00, 10.50, 12.40, 14.30, 16.10, 17.40, 19.10, 20.40};
+    protected static final double[] stop = new double[]{10.30, 12.20, 14.10, 16.00, 17.30, 19.00, 20.30, 22.10};
 
-    private static WeakReference<Integer> mCurrentIconPair;
+    private static int mCurrentIconPair;
 
     private static final Calendar mCalendar;
     private static final DecimalFormat mDecimalFormatter;
@@ -54,6 +53,8 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
         View view = convertView;
         ViewHolder holder;
         if (view == null) {
+            Log.d("URSMULOG", "getView ScheduleAdapter");
+            mCurrentIconPair = 0;
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(mResID, null);
 
@@ -70,7 +71,9 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
         }
 
         EducationItem item = getItem(position);
-        Log.d("URSMULOG", "item.getNumberPar() " + item.getNumberPar());
+        int current_pair = item.getNumberPar();
+
+        Log.d("URSMULOG", "item.getNumberPar() " + current_pair);
         holder.nametv.setText(item.getPredmet());
         if (!isProfessor) {
             holder.teacher.setText(item.getProfessor());
@@ -78,9 +81,9 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
             holder.teacher.setText(item.getGroupName());
         }
         holder.room.setText(item.getAud());
-        holder.timeStart.setText(getTime(item.getNumberPar(), true));
-        holder.timeStop.setText(getTime(item.getNumberPar(), false));
-        if (getIcon(item.getNumberPar())) {
+        holder.timeStart.setText(getTime(current_pair, true));
+        holder.timeStop.setText(getTime(current_pair, false));
+        if (getIcon(current_pair, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE))) {
             holder.flag.setVisibility(View.VISIBLE);
         } else {
             holder.flag.setVisibility(View.INVISIBLE);
@@ -101,8 +104,8 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
                 return s;
             }
         } else {
-            if (n < end.length) {
-                t = end[n];
+            if (n < stop.length) {
+                t = stop[n];
                 s = mDecimalFormatter.format(t);
                 return s;
             }
@@ -111,29 +114,38 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
         return s;
     }
 
-    private boolean getIcon(int numberPair) {
-        if (mCurrentIconPair != null)
+    protected static boolean getIcon(int numberPair, int current_hour, int current_min) {
+/*        if (mCurrentIconPair != null) {
             if (mCurrentIconPair.get() != 0) {
-                if (mCurrentIconPair.get() == numberPair) {
+                if (mCurrentIconPair.get().equals(numberPair)) {
                     return true;
-                } else {
-                    return false;
                 }
             }
+        }*/
+
+        if (mCurrentIconPair == numberPair) {
+            return true;
+        }
 
         int n = numberPair - 1;
-        if (n < start.length && n < end.length) {
-            int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
-            int minute = mCalendar.get(Calendar.MINUTE);
-            int i2 = hour * 60 + minute;
-            double b = start[n];
-            double e = end[n];
-            int i1 = (int) b * 60 + (int) (b - (int) b);
-            int i3 = (int) e * 60 + (int) (e - (int) e);
+        if (n < start.length && n < stop.length) {
+            int hour = current_hour;
+            int minute = current_min;
+            int i2 = hour * 60 + minute;   //current
 
+            double begin = start[n];
+            int[] x = timeArrayItemConvert(begin);
+            int i1 = x[0] * 60 + x[1];      //begin
+
+            double end = stop[n];
+            x = timeArrayItemConvert(end);
+            int i3 = x[0] * 60 + x[1];   //stop
+
+            //current >= begin &&  current <= stop
             if (i2 >= i1 && i2 <= i3) {
-                Log.d("URSMULOG", i2 + " >= " + i1 + " && " + i2 + " <= " + i3 + " n=" + n);
-                mCurrentIconPair = new WeakReference<Integer>(numberPair);
+                Log.d("URSMULOG", "getIcon(" + numberPair + ")" + i2 + " >= " + i1 + " && " + i2 + " <= " + i3 + " n=" + n);
+                //mCurrentIconPair = new WeakReference<Integer>(numberPair);
+                mCurrentIconPair = numberPair;
                 return true;
             }
         }
@@ -141,10 +153,24 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
         return false;
     }
 
+    protected static int[] timeArrayItemConvert(double item) { //item = x,y
+        int x = (int) item;       //целая часть
+        double z = (item - x); //дробная часть
+        if (z < 10) {
+            z = z * 100;
+        }
+        int y = (int) z;
+        return new int[]{x, y};
+    }
+
+    protected static void clearIconPair() {
+
+    }
+
     public void setAlarm(int position) {
         double b = start[position];
         int hour = (int) b - 1;
-        int minute = (int) ((b - (int)b) * 100); //0.4 * 100
+        int minute = (int) ((b - (int) b) * 100); //0.4 * 100
 
         Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
         i.putExtra(AlarmClock.EXTRA_MESSAGE, "Мне к " + (position + 1) + " паре");
