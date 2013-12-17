@@ -10,14 +10,13 @@ import java.net.URLEncoder;
 
 public class KursList implements IUrsmuObject {
 
-    private String mUri = SERVER_1;
     private StringBuilder mParam = new StringBuilder("task=kurs" + "&fak=");
     //private boolean mIsDB = false;
 
 
-    public KursList(String number) {
+    public KursList(String kur) {
         //String kurs = FacultyFactory.toShortName(number);
-        mParam.append(Encode(number));
+        mParam.append(Encode(kur));
     }
 
     private String Encode(String original) {
@@ -32,7 +31,7 @@ public class KursList implements IUrsmuObject {
 
     @Override
     public String getUri() {
-        return mUri;
+        return SERVER_1;
     }
 
     @Override
@@ -52,7 +51,6 @@ public class KursList implements IUrsmuObject {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mUri);
         dest.writeSerializable(mParam);
         //dest.writeByte((byte) (mIsDB ? 1 : 0));
     }
@@ -68,7 +66,6 @@ public class KursList implements IUrsmuObject {
     };
 
     private KursList(Parcel parcel) {
-        mUri = parcel.readString();
         mParam = (StringBuilder) parcel.readSerializable();
         //mIsDB = (parcel.readByte() == 1);
     }

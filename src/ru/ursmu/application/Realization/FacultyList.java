@@ -8,7 +8,6 @@ import ru.ursmu.application.Abstraction.IUrsmuObject;
 public class FacultyList implements IUrsmuObject {
 
 
-    private String mUri = SERVER_1;
     private String mParam = "task=fak";
     //private boolean mIsDB = false;
 
@@ -18,7 +17,7 @@ public class FacultyList implements IUrsmuObject {
 
     @Override
     public String getUri() {
-        return mUri;
+        return SERVER_1;
     }
 
     @Override
@@ -40,7 +39,6 @@ public class FacultyList implements IUrsmuObject {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mUri);
         dest.writeString(mParam);
         //dest.writeByte((byte) (mIsDB ? 1 : 0));
     }
@@ -57,7 +55,6 @@ public class FacultyList implements IUrsmuObject {
     };
 
     private FacultyList(Parcel parcel) {
-        mUri = parcel.readString();
         mParam = parcel.readString();
         //mIsDB = (parcel.readByte() == 1);
     }

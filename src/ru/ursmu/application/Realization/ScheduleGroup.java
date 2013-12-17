@@ -13,7 +13,7 @@ import java.net.URLEncoder;
 
 public class ScheduleGroup implements IUrsmuDBObject, IUrsmuObject {
 
-    String uri = "http://rasp.ursmu.ru/";
+    String uri = "http://mobrasp.ursmu.ru/";
 
     public String mFaculty;
     public String mKurs;

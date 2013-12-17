@@ -12,8 +12,7 @@ public class GroupList implements IUrsmuObject {
 
     //private StringBuilder mParam = new StringBuilder("task=group"+"&fak=" + faculty + "&kurs=" + kurs);
 
-    private String mParam;
-    private String mUri = SERVER_1;
+    private String mParam;;
 
     public GroupList(String f, String k) {
         mParam = "task=group" + "&fak=" + Encode(f) + "&kurs=" + Encode(k);
@@ -30,7 +29,7 @@ public class GroupList implements IUrsmuObject {
 
     @Override
     public String getUri() {
-        return mUri;
+        return SERVER_1;
     }
 
     @Override
@@ -50,7 +49,6 @@ public class GroupList implements IUrsmuObject {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mUri);
         dest.writeString(mParam);
     }
 
@@ -65,7 +63,6 @@ public class GroupList implements IUrsmuObject {
     };
 
     private GroupList(Parcel parcel) {
-        mUri = parcel.readString();
         mParam = parcel.readString();
     }
 }
