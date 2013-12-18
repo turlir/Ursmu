@@ -28,7 +28,7 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
 
     private static int mCurrentIconPair;
 
-    private static final Calendar mCalendar;
+    private static Calendar mCalendar = Calendar.getInstance();
     private static final DecimalFormat mDecimalFormatter;
 
     static {
@@ -37,8 +37,6 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
         custom.setDecimalSeparator(':');
         mDecimalFormatter.setDecimalFormatSymbols(custom);
         mDecimalFormatter.setGroupingSize(2);
-
-        mCalendar = Calendar.getInstance();
     }
 
     public ScheduleAdapter(Context context, int layout, EducationItem[] data, boolean isProf) {
@@ -46,14 +44,13 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
         mContext = context;
         mResID = layout;
         isProfessor = isProf;
-
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         ViewHolder holder;
         if (view == null) {
-            Log.d("URSMULOG", "getView ScheduleAdapter");
+            //Log.d("URSMULOG", "getView ScheduleAdapter");
             mCurrentIconPair = 0;
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(mResID, null);
@@ -82,6 +79,10 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
         holder.room.setText(item.getAud());
         holder.timeStart.setText(getTime(current_pair, true));
         holder.timeStop.setText(getTime(current_pair, false));
+
+        if (mCalendar == null)
+            mCalendar = Calendar.getInstance();
+
         if (getIcon(current_pair, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE))) {
             holder.flag.setVisibility(View.VISIBLE);
         } else {
@@ -122,7 +123,7 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
             }
         }*/
 
-        if (mCurrentIconPair == numberPair) {
+        if (mCurrentIconPair == numberPair && mCurrentIconPair != -1) {
             return true;
         }
 
@@ -164,6 +165,7 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
 
     protected static void clearIconPair() {
         mCurrentIconPair = -1;
+        mCalendar = null;
     }
 
     public void setAlarm(int position) {

@@ -218,7 +218,7 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
     }
 
     @Override
-    protected void onStop() {
+    protected void onPause() {
         super.onStop();
         ScheduleAdapter.clearIconPair();
     }
