@@ -37,8 +37,8 @@
                     android:typeface="serif"/>
             <!--Всегда под рукой-->
             <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="130dp"
+                    android:layout_height="48dp"
                     android:drawableLeft="@drawable/new_social_group"
                     android:text="Группа"
                     android:id="@+id/button_groups"

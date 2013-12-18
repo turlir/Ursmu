@@ -7,13 +7,13 @@
 
     <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text=""
+            android:layout_height="32dp"
+            android:text="1К"
             android:id="@+id/kursItem"
             android:textSize="22sp"
 
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp" android:singleLine="true" android:gravity="left"/>
 </LinearLayout>
