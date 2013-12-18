@@ -1,27 +1,28 @@
 package ru.ursmu.application.Activity;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
+import com.actionbarsherlock.app.SherlockActivity;
 import ru.ursmu.beta.application.R;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 
 
-public class AboutActivity extends Activity {
+public class AboutActivity extends SherlockActivity {
     private static final String PATH_TEXT_ASSETS = "about";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_activity);
         addText();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void addText() {
@@ -50,6 +51,20 @@ public class AboutActivity extends Activity {
             e.printStackTrace();
             Log.d("URSMULOG", "AboutActivity addText " + e.getMessage());
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 
 }
