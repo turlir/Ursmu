@@ -212,6 +212,12 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ScheduleAdapter.clearIconPair();
+    }
+
     public void previous(View v) {
         if (mViewPager != null) {
             mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);

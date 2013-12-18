@@ -73,7 +73,6 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
         EducationItem item = getItem(position);
         int current_pair = item.getNumberPar();
 
-        Log.d("URSMULOG", "item.getNumberPar() " + current_pair);
         holder.nametv.setText(item.getPredmet());
         if (!isProfessor) {
             holder.teacher.setText(item.getProfessor());
@@ -93,7 +92,7 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
     }
 
     private String getTime(int numberPair, boolean f) {
-        Log.d("URSMULOG", "getTime(" + numberPair + ")");
+        //Log.d("URSMULOG", "getTime(" + numberPair + ")");
         int n = numberPair - 1;
         String s;
         Double t;
@@ -164,7 +163,7 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
     }
 
     protected static void clearIconPair() {
-
+        mCurrentIconPair = -1;
     }
 
     public void setAlarm(int position) {
