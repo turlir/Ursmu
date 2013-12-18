@@ -125,7 +125,12 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         bar.setListNavigationCallbacks(adapter, this);
         bar.setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        bar.setSelectedNavigationItem(1);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getSupportActionBar().setSelectedNavigationItem(1);
     }
 
     @Override
