@@ -84,14 +84,16 @@
                     android:layout_alignTop="@+id/event" android:drawableLeft="@drawable/video_camera"
                     android:typeface="monospace" android:id="@+id/tv" android:onClick="tv"/>
         </RelativeLayout>
-        <LinearLayout android:layout_width="fill_parent" android:layout_height="200dp" android:layout_marginLeft="16dp"
+        <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16dp"
                       android:layout_marginRight="16dp" android:layout_marginTop="8dp"
-                      android:id="@+id/footer" android:orientation="vertical">
+                      android:id="@+id/footer" android:orientation="vertical"
+                      android:gravity="bottom" android:layout_gravity="bottom">
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageView" android:src="@drawable/twi_logo"
-                    android:layout_gravity="center_horizontal"/>
+                    android:id="@+id/imageView" android:src="@drawable/new_vk"
+                    android:layout_gravity="center_horizontal|bottom" android:clickable="true"
+                    android:onClick="vkLogoClick"/>
         </LinearLayout>
 
     </LinearLayout>

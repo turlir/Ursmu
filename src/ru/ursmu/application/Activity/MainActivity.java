@@ -24,7 +24,6 @@ import java.util.TimerTask;
 public class MainActivity extends SherlockFragmentActivity {
     private static final String STATE_BTN_1 = "SATE_BTN_1";
     private static final String STATE_BTN_2 = "SATE_BTN_2";
-    private static final String NOTIFICATION_ACTION = "NOTIFICATION_ACTION";
     private int mImageNumber = 1;
     private Timer mTimer;
 
@@ -67,14 +66,6 @@ public class MainActivity extends SherlockFragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        Intent i = getIntent();
-        if (i != null) {
-            if (i.getAction() != null) {
-                if (i.getAction().equals(NOTIFICATION_ACTION)) {
-                    startUpdateDialog();
-                }
-            }
-        }
         if (savedInstanceState != null) {
             mImageNumber = savedInstanceState.getInt(LOGO_NUMBER);
             displayLogo();
@@ -123,7 +114,8 @@ public class MainActivity extends SherlockFragmentActivity {
                 Intent i = new Intent(this, AboutActivity.class);
                 startActivity(i);
                 return true;
-            default:  return super.onOptionsItemSelected(item);
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -166,7 +158,7 @@ public class MainActivity extends SherlockFragmentActivity {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setAction(Intent.ACTION_SEND);
         i.setType("text/plain");
-        i.putExtra(Intent.EXTRA_TEXT, " Расписание и новости УГГУ в одном Android приложении https://play.google.com/store/apps/details?id=ru.ursmu.application");
+        i.putExtra(Intent.EXTRA_TEXT, "Расписание и новости УГГУ в одном Android приложении https://play.google.com/store/apps/details?id=ru.ursmu.application");
         return i;
     }
 
@@ -187,13 +179,6 @@ public class MainActivity extends SherlockFragmentActivity {
         }
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        if (intent.getAction().equals(NOTIFICATION_ACTION)) {
-            startUpdateDialog();
-            //mTimer.cancel();
-        }
-    }
 
     private void startUpdateDialog() {
         DialogFragment mUpdateDialog = new UpdateDialog(mHandlerDialog);
@@ -210,15 +195,23 @@ public class MainActivity extends SherlockFragmentActivity {
     }
 
     public void tv(View v) {
-        Uri address = Uri.parse("https://www.youtube.com/user/TheUrsmu?feature=watch");
-        Intent open_link = new Intent(Intent.ACTION_VIEW, address);
-        startActivity(open_link);
-        mTimer.cancel();
+        openLink("https://www.youtube.com/user/TheUrsmu?feature=watch");
     }
 
     public void scheduleProf(View v) {
         Intent i = new Intent(this, ProfessorScheduleActivity.class);
         startActivity(i);
+    }
+
+    public void vkLogoClick(View v) {
+        openLink("https://vk.com/ursmu_ru");
+    }
+
+    private void openLink(String s) {
+        Uri address = Uri.parse(s);
+        Intent open_link = new Intent(Intent.ACTION_VIEW, address);
+        startActivity(open_link);
+        mTimer.cancel();
     }
 
 }
