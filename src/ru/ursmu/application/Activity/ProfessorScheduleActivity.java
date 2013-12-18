@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -93,6 +94,7 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
         public void sendStart(long id) {
             changeIndicatorVisible(View.VISIBLE);
             changeDescText(null);
+            changeVisibilityNavigationBar(View.VISIBLE);
         }
     };
 
@@ -121,6 +123,7 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        findViewById(R.id.path_to_icon).setVisibility(View.INVISIBLE);
         if (newText.length() > 4) {
             ProfessorSchedule prof = new ProfessorSchedule(newText.toLowerCase());
             Cursor suggestion = prof.getDataBasingBehavior(getApplicationContext()).get();
@@ -296,8 +299,9 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
             mViewPager.setAdapter(mPagerAdapter);
             mViewPager.setOnPageChangeListener(pageChangeListener);
             mRequestId = mHelper.getUrsmuDBObject(new ProfessorSchedule(mProfessor), mHandlerTwo);
-            changeDescText(null);
+            //changeDescText(null);
         } else {
+            findViewById(R.id.path_to_icon).setVisibility(View.VISIBLE);
             changeDescText(getResources().getString(R.string.offline_search_help));
         }
     }
@@ -348,6 +352,12 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
         } else {
             mDesc.setVisibility(View.INVISIBLE);
         }
+    }
+
+    private void changeVisibilityNavigationBar(int vis) {
+        ((ImageView)findViewById(R.id.back_schedule_prof)).setVisibility(vis);
+        ((TextView) findViewById(R.id.day_schedule_prof)). setVisibility(vis);
+        ((ImageView)findViewById(R.id.next_schedule_prof)).setVisibility(vis);
     }
 
 
