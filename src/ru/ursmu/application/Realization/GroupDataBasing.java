@@ -188,8 +188,8 @@ public class GroupDataBasing extends IDatabasingBehavior {
     @Override
     public void clearTable() {
         Log.d("URSMULOG", "GroupDataBasing clearTable");
-        mDataBase.delete("ScheduleCommon", null, new String[]{});
-        mDataBase.delete("ScheduleDays", null, new String[]{});
+        mDataBase.delete("ScheduleCommon", "", new String[]{});
+        mDataBase.delete("ScheduleDays", "", new String[]{});
 
         mDataBase.close();
     }
