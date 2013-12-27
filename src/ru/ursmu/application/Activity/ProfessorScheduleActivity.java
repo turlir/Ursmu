@@ -19,7 +19,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.JsonObject.EducationItem;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 import ru.ursmu.application.Realization.ProfessorSchedule;
 import ru.ursmu.application.Realization.ScheduleGroupFactory;
 
