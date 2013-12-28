@@ -187,11 +187,15 @@ public class GroupDataBasing extends IDatabasingBehavior {
 
     @Override
     public void clearTable() {
+        if (!mDataBase.isDbLockedByCurrentThread()) {
         Log.d("URSMULOG", "GroupDataBasing clearTable");
         mDataBase.delete("ScheduleCommon", "", new String[]{});
         mDataBase.delete("ScheduleDays", "", new String[]{});
 
         mDataBase.close();
+        } else {
+            Log.d("URSMULOG", "GroupDataBasing clearTable mDataBase.isDbLockedByCurrentThread() " + mDataBase.isDbLockedByCurrentThread());
+        }
     }
 
 

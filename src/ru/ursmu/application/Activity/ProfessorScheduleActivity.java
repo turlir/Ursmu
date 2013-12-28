@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.*;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -55,12 +54,14 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
             light = true;
             invalidateOptionsMenu();
             nextStep();
+            mRequestId = null;
         }
 
         @Override
         public void sendStart(long id) {
             changeIndicatorVisible(View.VISIBLE);
             changeDescText("Выполняется обновление");
+            mRequestId = id;
         }
     };
 
@@ -190,13 +191,6 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
         changeDescText(savedInstanceState.getString("DESC_BAR_TEXT"));
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (mRequestId != null) {
-            //ServiceHelper.removeCallback(mRequestId);
-        }
-    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -239,10 +233,10 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
                 if (mBar == null) {
                     mBar = (ProgressBar) findViewById(R.id.schedule_prof_bar);
                 }
-                if (mBar.getVisibility() != View.VISIBLE) {
+                if (mRequestId == null) {
                     startUpdateDialog();
-                }  else {
-                    Toast.makeText(getApplicationContext(),"Дождитесь окончания операции", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Дождитесь окончания операции", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             default:
@@ -307,7 +301,7 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
     }
 
     public void previous(View v) {
-        if (mViewPager!= null)
+        if (mViewPager != null)
             mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
     }
 
@@ -317,7 +311,7 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
     }
 
     public void current(View v) {
-        if (mViewPager!=null) {
+        if (mViewPager != null) {
             mViewPager.setCurrentItem(0, true);
             changeFooter(mViewPager.getCurrentItem());
         }
@@ -337,6 +331,9 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
         }
         mBar.setVisibility(visibility);
 
+        if (mViewPager != null) {
+            mViewPager.setVisibility(visibility);
+        }
         if (visibility == View.INVISIBLE) {
             mBar = null;
         }
@@ -355,9 +352,9 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
     }
 
     private void changeVisibilityNavigationBar(int vis) {
-        ((ImageView)findViewById(R.id.back_schedule_prof)).setVisibility(vis);
-        ((TextView) findViewById(R.id.day_schedule_prof)). setVisibility(vis);
-        ((ImageView)findViewById(R.id.next_schedule_prof)).setVisibility(vis);
+        ((ImageView) findViewById(R.id.back_schedule_prof)).setVisibility(vis);
+        ((TextView) findViewById(R.id.day_schedule_prof)).setVisibility(vis);
+        ((ImageView) findViewById(R.id.next_schedule_prof)).setVisibility(vis);
     }
 
 

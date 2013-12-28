@@ -3,6 +3,7 @@ package ru.ursmu.application.Realization;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import ru.ursmu.application.Abstraction.IDatabasingBehavior;
 import ru.ursmu.application.Activity.DataBaseHelper;
 import ru.ursmu.application.JsonObject.EducationItem;
@@ -76,8 +77,12 @@ public class ProfessorDataBasing extends IDatabasingBehavior {
 
     @Override
     public void clearTable() {
-        mDataBase.rawQuery("DROP TABLE IF EXISTS ScheduleCommon", null);
-        mDataBase.rawQuery("DROP TABLE IF EXISTS ScheduleDays", null);
+        if (!mDataBase.isDbLockedByCurrentThread()) {
+            mDataBase.rawQuery("DROP TABLE IF EXISTS ScheduleCommon", new String[]{});
+            mDataBase.rawQuery("DROP TABLE IF EXISTS ScheduleDays", new String[]{});
+        }  else {
+            Log.d("URSMULOG", "ProfessorDataBasing clearTable mDataBase.isDbLockedByCurrentThread() " + mDataBase.isDbLockedByCurrentThread());
+        }
     }
 
     @Override
