@@ -3,14 +3,12 @@ package ru.ursmu.application.Realization;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
+import org.json.JSONException;
 import ru.ursmu.application.Abstraction.IDatabasingBehavior;
 import ru.ursmu.application.Abstraction.IGroupDBUrsmuObject;
 import ru.ursmu.application.Activity.ServiceHelper;
-import org.json.JSONException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class ScheduleGroupFactory implements IGroupDBUrsmuObject<ScheduleGroup> {
 
@@ -19,7 +17,6 @@ public class ScheduleGroupFactory implements IGroupDBUrsmuObject<ScheduleGroup> 
     public ScheduleGroupFactory() {
 
     }
-
 
 
     UrsmuPostDownload downloadBehavior = new UrsmuPostDownload();
@@ -81,7 +78,9 @@ public class ScheduleGroupFactory implements IGroupDBUrsmuObject<ScheduleGroup> 
 
     @Override
     public void clearDB(IDatabasingBehavior dbAgent) {
-        dbAgent.clearTable();
+        if (dbAgent != null) {
+            dbAgent.clearTable();
+        }
     }
 
     @Override

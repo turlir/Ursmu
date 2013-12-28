@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 import ru.ursmu.application.JsonObject.Faculty;
 
 public class FacultyAdapter extends ArrayAdapter<Faculty> {
