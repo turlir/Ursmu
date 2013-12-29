@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/schedule_prof_desc"
             android:layout_below="@+id/schedule_prof_bar" android:textSize="18sp" android:visibility="visible"
-            android:gravity="center_horizontal" android:layout_centerHorizontal="true" android:text="123efrgerbhehntrebernhrn"/>
+            android:gravity="center_horizontal" android:layout_centerHorizontal="true"/>
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
