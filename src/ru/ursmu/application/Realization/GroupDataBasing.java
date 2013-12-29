@@ -27,6 +27,7 @@ public class GroupDataBasing extends IDatabasingBehavior {
 
     public static GroupDataBasing getInstance(Context c, String f, String k, String g) {
         if (mContext == null || mDataBase == null) {
+            Log.d("URSMULOG", "GroupDataBasing getInstance");
             mContext = c;
             DataBaseHelper dbHelper = new DataBaseHelper(mContext);
             mDataBase = dbHelper.getWritableDatabase();

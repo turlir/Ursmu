@@ -77,10 +77,8 @@ public class ScheduleGroupFactory implements IGroupDBUrsmuObject<ScheduleGroup> 
     }
 
     @Override
-    public void clearDB(IDatabasingBehavior dbAgent) {
-        if (dbAgent != null) {
-            dbAgent.clearTable();
-        }
+    public IDatabasingBehavior getDataBasingBehavior(Context context) {
+        return ProfessorDataBasing.getInstance(context, "");
     }
 
     @Override

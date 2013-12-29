@@ -22,7 +22,7 @@ public abstract class IDatabasingBehavior {
         return true;
     }
 
-    public void clearTable() {
+    public void clearTable() throws Exception {
     }
 
     public abstract void update(ArrayList<Object> q);

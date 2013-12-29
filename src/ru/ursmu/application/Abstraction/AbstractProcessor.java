@@ -35,9 +35,10 @@ public abstract class AbstractProcessor extends AsyncTask<Void, Void, Object[]> 
         mDataBaseAgent = object.getDataBasingBehavior(context);
     }
 
-    public AbstractProcessor(IGroupDBUrsmuObject<IUrsmuDBObject> to, ResultReceiver callback, long id, Context c) {
+    public AbstractProcessor(IGroupDBUrsmuObject<IUrsmuDBObject> object, ResultReceiver callback, long id, Context context) {
         mCallback = callback;
         mReqId = id;
+        mDataBaseAgent = object.getDataBasingBehavior(context);
     }
 
     @Override

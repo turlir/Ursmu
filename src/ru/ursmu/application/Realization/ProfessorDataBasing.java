@@ -76,13 +76,16 @@ public class ProfessorDataBasing extends IDatabasingBehavior {
 
 
     @Override
-    public void clearTable() {
-        if (!mDataBase.isDbLockedByCurrentThread()) {
+    public void clearTable() throws Exception {
+        if (!mDataBase.isDbLockedByCurrentThread() && !mDataBase.isDbLockedByOtherThreads()) {
             mDataBase.rawQuery("DROP TABLE IF EXISTS ScheduleCommon", new String[]{});
             mDataBase.rawQuery("DROP TABLE IF EXISTS ScheduleDays", new String[]{});
-        }  else {
-            Log.d("URSMULOG", "ProfessorDataBasing clearTable mDataBase.isDbLockedByCurrentThread() " + mDataBase.isDbLockedByCurrentThread());
+        } else {
+            String s = "ProfessorDataBasing blocked";
+            Log.d("URSMULOG", s);
+            throw new Exception(s);
         }
+        close();
     }
 
     @Override

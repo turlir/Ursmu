@@ -33,11 +33,10 @@ public class GroupDBProcessor extends AbstractProcessor {
 
         sendStart();
 
-        GroupDataBasing dbAgent = GroupDataBasing.getInstance(mContext, null, null, null);
-        object.clearDB(dbAgent);
-        dbAgent.close();
 
         try {
+            getDataBaseBehavior().clearTable();
+
             boolean first = object.first();
             ScheduleGroup next;
             if (first) {
@@ -64,6 +63,8 @@ public class GroupDBProcessor extends AbstractProcessor {
         } catch (IOException e) {
             sendFailure(e.getMessage());
         } catch (JSONException e) {
+            sendFailure(e.getMessage());
+        } catch (Exception e) {
             sendFailure(e.getMessage());
         }
         return null;

@@ -11,8 +11,6 @@ public interface IGroupDBUrsmuObject<T extends IUrsmuDBObject> extends Parcelabl
 
 
 
-    public void clearDB(IDatabasingBehavior dbAgent);
-
     boolean check(Context c);
 
     void setCheck(Context c);
@@ -20,4 +18,6 @@ public interface IGroupDBUrsmuObject<T extends IUrsmuDBObject> extends Parcelabl
     public boolean first() throws IOException, JSONException;
 
     public T next() throws IOException, JSONException;
+
+    public IDatabasingBehavior getDataBasingBehavior(Context context);
 }
