@@ -26,7 +26,7 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
     protected static final double[] start = new double[]{9.00, 10.50, 12.40, 14.30, 16.10, 17.40, 19.10, 20.40};
     protected static final double[] stop = new double[]{10.30, 12.20, 14.10, 16.00, 17.30, 19.00, 20.30, 22.10};
 
-    private static int mCurrentIconPair;
+    private static int mCurrentIconPair = -1;
 
     private static Calendar mCalendar = Calendar.getInstance();
     private static final DecimalFormat mDecimalFormatter;
@@ -51,7 +51,6 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
         ViewHolder holder;
         if (view == null) {
             //Log.d("URSMULOG", "getView ScheduleAdapter");
-            mCurrentIconPair = 0;
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(mResID, null);
 
@@ -123,9 +122,18 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
             }
         }*/
 
-        if (mCurrentIconPair == numberPair && mCurrentIconPair != -1) {
-            return true;
+
+        if(ScheduleAdapter.mCurrentIconPair != -1) {
+            if(ScheduleAdapter.mCurrentIconPair == numberPair) {
+                return true;
+            } else {
+                return false;
+            }
         }
+
+       /* if (mCurrentIconPair == numberPair && mCurrentIconPair != -1) {
+            return true;
+        }*/
 
         int n = numberPair - 1;
         if (n < start.length && n < stop.length) {
@@ -145,7 +153,7 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
             if (i2 >= i1 && i2 <= i3) {
                 Log.d("URSMULOG", "getIcon(" + numberPair + ")" + i2 + " >= " + i1 + " && " + i2 + " <= " + i3 + " n=" + n);
                 //mCurrentIconPair = new WeakReference<Integer>(numberPair);
-                mCurrentIconPair = numberPair;
+                ScheduleAdapter.mCurrentIconPair = numberPair;
                 return true;
             }
         }
@@ -164,8 +172,8 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
     }
 
     protected static void clearIconPair() {
-        mCurrentIconPair = -1;
-        mCalendar = null;
+        ScheduleAdapter.mCurrentIconPair = -1;
+        ScheduleAdapter.mCalendar = null;
     }
 
     public void setAlarm(int position) {
