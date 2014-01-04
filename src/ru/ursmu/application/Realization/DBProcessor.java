@@ -75,7 +75,6 @@ public class DBProcessor extends AbstractProcessor {
     public void start(IDatabasingBehavior db_agent) {
 
         Log.d("URSMULOG", "DBProcessor streamStart");
-
         for (int i = 0; i < 6; i++) {
             Object[] items = getDataBaseBehavior().get(i);
             Parcelable[] day = (Parcelable[]) items;
@@ -84,6 +83,5 @@ public class DBProcessor extends AbstractProcessor {
         db_agent.close();
         mContext.stopService(new Intent(mContext, UrsmuService.class));
         Log.d("URSMULOG", "DBProcessor stop");
-
     }
 }

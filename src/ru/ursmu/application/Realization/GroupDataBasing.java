@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import android.os.Debug;
 import android.util.Log;
 import ru.ursmu.application.Abstraction.IDatabasingBehavior;
 import ru.ursmu.application.Activity.DataBaseHelper;
@@ -142,15 +141,13 @@ public class GroupDataBasing extends IDatabasingBehavior {
 
     @Override
     public Object[] get(int limit) {
-        //Debug.startMethodTracing("GroupDataBasing get");
-            getUINCurrentGroup();
-        //Debug.stopMethodTracing();
+        getUINCurrentGroup();
         return getGroupSchedule(limit);
     }
 
     private void getUINCurrentGroup() {
         if (mUIN != null && mGroup.equals(mLastGroup)) {
-           return;
+            return;
         }
         Cursor c = mDataBase.rawQuery("SELECT ScheduleCommon.UIN FROM ScheduleCommon WHERE (ScheduleCommon.GroupName = ?)", new String[]{mGroup});
         try {
@@ -206,7 +203,6 @@ public class GroupDataBasing extends IDatabasingBehavior {
 
 
     public Object[] getGroupSchedule(int limit) {
-        //Debug.startMethodTracing("GroupDataBasing getGroupSchedule");
         Cursor data = mDataBase.rawQuery(mQueryLimit, new String[]{String.valueOf(mUIN), String.valueOf(limit)});
         int count = data.getCount();
 
@@ -218,11 +214,9 @@ public class GroupDataBasing extends IDatabasingBehavior {
                 data.moveToNext();
             }
             data.close();
-            //Debug.stopMethodTracing();
             return arr;
         } else {
             data.close();
-            //Debug.stopMethodTracing();
             return null;
         }
     }
