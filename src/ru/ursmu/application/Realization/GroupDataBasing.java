@@ -92,7 +92,6 @@ public class GroupDataBasing extends IDatabasingBehavior {
 
 
         for (EducationItem item : temp) {
-            //Log.d("URSMULOG", "add " + item.getDayOfTheWeek());
             day.bindLong(2, id);
             day.bindString(3, item.getPredmet());
             day.bindString(4, item.getProfessor());
@@ -105,12 +104,12 @@ public class GroupDataBasing extends IDatabasingBehavior {
         mDataBase.setTransactionSuccessful();
         mDataBase.endTransaction();
 
+        mUIN = id;
+        mLastGroup = mGroup;
     }
 
     @Override
     public void close() {
-        mUIN = null;
-        mLastGroup = null;
         if (mDataBase != null) {
             mDataBase.setLockingEnabled(true);
             //mDataBase.rawQuery("PRAGMA foreign_keys = ON", null);
@@ -136,74 +135,76 @@ public class GroupDataBasing extends IDatabasingBehavior {
     }
 
     private static Long mUIN = null;
-    private static String mLastGroup = "";
+    private static String mLastGroup = null;
 
     @Override
     public Object[] get(int limit) {
-        if (mUIN == null || !mGroup.equals(mLastGroup)) {
-            mLastGroup = mGroup;
-            mUIN = getUINCurrentGroup();
-            Log.d("URSMULOG", "getUINCurrentGroup" + mUIN);
-        }
-
-        return getGroupSchedule(limit, mUIN);
+        //Debug.startMethodTracing("GroupDataBasing get");
+            getUINCurrentGroup();
+        //Debug.stopMethodTracing();
+        return getGroupSchedule(limit);
     }
 
-    private Long getUINCurrentGroup() {
-        Cursor c = mDataBase.rawQuery("SELECT ScheduleCommon.UIN FROM ScheduleCommon WHERE (ScheduleCommon.GroupName = ?)",
-                new String[]{mGroup});
-        int uin_index = c.getColumnIndex("UIN");
-        c.moveToFirst();
-        Long uin = c.getLong(uin_index);
-        c.close();
-        return uin;
+    private void getUINCurrentGroup() {
+        if (mUIN != null || mGroup.equals(mLastGroup)) {
+           return;
+        }
+        Cursor c = mDataBase.rawQuery("SELECT ScheduleCommon.UIN FROM ScheduleCommon WHERE (ScheduleCommon.GroupName = ?)", new String[]{mGroup});
+        try {
+            int uin_index = c.getColumnIndexOrThrow("UIN");
+            if (c.moveToFirst()) {
+                Long uin = c.getLong(uin_index);
+                c.close();
+                mUIN = uin;
+                Log.d("URSMULOG", "getUINCurrentGroup()" + mUIN);
+                mLastGroup = mGroup;
+                Log.d("URSMULOG", "getUINCurrentGroup() mLastGroup" + mLastGroup);
+            }
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void update(ArrayList<Object> q) {
         if (check()) {
-            Cursor c = mDataBase.rawQuery("SELECT ScheduleCommon.UIN FROM ScheduleCommon WHERE (ScheduleCommon.GroupName = ?)",
-                    new String[]{mGroup});
-            c.moveToFirst();
-            mUIN = c.getLong(c.getColumnIndexOrThrow("UIN"));
-            c.close();
-
-            mDataBase.delete("ScheduleCommon", "UIN=?", new String[]{String.valueOf(mUIN)});
-            mDataBase.delete("ScheduleDays", "GroupID=?", new String[]{String.valueOf(mUIN)});
+            if (mUIN != null) {
+                mDataBase.delete("ScheduleCommon", "UIN=?", new String[]{String.valueOf(mUIN)});
+                mDataBase.delete("ScheduleDays", "GroupID=?", new String[]{String.valueOf(mUIN)});
+            } else {
+                Log.d("URSMULOG", "GroupDataBasing update mUIN != null");
+            }
+            mUIN = null;
+            mLastGroup = null;
         }
         add(q);
     }
 
     @Override
     public boolean check() {
-        Cursor c = mDataBase.rawQuery("SELECT COUNT(ScheduleCommon.UIN) FROM ScheduleCommon WHERE (ScheduleCommon.GroupName = '" + mGroup + "')", new String[]{});
-        if (c!=null) {
-            c.moveToFirst();
-            int count = c.getInt(0);
-            c.close();
-            return (count > 0);
-        } else
-            return false;
+        getUINCurrentGroup();
+        return (mUIN != null);
     }
 
     @Override
     public void clearTable() {
         if (!mDataBase.isDbLockedByCurrentThread()) {
-        Log.d("URSMULOG", "GroupDataBasing clearTable");
-        mDataBase.delete("ScheduleCommon", "", new String[]{});
-        mDataBase.delete("ScheduleDays", "", new String[]{});
+            Log.d("URSMULOG", "GroupDataBasing clearTable");
+            mDataBase.delete("ScheduleCommon", "", new String[]{});
+            mDataBase.delete("ScheduleDays", "", new String[]{});
 
-        mDataBase.close();
+            mDataBase.close();
+            mUIN = null;
+            mLastGroup = null;
         } else {
             Log.d("URSMULOG", "GroupDataBasing clearTable mDataBase.isDbLockedByCurrentThread() " + mDataBase.isDbLockedByCurrentThread());
         }
     }
 
 
-    public Object[] getGroupSchedule(int limit, Long uin) {
-        //Long t = System.currentTimeMillis();
-        Cursor data = mDataBase.rawQuery(mQueryLimit, new String[]{String.valueOf(uin), String.valueOf(limit)});
-        //Log.d("URSMULOG ", "TIME SELECT " + limit + "" + (System.currentTimeMillis() - t));
+    public Object[] getGroupSchedule(int limit) {
+        //Debug.startMethodTracing("GroupDataBasing getGroupSchedule");
+        Cursor data = mDataBase.rawQuery(mQueryLimit, new String[]{String.valueOf(mUIN), String.valueOf(limit)});
         int count = data.getCount();
 
         if (count != 0) {
@@ -213,11 +214,12 @@ public class GroupDataBasing extends IDatabasingBehavior {
                 arr[i] = new EducationItem(data, false);
                 data.moveToNext();
             }
-            //Log.d("URSMULOG ", "TIME PARSE " + (System.currentTimeMillis() - t));
             data.close();
+            //Debug.stopMethodTracing();
             return arr;
         } else {
             data.close();
+            //Debug.stopMethodTracing();
             return null;
         }
     }
