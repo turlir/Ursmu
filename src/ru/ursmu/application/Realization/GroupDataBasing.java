@@ -129,8 +129,7 @@ public class GroupDataBasing extends IDatabasingBehavior {
             mContext = null;
         }
 
-        mUIN = null;
-        mLastGroup = null;
+
     }
 
     @Override
@@ -143,14 +142,14 @@ public class GroupDataBasing extends IDatabasingBehavior {
 
     @Override
     public Object[] get(int limit) {
-        Debug.startMethodTracing("GroupDataBasing get");
+        //Debug.startMethodTracing("GroupDataBasing get");
             getUINCurrentGroup();
-        Debug.stopMethodTracing();
+        //Debug.stopMethodTracing();
         return getGroupSchedule(limit);
     }
 
     private void getUINCurrentGroup() {
-        if (mUIN != null || mGroup.equals(mLastGroup)) {
+        if (mUIN != null && mGroup.equals(mLastGroup)) {
            return;
         }
         Cursor c = mDataBase.rawQuery("SELECT ScheduleCommon.UIN FROM ScheduleCommon WHERE (ScheduleCommon.GroupName = ?)", new String[]{mGroup});
@@ -207,7 +206,7 @@ public class GroupDataBasing extends IDatabasingBehavior {
 
 
     public Object[] getGroupSchedule(int limit) {
-        Debug.startMethodTracing("GroupDataBasing getGroupSchedule");
+        //Debug.startMethodTracing("GroupDataBasing getGroupSchedule");
         Cursor data = mDataBase.rawQuery(mQueryLimit, new String[]{String.valueOf(mUIN), String.valueOf(limit)});
         int count = data.getCount();
 
@@ -219,11 +218,11 @@ public class GroupDataBasing extends IDatabasingBehavior {
                 data.moveToNext();
             }
             data.close();
-            Debug.stopMethodTracing();
+            //Debug.stopMethodTracing();
             return arr;
         } else {
             data.close();
-            Debug.stopMethodTracing();
+            //Debug.stopMethodTracing();
             return null;
         }
     }
