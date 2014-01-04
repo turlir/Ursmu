@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockActivity;
-import ru.ursmu.application.R;
+import ru.ursmu.beta.application.R;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import com.actionbarsherlock.app.SherlockListActivity;
-import ru.ursmu.application.R;
+import ru.ursmu.beta.application.R;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.Realization.KursList;
 

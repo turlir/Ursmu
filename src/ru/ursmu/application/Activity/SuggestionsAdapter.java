@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import ru.ursmu.application.R;
+import ru.ursmu.beta.application.R;
 
 public class SuggestionsAdapter extends CursorAdapter {
 
