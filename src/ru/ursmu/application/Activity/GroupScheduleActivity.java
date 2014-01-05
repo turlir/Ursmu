@@ -36,6 +36,7 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         public void sendError(String notify) {
             changeIndicatorVisible(View.INVISIBLE);
             showNotification(notify);
+            mRequestId = 0;
         }
 
         @Override
@@ -53,6 +54,7 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
                     changeIndicatorVisible(View.INVISIBLE);
                     mViewPager.setVisibility(View.VISIBLE);
                     current(null);
+                    mRequestId = 0;
                     //ServiceHelper.removeCallback(mRequestId);
                 }
             }
@@ -61,6 +63,7 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         @Override
         public void sendStart(long id) {
             changeIndicatorVisible(View.VISIBLE);
+            mRequestId = id;
         }
     };
 
@@ -96,26 +99,16 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         setContentView(R.layout.new_schedule_group);
 
         Intent info = getIntent();
-        mHelper = ServiceHelper.getInstance(getApplicationContext());
-
-        mPages = new ArrayList<ListView>(6);
-        mPagerAdapter = new MyPagerAdapter(mPages);
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        mViewPager.setAdapter(mPagerAdapter);
-        mViewPager.setOnPageChangeListener(pageChangeListener);
 
         String faculty = info.getStringExtra(ServiceHelper.FACULTY);
         String kurs = info.getStringExtra(ServiceHelper.KURS);
         String group = info.getStringExtra(ServiceHelper.GROUP);
         boolean isHard = info.getBooleanExtra("IS_HARD", true);
 
-        String[] list_navigation = new String[2];
-        list_navigation[0] = "Поиск";
-        list_navigation[1] = group;
+        String[] list_navigation = new String[] {"Поиск", group};
 
         mObject = new ScheduleGroup(faculty, kurs, group, isHard);
-
-        mRequestId = mHelper.getUrsmuDBObject(mObject, mHandler);
+        start();
 
         ActionBar bar = getSupportActionBar();
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
@@ -125,6 +118,31 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         bar.setListNavigationCallbacks(adapter, this);
         bar.setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+
+
+    private void start() {
+        if (mHelper == null) {
+            mHelper = ServiceHelper.getInstance(getApplicationContext());
+        }
+
+        mPages = new ArrayList<ListView>(6);
+        mPagerAdapter = new MyPagerAdapter(mPages);
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        mViewPager.setAdapter(mPagerAdapter);
+        mViewPager.setOnPageChangeListener(pageChangeListener);
+
+        mHelper.getUrsmuDBObject(mObject, mHandler);
+    }
+
+    private void stop() {
+        mPages.clear();
+        mPages = null;
+        mPagerAdapter = null;
+        mViewPager.setAdapter(null);
+        mViewPager.setVisibility(View.INVISIBLE);
+        mViewPager.invalidate();
+        mViewPager = null;
     }
 
     @Override
@@ -199,13 +217,14 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
                 startActivity(intent);
                 return true;
             case R.id.schedule_group_update:
-                mPages.clear();
-                mPagerAdapter = new MyPagerAdapter(mPages);
-                mViewPager.setAdapter(mPagerAdapter);
-
-                mObject.setHard(true);
-                mHelper.getUrsmuDBObject(mObject, mHandler);
-                return true;
+                if (mRequestId == 0) {
+                    stop();
+                    mObject.setHard(true);
+                    start();
+                    return true;
+                } else {
+                    Toast.makeText(getApplicationContext(), "Дождитесь завершения операции", Toast.LENGTH_SHORT).show();
+                }
             case R.id.schedule_group_site:
                 if (mObject != null) {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mObject.getUri() + "#" + mObject.getParameters()));
