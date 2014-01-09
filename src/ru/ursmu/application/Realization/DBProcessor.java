@@ -7,6 +7,7 @@ import android.os.ResultReceiver;
 import android.util.Log;
 import ru.ursmu.application.Abstraction.*;
 import ru.ursmu.application.Activity.UrsmuService;
+import ru.ursmu.application.JsonObject.EducationItem;
 
 import java.util.ArrayList;
 
@@ -75,11 +76,8 @@ public class DBProcessor extends AbstractProcessor {
     public void start(IDatabasingBehavior db_agent) {
 
         Log.d("URSMULOG", "DBProcessor streamStart");
-        for (int i = 0; i < 6; i++) {
-            Object[] items = getDataBaseBehavior().get(i);
-            Parcelable[] day = (Parcelable[]) items;
-            super.sendComplete(day);
-        }
+        EducationWeek items = getDataBaseBehavior().getSchedule();
+        super.sendComplete(items);
         db_agent.close();
         mContext.stopService(new Intent(mContext, UrsmuService.class));
         Log.d("URSMULOG", "DBProcessor stop");

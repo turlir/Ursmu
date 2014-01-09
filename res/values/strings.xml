@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">УГГУ beta</string>
     <string name="offline_search_help">Вы можете воспользоваться оффлайн поиском</string>
+    <item name="null_error" type="id">Ошибка. Попробуйте снова</item>
 </resources>

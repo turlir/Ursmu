@@ -10,6 +10,8 @@ import ru.ursmu.beta.application.R;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.Realization.GroupList;
 
+import java.io.Serializable;
+
 public class FindGroupActivity extends SherlockListActivity {
     private ServiceHelper mHelper;
     private ProgressBar mBar;
@@ -24,7 +26,7 @@ public class FindGroupActivity extends SherlockListActivity {
         }
 
         @Override
-        public void sendComplete(Object[] data) {
+        public void sendComplete(Serializable data) {
             changeIndicatorVisible(View.INVISIBLE);
             postProcessing((String[]) data);
             //ServiceHelper.removeCallback(mRequestId);

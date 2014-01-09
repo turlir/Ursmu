@@ -20,50 +20,39 @@ public class ProfessorDataBasing extends IDatabasingBehavior {
     private String mProfessor;
     private static String mQueryLimit;
 
+    static {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT ScheduleDays.Name, ");
+        sb.append("ScheduleDays.teacher,");
+        sb.append("ScheduleDays.room, ");
+        sb.append("ScheduleDays.numerPair, ");
+        sb.append("ScheduleDays._id, ");
+        sb.append("ScheduleDays.normalProfessor, ");
+        sb.append("ScheduleDays.DayIndex, ");
+        sb.append("ScheduleCommon.GroupName, ");
+        sb.append("ScheduleCommon.FACULTY, ");
+        sb.append("ScheduleCommon.KURS ");
+        sb.append("FROM ScheduleCommon, ScheduleDays ");
+        sb.append("WHERE (ScheduleCommon.UIN = ScheduleDays.GroupID) ");
+        sb.append("AND (ScheduleDays.normalProfessor = ?) ");
+        sb.append("ORDER BY ScheduleDays.DayIndex, ScheduleDays.numerPair");
+        mQueryLimit = sb.toString();
+
+
+        sb = new StringBuilder();
+        sb.append("SELECT ScheduleDays.normalProfessor, ScheduleDays._id ");
+        sb.append("FROM ScheduleDays ");
+        sb.append("WHERE (ScheduleDays.normalProfessor LIKE ?) ");
+        //sb.append("'%" + "?" + "%')");
+        sb.append("GROUP BY ScheduleDays.normalProfessor");
+        //sb.append(" ORDER BY ScheduleDays.numerPair");
+        mQueryNonLimit = sb.toString();
+    }
+
     public static ProfessorDataBasing getInstance(Context c, String professorName) {
         if (mContext == null || mDataBase == null) {
             mContext = c;
             mDataBase = new DataBaseHelper(mContext).getWritableDatabase();
-
-
-            StringBuilder query_limit = new StringBuilder();
-            query_limit.append("SELECT ScheduleDays.Name,");
-            query_limit.append("ScheduleDays.teacher,");
-            query_limit.append("ScheduleDays.room,");
-            query_limit.append("ScheduleDays.numerPair,");
-            query_limit.append("ScheduleDays._id,");
-            query_limit.append("ScheduleDays.normalProfessor,");
-            query_limit.append("ScheduleDays.DayIndex,");
-
-            query_limit.append("ScheduleCommon.GroupName,");
-            query_limit.append("ScheduleCommon.FACULTY,");
-            query_limit.append("ScheduleCommon.KURS");
-
-            query_limit.append(" FROM ScheduleCommon, ScheduleDays");
-            query_limit.append(" WHERE (ScheduleCommon.UIN = ScheduleDays.GroupID)");
-
-            query_limit.append("AND (ScheduleDays.normalProfessor = ");
-            query_limit.append("?");
-            query_limit.append(")");
-
-            query_limit.append("AND (ScheduleDays.DayIndex = ");
-            query_limit.append("?");
-            query_limit.append(")");
-
-            query_limit.append(" ORDER BY ScheduleDays.numerPair");
-            mQueryLimit = query_limit.toString();
-
-
-            StringBuilder sb = new StringBuilder();
-            sb.append("SELECT ScheduleDays.normalProfessor, ScheduleDays._id");
-            sb.append(" FROM ScheduleDays");
-
-            sb.append(" WHERE (ScheduleDays.normalProfessor LIKE");
-            //sb.append("'%" + "?" + "%')");
-            sb.append("?)");
-            sb.append("GROUP BY ScheduleDays.normalProfessor");
-            //sb.append(" ORDER BY ScheduleDays.numerPair");
-            mQueryNonLimit = sb.toString();
 
         }
         return new ProfessorDataBasing(professorName);
@@ -100,8 +89,8 @@ public class ProfessorDataBasing extends IDatabasingBehavior {
     }
 
     @Override
-    public Object[] get(int limit) {
-        return getProfessorSchedule(limit);
+    public EducationWeek getSchedule() {
+        return getProfessorSchedule();
     }
 
 
@@ -115,24 +104,22 @@ public class ProfessorDataBasing extends IDatabasingBehavior {
         add(q);
     }
 
-    private Object[] getProfessorSchedule(int limit) {
-        Cursor data = mDataBase.rawQuery(mQueryLimit, new String[]{mProfessor, String.valueOf(limit)});
+    private EducationWeek getProfessorSchedule() {
+        EducationWeek week = new EducationWeek();
 
-        int count = data.getCount();
+        Cursor cursor = mDataBase.rawQuery(mQueryLimit, new String[]{String.valueOf(mProfessor)});
+        int count = cursor.getCount();
 
-        if (count != 0) {
-            EducationItem[] arr = new EducationItem[count];
-            for (int i = 0; i < count; i++) {
-                data.moveToPosition(i);
-                arr[i] = new EducationItem(data, true);
-            }
-            data.close();
-            return arr;
-        } else {
-            data.close();
-            return null;
+        if (count != 0 && cursor.moveToFirst()) {
+            EducationItem item;
+            do {
+                item = new EducationItem(cursor, true);
+                week.set(item.getDayOfTheWeek(), item);
+            } while (cursor.moveToNext());
+
         }
 
+        return week;
     }
 
 }

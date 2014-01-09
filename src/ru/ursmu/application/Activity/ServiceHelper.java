@@ -148,7 +148,7 @@ public class ServiceHelper {
                 switch (resultCode) {
                     case DOWNLOAD_COMPLETE:
                         //removeCallback(id);
-                        callback.sendComplete(data.getParcelableArray(ServiceHelper.PARSE_DATA));
+                        callback.sendComplete(data.getSerializable(ServiceHelper.PARSE_DATA));
                         break;
                     case PROCESSOR_FAILURE:
                         callback.sendError(data.getString("ERROR_NOTIF"));

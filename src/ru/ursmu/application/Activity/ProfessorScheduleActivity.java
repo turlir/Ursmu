@@ -2,37 +2,35 @@ package ru.ursmu.application.Activity;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.MenuInflater;
 import android.view.View;
-import android.widget.*;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 import ru.ursmu.application.Abstraction.UniversalCallback;
-import ru.ursmu.application.JsonObject.EducationItem;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.Realization.EducationWeek;
 import ru.ursmu.application.Realization.ProfessorSchedule;
 import ru.ursmu.application.Realization.ScheduleGroupFactory;
+import ru.ursmu.beta.application.R;
 
-import java.util.ArrayList;
+import java.io.Serializable;
+import java.util.Calendar;
 
 public class ProfessorScheduleActivity extends SherlockFragmentActivity implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
     String mProfessor;
     ServiceHelper mHelper;
     private ProgressBar mBar;
     private TextView mDesc;
-    private ViewPager mViewPager;
-    private ArrayList<ListView> mPages;
-    private MyPagerAdapter mPagerAdapter;
-    private TextView footerText;
     private boolean light = false;
     private SearchView mSearchView;
     private Long mRequestId;
@@ -41,13 +39,12 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
         @Override
         public void sendError(String notify) {
             changeIndicatorVisible(View.INVISIBLE);
-            Toast.makeText(getApplicationContext(), "Обновление завершено с ошибкой",
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Обновление завершено с ошибкой", Toast.LENGTH_LONG).show();
             changeDescText(null);
         }
 
         @Override
-        public void sendComplete(Object[] data) {
+        public void sendComplete(Serializable data) {
             Toast.makeText(getApplicationContext(), "Обновление завершено успешно", Toast.LENGTH_LONG).show();
             changeIndicatorVisible(View.INVISIBLE);
             changeDescText(null);
@@ -73,21 +70,23 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
         }
 
         @Override
-        public void sendComplete(Object[] data) {
+        public void sendComplete(Serializable data) {
+            changeIndicatorVisible(View.INVISIBLE);
+            mRequestId = null;
             if (data != null) {
-                changeIndicatorVisible(View.INVISIBLE);
-                ListView list_view = new ListView(getApplicationContext());
-                ArrayAdapter<EducationItem> list_adapter = new ScheduleAdapter(getApplicationContext(),
-                        R.layout.schedule_adapter, (EducationItem[]) data, true);
-                list_view.setAdapter(list_adapter);
-                registerForContextMenu(list_view);
-                mPages.add(list_view);
-                mPagerAdapter.notifyDataSetChanged();
+                MyPagerAdapter pager_adapter = new MyPagerAdapter(getSupportFragmentManager(), (EducationWeek) data, getApplicationContext(), true);
 
+                ViewPager view_pager = (ViewPager) findViewById(R.id.professor_viewpager);
+                view_pager.setVisibility(View.VISIBLE);
+                view_pager.setCurrentItem(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2, true);
+                view_pager.setAdapter(pager_adapter);
 
-                changeIndicatorVisible(View.INVISIBLE);
-                mViewPager.setVisibility(View.VISIBLE);
-                changeFooter(mViewPager.getCurrentItem());
+                PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.professor_pagerTabStrip);
+                pagerTabStrip.setDrawFullUnderline(true);
+                pagerTabStrip.setTabIndicatorColor(Color.parseColor("#33B5E5"));
+                pagerTabStrip.setVisibility(View.VISIBLE);
+            } else {
+                Toast.makeText(getApplicationContext(), getResources().getText(R.id.null_error), Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -95,23 +94,9 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
         public void sendStart(long id) {
             changeIndicatorVisible(View.VISIBLE);
             changeDescText(null);
-            changeVisibilityNavigationBar(View.VISIBLE);
-        }
-    };
-
-    private ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
-        @Override
-        public void onPageScrolled(int i, float v, int i2) {
         }
 
-        @Override
-        public void onPageSelected(int i) {
-            changeFooter(i);
-        }
 
-        @Override
-        public void onPageScrollStateChanged(int i) {
-        }
     };
 
 
@@ -158,7 +143,6 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.professor_schedule);
-        mHelper = ServiceHelper.getInstance(getApplicationContext());
 
         ScheduleGroupFactory object = new ScheduleGroupFactory();
 
@@ -171,6 +155,12 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ScheduleAdapter.clearIconPair();
     }
 
     @Override
@@ -189,14 +179,6 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
         super.onRestoreInstanceState(savedInstanceState);
         changeIndicatorVisible(savedInstanceState.getInt("PROGRESS_BAR_STATE"));
         changeDescText(savedInstanceState.getString("DESC_BAR_TEXT"));
-    }
-
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.schedule_professor_item, menu);
     }
 
     @Override
@@ -244,40 +226,6 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
         }
     }
 
-    @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-        switch (item.getItemId()) {
-            case R.id.schedule_prof_item_group:
-                //EducationItem etem = adapter.getItem(info.position);
-                ListAdapter ada = mPages.get(mViewPager.getCurrentItem()).getAdapter();
-                EducationItem selected = ((EducationItem) ada.getItem(info.position));
-                String groupName = selected.getGroupName();
-                String faculty = selected.getFaculty();
-                String kurs = selected.getKurs();
-                if (!TextUtils.isEmpty(groupName) && !TextUtils.isEmpty(faculty) && !TextUtils.isEmpty(kurs)) {
-                    Intent i = new Intent(getApplicationContext(), GroupScheduleActivity.class);
-                    i.putExtra(ServiceHelper.FACULTY, faculty);
-                    i.putExtra(ServiceHelper.KURS, kurs);
-                    i.putExtra(ServiceHelper.GROUP, groupName);
-                    i.putExtra("IS_HARD", false);
-                    startActivity(i);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Выберите пару", Toast.LENGTH_SHORT).show();
-                }
-                return true;
-            case R.id.schedule_prof_item_alarm:
-                ListAdapter temp = mPages.get(mViewPager.getCurrentItem()).getAdapter();
-                ScheduleAdapter adapter = (ScheduleAdapter) temp;
-                adapter.setAlarm(info.position);
-                Log.d("URSMULOG", "onContextItemSelected R.id.schedule_prof_item_alarm" + info.position);
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
-    }
-
     private void startUpdateDialog() {
         changeIndicatorVisible(View.INVISIBLE);
         DialogFragment newFragment = new UpdateDialog(mHandlerDialog);
@@ -287,42 +235,14 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
     private void nextStep() {
         if (mProfessor != null) {
             setTitle(mProfessor);
-            mPages = new ArrayList<ListView>(6);
-            mPagerAdapter = new MyPagerAdapter(mPages);
-            mViewPager = (ViewPager) findViewById(R.id.professor_view_pager);
-            mViewPager.setAdapter(mPagerAdapter);
-            mViewPager.setOnPageChangeListener(pageChangeListener);
-            mRequestId = mHelper.getUrsmuDBObject(new ProfessorSchedule(mProfessor), mHandlerTwo);
-            //changeDescText(null);
+            if (mHelper == null)
+                mHelper = ServiceHelper.getInstance(getApplicationContext());
+
+            mHelper.getUrsmuDBObject(new ProfessorSchedule(mProfessor), mHandlerTwo);
         } else {
             findViewById(R.id.path_to_icon).setVisibility(View.VISIBLE);
             changeDescText(getResources().getString(R.string.offline_search_help));
         }
-    }
-
-    public void previous(View v) {
-        if (mViewPager != null)
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
-    }
-
-    public void next(View v) {
-        if (mViewPager != null)
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
-    }
-
-    public void current(View v) {
-        if (mViewPager != null) {
-            mViewPager.setCurrentItem(0, true);
-            changeFooter(mViewPager.getCurrentItem());
-        }
-    }
-
-    private void changeFooter(int i) {
-        if (footerText == null) {
-            footerText = (TextView) findViewById(R.id.day_schedule_prof);
-        }
-        EducationItem n = ((ScheduleAdapter) mPagerAdapter.getItem(i).getAdapter()).getItem(0);
-        footerText.setText(EducationItem.DayOfTheWeek[n.getDayOfTheWeek()]);
     }
 
     protected void changeIndicatorVisible(int visibility) {
@@ -330,10 +250,6 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
             mBar = (ProgressBar) findViewById(R.id.schedule_prof_bar);
         }
         mBar.setVisibility(visibility);
-
-        if (mViewPager != null) {
-            mViewPager.setVisibility(visibility);
-        }
         if (visibility == View.INVISIBLE) {
             mBar = null;
         }
@@ -349,12 +265,6 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
         } else {
             mDesc.setVisibility(View.INVISIBLE);
         }
-    }
-
-    private void changeVisibilityNavigationBar(int vis) {
-        ((ImageView) findViewById(R.id.back_schedule_prof)).setVisibility(vis);
-        ((TextView) findViewById(R.id.day_schedule_prof)).setVisibility(vis);
-        ((ImageView) findViewById(R.id.next_schedule_prof)).setVisibility(vis);
     }
 
 

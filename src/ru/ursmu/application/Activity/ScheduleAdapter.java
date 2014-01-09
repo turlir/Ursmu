@@ -22,6 +22,7 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
     private Context mContext;
     private int mResID;
     private boolean isProfessor;
+    private EducationItem[] mData;
 
     protected static final double[] start = new double[]{9.00, 10.50, 12.40, 14.30, 16.10, 17.40, 19.10, 20.40};
     protected static final double[] stop = new double[]{10.30, 12.20, 14.10, 16.00, 17.30, 19.00, 20.30, 22.10};
@@ -44,29 +45,29 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
         mContext = context;
         mResID = layout;
         isProfessor = isProf;
+        mData = data;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
         ViewHolder holder;
-        if (view == null) {
-            //Log.d("URSMULOG", "getView ScheduleAdapter");
+        if (convertView == null) {
+            //Log.d("URSMULOG", "ScheduleAdapter getView view == null");
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(mResID, null);
+            convertView = inflater.inflate(mResID, parent, false);
 
             holder = new ViewHolder();
-            holder.nametv = (TextView) view.findViewById(R.id.schedule_name);
-            holder.teacher = (TextView) view.findViewById(R.id.schedule_professor);
-            holder.room = (TextView) view.findViewById(R.id.schedule_aud);
-            holder.timeStart = (TextView) view.findViewById(R.id.time_schedule_start);
-            holder.timeStop = (TextView) view.findViewById(R.id.time_schedule_stop);
-            holder.flag = view.findViewById(R.id.viewColor_sc);
-            view.setTag(holder);
+            holder.nametv = (TextView) convertView.findViewById(R.id.schedule_name);
+            holder.teacher = (TextView) convertView.findViewById(R.id.schedule_professor);
+            holder.room = (TextView) convertView.findViewById(R.id.schedule_aud);
+            holder.timeStart = (TextView) convertView.findViewById(R.id.time_schedule_start);
+            holder.timeStop = (TextView) convertView.findViewById(R.id.time_schedule_stop);
+            holder.flag = convertView.findViewById(R.id.viewColor_sc);
+            convertView.setTag(holder);
         } else {
-            holder = (ViewHolder) view.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
 
-        EducationItem item = getItem(position);
+        EducationItem item = mData[position];
         int current_pair = item.getNumberPar();
 
         holder.nametv.setText(item.getPredmet());
@@ -88,12 +89,12 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
             holder.flag.setVisibility(View.INVISIBLE);
         }
 
-        return view;
+        return convertView;
     }
 
     private String getTime(int numberPair, boolean f) {
         //Log.d("URSMULOG", "getTime(" + numberPair + ")");
-        int n = numberPair - 1;
+        int n = (numberPair == 0 ? 0 : numberPair - 1);
         String s;
         Double t;
         if (f) {
@@ -114,47 +115,37 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
     }
 
     protected static boolean getIcon(int numberPair, int current_hour, int current_min) {
-/*        if (mCurrentIconPair != null) {
-            if (mCurrentIconPair.get() != 0) {
-                if (mCurrentIconPair.get().equals(numberPair)) {
-                    return true;
-                }
-            }
-        }*/
-
-
-        if(ScheduleAdapter.mCurrentIconPair != -1) {
-            if(ScheduleAdapter.mCurrentIconPair == numberPair) {
+        if (ScheduleAdapter.mCurrentIconPair != -1) {
+            if (ScheduleAdapter.mCurrentIconPair == numberPair) {
+                Log.d("URSMULOG", "getIcon shor " + (numberPair - 1));
                 return true;
             } else {
                 return false;
             }
-        }
+        } else {
 
-       /* if (mCurrentIconPair == numberPair && mCurrentIconPair != -1) {
-            return true;
-        }*/
 
-        int n = numberPair - 1;
-        if (n < start.length && n < stop.length) {
-            int hour = current_hour;
-            int minute = current_min;
-            int i2 = hour * 60 + minute;   //current
+            int n = (numberPair == 0 ? 0 : numberPair - 1);
+            if (n < start.length && n < stop.length) {
+                int hour = current_hour;
+                int minute = current_min;
+                int i2 = hour * 60 + minute;   //current
 
-            double begin = start[n];
-            int[] x = timeArrayItemConvert(begin);
-            int i1 = x[0] * 60 + x[1];      //begin
+                double begin = start[n];
+                int[] x = timeArrayItemConvert(begin);
+                int i1 = x[0] * 60 + x[1];      //begin
 
-            double end = stop[n];
-            x = timeArrayItemConvert(end);
-            int i3 = x[0] * 60 + x[1];   //stop
+                double end = stop[n];
+                x = timeArrayItemConvert(end);
+                int i3 = x[0] * 60 + x[1];   //stop
 
-            //current >= begin &&  current <= stop
-            if (i2 >= i1 && i2 <= i3) {
-                Log.d("URSMULOG", "getIcon(" + numberPair + ")" + i2 + " >= " + i1 + " && " + i2 + " <= " + i3 + " n=" + n);
-                //mCurrentIconPair = new WeakReference<Integer>(numberPair);
-                ScheduleAdapter.mCurrentIconPair = numberPair;
-                return true;
+                //current >= begin &&  current <= stop
+                if (i2 >= i1 && i2 <= i3) {
+                    Log.d("URSMULOG", "getIcon(" + numberPair + ")" + i2 + " >= " + i1 + " && " + i2 + " <= " + i3 + " n=" + n);
+                    //mCurrentIconPair = new WeakReference<Integer>(numberPair);
+                    ScheduleAdapter.mCurrentIconPair = numberPair;
+                    return true;
+                }
             }
         }
 
@@ -190,12 +181,17 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
         mContext.startActivity(i);
     }
 
+    public void setData(EducationItem[] newData) {
+        mData = newData;
+        this.notifyDataSetChanged();
+    }
+
     private static class ViewHolder {
-        public TextView nametv;
-        public TextView teacher;
-        public TextView room;
-        public TextView timeStart;
-        public TextView timeStop;
-        public View flag;
+        TextView nametv;
+        TextView teacher;
+        TextView room;
+        TextView timeStart;
+        TextView timeStop;
+        View flag;
     }
 }

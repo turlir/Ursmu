@@ -1,36 +1,33 @@
 package ru.ursmu.application.Activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
-import android.view.ContextMenu;
-import android.view.MenuInflater;
 import android.view.View;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import ru.ursmu.application.Abstraction.UniversalCallback;
-import ru.ursmu.application.JsonObject.EducationItem;
+import ru.ursmu.application.Realization.EducationWeek;
 import ru.ursmu.application.Realization.ScheduleGroup;
 import ru.ursmu.beta.application.R;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Calendar;
 
-public class GroupScheduleActivity extends SherlockActivity implements ActionBar.OnNavigationListener {
+public class GroupScheduleActivity extends SherlockFragmentActivity implements ActionBar.OnNavigationListener {
     private ScheduleGroup mObject;
     private ProgressBar mBar;
-    private TextView footerText;
-
-    private ViewPager mViewPager;
-    private ArrayList<ListView> mPages;
-    private MyPagerAdapter mPagerAdapter;
-
+    private ServiceHelper mHelper;
     private long mRequestId;
+
     private UniversalCallback mHandler = new UniversalCallback() {
         @Override
         public void sendError(String notify) {
@@ -40,24 +37,23 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         }
 
         @Override
-        public void sendComplete(Object[] data) {
+        public void sendComplete(Serializable data) {
+            changeIndicatorVisible(View.INVISIBLE);
+            mRequestId = 0;
             if (data != null) {
-                ListView list_view = new ListView(getApplicationContext());
-                ArrayAdapter<EducationItem> list_adapter = new ScheduleAdapter(getApplicationContext(),
-                        R.layout.schedule_adapter, (EducationItem[]) data, false);
-                list_view.setAdapter(list_adapter);
-                registerForContextMenu(list_view);
-                mPages.add(list_view);
-                mPagerAdapter.notifyDataSetChanged();
+                MyPagerAdapter pager_adapter = new MyPagerAdapter(getSupportFragmentManager(), (EducationWeek) data, getApplicationContext(), false);
 
-                if (mPagerAdapter.getCount() == 6) {
-                    changeIndicatorVisible(View.INVISIBLE);
-                    mViewPager.setVisibility(View.VISIBLE);
-                    current(null);
-                    mRequestId = 0;
-                    //ServiceHelper.removeCallback(mRequestId);
-                }
-            }
+                ViewPager view_pager = (ViewPager) findViewById(R.id.viewpager);
+                view_pager.setVisibility(View.VISIBLE);
+                view_pager.setCurrentItem(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2, true);
+                view_pager.setAdapter(pager_adapter);
+
+                PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagerTabStrip);
+                pagerTabStrip.setDrawFullUnderline(true);
+                pagerTabStrip.setTabIndicatorColor(Color.parseColor("#33B5E5"));
+            } else
+                showNotification((String) getResources().getText(R.id.null_error));
+
         }
 
         @Override
@@ -67,30 +63,15 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         }
     };
 
-    private ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
-        @Override
-        public void onPageScrolled(int i, float v, int i2) {
-        }
-
-        @Override
-        public void onPageSelected(int i) {
-            changeFooter(i);
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int i) {
-        }
-    };
-    private ServiceHelper mHelper;
-
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
         if (itemPosition == 0) {
             Intent i = new Intent(this, FindFacultyActivity.class);
             startActivity(i);
+            return true;
         }
 
-        return true;
+        return false;
     }
 
 
@@ -99,17 +80,15 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         setContentView(R.layout.new_schedule_group);
 
         Intent info = getIntent();
-
         String faculty = info.getStringExtra(ServiceHelper.FACULTY);
         String kurs = info.getStringExtra(ServiceHelper.KURS);
         String group = info.getStringExtra(ServiceHelper.GROUP);
         boolean isHard = info.getBooleanExtra("IS_HARD", true);
 
-        String[] list_navigation = new String[] {"Поиск", group};
-
         mObject = new ScheduleGroup(faculty, kurs, group, isHard);
         start();
 
+        String[] list_navigation = new String[]{"Поиск", group};
         ActionBar bar = getSupportActionBar();
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         ArrayAdapter<String> adapter = new SimpleCustomArrayAdapter<String>(this,
@@ -126,23 +105,7 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
             mHelper = ServiceHelper.getInstance(getApplicationContext());
         }
 
-        mPages = new ArrayList<ListView>(6);
-        mPagerAdapter = new MyPagerAdapter(mPages);
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        mViewPager.setAdapter(mPagerAdapter);
-        mViewPager.setOnPageChangeListener(pageChangeListener);
-
         mHelper.getUrsmuDBObject(mObject, mHandler);
-    }
-
-    private void stop() {
-        mPages.clear();
-        mPages = null;
-        mPagerAdapter = null;
-        mViewPager.setAdapter(null);
-        mViewPager.setVisibility(View.INVISIBLE);
-        mViewPager.invalidate();
-        mViewPager = null;
     }
 
     @Override
@@ -152,36 +115,9 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
     }
 
     @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-        switch (item.getItemId()) {
-            case R.id.schedule_item_professor:
-                ListAdapter ada = mPages.get(mViewPager.getCurrentItem()).getAdapter();
-                String normalProfessor = ((EducationItem) ada.getItem(info.position)).getNormalProfessor();
-                if (!TextUtils.isEmpty(normalProfessor)) {
-                    Intent i = new Intent(this, ProfessorScheduleActivity.class);
-                    i.putExtra("PROFESSOR", normalProfessor);
-                    startActivity(i);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Выберите пару", Toast.LENGTH_SHORT).show();
-                }
-                return true;
-            case R.id.schedule_item_alarm:
-                ListAdapter temp = mPages.get(mViewPager.getCurrentItem()).getAdapter();
-                ScheduleAdapter adapter = (ScheduleAdapter) temp;
-                adapter.setAlarm(info.position);
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.schedule_item, menu);
+    protected void onPause() {
+        super.onPause();
+        ScheduleAdapter.clearIconPair();
     }
 
     @Override
@@ -218,7 +154,6 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
                 return true;
             case R.id.schedule_group_update:
                 if (mRequestId == 0) {
-                    stop();
                     mObject.setHard(true);
                     start();
                     return true;
@@ -236,35 +171,10 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         }
     }
 
-    @Override
-    protected void onPause() {
-        super.onStop();
-        ScheduleAdapter.clearIconPair();
-    }
 
-    public void previous(View v) {
-        if (mViewPager != null) {
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
-        }
-    }
-
-    public void next(View v) {
-        if (mViewPager != null) {
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
-        }
-    }
-
-    public void current(View v) {
-        if (mViewPager != null) {
-            mViewPager.setCurrentItem(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2, true);
-        }
-    }
-
-    @Override
     protected void showNotification(String notify) {
         Toast.makeText(getApplicationContext(), notify, Toast.LENGTH_LONG).show();
     }
-
 
     protected void changeIndicatorVisible(int visibility) {
         if (mBar == null) {
@@ -274,13 +184,5 @@ public class GroupScheduleActivity extends SherlockActivity implements ActionBar
         if (visibility == View.INVISIBLE) {
             mBar = null;
         }
-    }
-
-    private void changeFooter(int i) {
-        if (footerText == null) {
-            footerText = (TextView) findViewById(R.id.schedule_name_day);
-        }
-        int n = ((ScheduleAdapter) mPagerAdapter.getItem(i).getAdapter()).getItem(0).getDayOfTheWeek();
-        footerText.setText(EducationItem.DayOfTheWeek[n]);
     }
 }

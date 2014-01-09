@@ -1,6 +1,8 @@
 package ru.ursmu.application.Abstraction;
 
 import android.database.Cursor;
+import ru.ursmu.application.JsonObject.EducationItem;
+import ru.ursmu.application.Realization.EducationWeek;
 
 import java.util.ArrayList;
 
@@ -12,7 +14,7 @@ public abstract class IDatabasingBehavior {
 
     public abstract void close();
 
-    public abstract Object[] get(int limit);
+    public abstract EducationWeek getSchedule();
 
     public Cursor get() {
         return null;

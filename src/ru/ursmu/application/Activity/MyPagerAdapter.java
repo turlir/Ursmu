@@ -1,47 +1,59 @@
 package ru.ursmu.application.Activity;
 
-import android.support.v4.view.PagerAdapter;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
+import ru.ursmu.application.JsonObject.EducationItem;
+import ru.ursmu.application.Realization.EducationWeek;
 
-import java.util.ArrayList;
+public class MyPagerAdapter extends FragmentPagerAdapter {
 
-public class MyPagerAdapter
-        extends PagerAdapter {
+    private EducationWeek mList;
+    Context mContext;
+    private Boolean mFlag;
 
-    private ArrayList<ListView> pages;
-    //GroupScheduleActivity mContext;
+    public MyPagerAdapter(FragmentManager fm, EducationWeek pages, Context c, Boolean isProfessor) {
+        super(fm);
 
-    public MyPagerAdapter(ArrayList<ListView> pages) {
-        this.pages = pages;
-        //this.mContext = context;
-    }
-
-    @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        container.addView(pages.get(position));
-        return pages.get(position);
-
+        mList = pages;
+        Log.d("URSMULOG", "MyPagerAdapter create");
+        mContext = c;
+        mFlag = isProfessor;
     }
 
     @Override
     public int getCount() {
-        return pages.size();
+        return 6;
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view.equals(object);
+    public Fragment getItem(int i) {
+        //ScheduleAdapter.clearIconPair();
+
+        if (mFlag) {
+            Log.d("URSMULOG", "MyPagerAdapter ProfessorScheduleFragment getItem " + i);
+            Fragment fragment = new ProfessorScheduleFragment();
+            Bundle args = new Bundle();
+            EducationItem[] value = mList.get(i);
+            args.putSerializable(GroupScheduleFragment.MAIN_ARG, value);
+            fragment.setArguments(args);
+            return fragment;
+        } else {
+            Log.d("URSMULOG", "MyPagerAdapter GroupScheduleFragment getItem " + i);
+            Fragment fragment = new GroupScheduleFragment();
+            Bundle args = new Bundle();
+            EducationItem[] value = mList.get(i);
+            args.putSerializable(GroupScheduleFragment.MAIN_ARG, value);
+            fragment.setArguments(args);
+            return fragment;
+        }
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((View) object);
+    public CharSequence getPageTitle(int position) {
+        return EducationItem.DayOfTheWeek[position];
     }
-
-    public ListView getItem(int posi) {
-        return pages.get(posi);
-    }
-
 }

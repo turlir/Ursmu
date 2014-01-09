@@ -10,6 +10,8 @@ import ru.ursmu.beta.application.R;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.Realization.KursList;
 
+import java.io.Serializable;
+
 public class FindKursActivity extends SherlockListActivity {
     private ProgressBar mBar;
     private String[] mKurs;
@@ -22,7 +24,7 @@ public class FindKursActivity extends SherlockListActivity {
         }
 
         @Override
-        public void sendComplete(Object[] data) {
+        public void sendComplete(Serializable data) {
             changeIndicatorVisible(View.INVISIBLE);
             postProcessing((String[]) data);
             //ServiceHelper.removeCallback(mRequestId);

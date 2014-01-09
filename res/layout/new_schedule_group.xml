@@ -5,42 +5,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="8dp" android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="true" android:id="@+id/relativeLayout" android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp">
-
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView" android:layout_alignParentLeft="true" android:layout_alignParentTop="true"
-                android:src="@drawable/new_backward" android:onClick="previous"/>
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/image_header"
-                android:layout_alignParentRight="true"
-                android:layout_alignBottom="@+id/imageView"
-                android:src="@drawable/new_forward"
-                android:onClick="next"/>
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Понедельник"
-                android:id="@+id/schedule_name_day" android:layout_centerHorizontal="true"
-                android:layout_alignTop="@+id/imageView" android:textSize="18sp" android:onClick="current"
-                android:clickable="true"/>
-    </RelativeLayout>
-
     <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"
             android:layout_height="fill_parent"
             android:layout_width="fill_parent"
-            android:layout_below="@+id/relativeLayout" android:layout_marginTop="8dp" android:visibility="invisible"/>
+            android:layout_below="@+id/relativeLayout" android:visibility="invisible">
+        <android.support.v4.view.PagerTabStrip
+                android:id="@+id/pagerTabStrip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:textSize="18sp"
+               >
+        </android.support.v4.view.PagerTabStrip>
+            </android.support.v4.view.ViewPager>
+
     <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

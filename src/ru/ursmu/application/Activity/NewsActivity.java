@@ -13,6 +13,7 @@ import ru.ursmu.application.JsonObject.ListItem;
 import ru.ursmu.application.Realization.UrsmuNews;
 import ru.ursmu.beta.application.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -29,7 +30,7 @@ public class NewsActivity extends SherlockActivity {
         }
 
         @Override
-        public void sendComplete(Object[] data) {
+        public void sendComplete(Serializable data) {
             changeIndicatorVisible(View.INVISIBLE);
             Collections.addAll(mSource, (ListItem[]) data);
             mAdapter.notifyDataSetChanged();

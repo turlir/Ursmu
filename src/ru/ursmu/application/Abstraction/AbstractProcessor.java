@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import android.os.ResultReceiver;
 import android.util.Log;
 import ru.ursmu.application.Activity.ServiceHelper;
+import ru.ursmu.application.Realization.EducationWeek;
 import ru.ursmu.application.Realization.UrsmuPostDownload;
 
 import java.io.Serializable;
@@ -65,22 +66,13 @@ public abstract class AbstractProcessor extends AsyncTask<Void, Void, Object[]> 
         mCallback.send(ServiceHelper.PROCESSOR_FAILURE, b);
     }
 
-    public void sendComplete(Parcelable[] data) {
+    public void sendComplete(EducationWeek data) {
         Log.d("URSMULOG", "AbstractProcessor sendComplete()");
         Bundle bundle = new Bundle(2);
         bundle.putLong("REQUEST_ID", mReqId);
-        bundle.putParcelableArray(ServiceHelper.PARSE_DATA, data);
+        bundle.putSerializable(ServiceHelper.PARSE_DATA, data);
         mCallback.send(ServiceHelper.DOWNLOAD_COMPLETE, bundle);
     }
-
-/*  public void sendComplete(String[] data) {
-        Log.d("URSMULOG", "AbstractProcessor sendComplete()");
-        Bundle bundle = new Bundle(2);
-        bundle.putLong("REQUEST_ID", mReqId);
-        //bundle.putParcelableArray(ServiceHelper.PARSE_DATA, data);
-        bundle.putStringArray(ServiceHelper.PARSE_DATA, data);
-        mCallback.send(ServiceHelper.DOWNLOAD_COMPLETE, bundle);
-    }*/
 
     public void sendComplete(Serializable[] data) {
         Log.d("URSMULOG", "AbstractProcessor sendComplete()");

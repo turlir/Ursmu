@@ -22,8 +22,29 @@ public class GroupDataBasing extends IDatabasingBehavior {
     private static SQLiteStatement common;
     private static SQLiteStatement day;
     private static SQLiteDatabase mDataBase;
-    private static String mQueryLimit;
-    private static String mQueryNonLimit;
+    private static String mQuerySchedule;
+    private static String mQueryGroupList;
+
+    private static Long mUIN = null;
+    private static String mLastGroup = null;
+
+    static {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT * ");
+        sb.append("FROM ScheduleDays ");
+        sb.append("WHERE (ScheduleDays.GroupID = ?) ");
+        //mQuery.append("AND (ScheduleDays.room !='')");          //show empty pair?
+        sb.append("ORDER BY ScheduleDays.DayIndex, ScheduleDays.numerPair");
+        mQuerySchedule = sb.toString();
+
+        sb = new StringBuilder();
+        sb.append("SELECT ScheduleCommon.GroupName, ScheduleCommon._id, ScheduleCommon.FACULTY, ScheduleCommon.KURS ");
+        sb.append("FROM ScheduleCommon ");
+        sb.append("WHERE ");
+        sb.append("(ScheduleCommon.GroupName LIKE ?) ");
+        sb.append("GROUP BY ScheduleCommon.GroupName ");
+        mQueryGroupList = sb.toString();
+    }
 
     public static GroupDataBasing getInstance(Context c, String f, String k, String g) {
         if (mContext == null || mDataBase == null) {
@@ -38,33 +59,6 @@ public class GroupDataBasing extends IDatabasingBehavior {
             } catch (SQLException e) {
                 Log.d("URSMULOG", "compileStatement error");
             }
-
-            StringBuilder query_limit = new StringBuilder();
-            query_limit.append("SELECT ScheduleDays.Name,");
-            query_limit.append("ScheduleDays.teacher,");
-            query_limit.append("ScheduleDays.room,");
-            query_limit.append("ScheduleDays.numerPair,");
-            query_limit.append("ScheduleDays.DayIndex");
-            query_limit.append(" FROM ScheduleCommon, ScheduleDays WHERE (ScheduleCommon.UIN = ScheduleDays.GroupID)");
-            query_limit.append("AND (ScheduleCommon.UIN = ");
-            query_limit.append("?");
-            query_limit.append(")");
-            query_limit.append("AND (ScheduleDays.DayIndex = ");
-            query_limit.append("?");
-            query_limit.append(")");
-            //mQuery.append("AND (ScheduleDays.room !='')");          //show empty pair?
-            query_limit.append("ORDER BY ScheduleDays.numerPair");
-            mQueryLimit = query_limit.toString();
-
-            StringBuilder query_non_limit = new StringBuilder();
-            query_non_limit.append("SELECT ScheduleCommon.GroupName, ScheduleCommon._id, ScheduleCommon.FACULTY, ScheduleCommon.KURS");
-            query_non_limit.append(" FROM ScheduleCommon");
-            query_non_limit.append(" WHERE ");
-            query_non_limit.append(" (ScheduleCommon.GroupName LIKE ?)");
-            query_non_limit.append(" GROUP BY ScheduleCommon.GroupName");
-            mQueryNonLimit = query_non_limit.toString();
-
-
         }
         return new GroupDataBasing(f, k, g);
     }
@@ -133,16 +127,13 @@ public class GroupDataBasing extends IDatabasingBehavior {
 
     @Override
     public Cursor get() {
-        return mDataBase.rawQuery(mQueryNonLimit, new String[]{"%" + mGroup + "%"});
+        return mDataBase.rawQuery(mQueryGroupList, new String[]{"%" + mGroup + "%"});
     }
 
-    private static Long mUIN = null;
-    private static String mLastGroup = null;
-
     @Override
-    public Object[] get(int limit) {
+    public EducationWeek getSchedule() {
         getUINCurrentGroup();
-        return getGroupSchedule(limit);
+        return getGroupSchedule();
     }
 
     private void getUINCurrentGroup() {
@@ -202,23 +193,22 @@ public class GroupDataBasing extends IDatabasingBehavior {
     }
 
 
-    public Object[] getGroupSchedule(int limit) {
-        Cursor data = mDataBase.rawQuery(mQueryLimit, new String[]{String.valueOf(mUIN), String.valueOf(limit)});
-        int count = data.getCount();
+    public EducationWeek getGroupSchedule() {
+        EducationWeek week = new EducationWeek();
 
-        if (count != 0) {
-            EducationItem[] arr = new EducationItem[count];
-            data.moveToFirst();
-            for (int i = 0; i < count; i++) {
-                arr[i] = new EducationItem(data, false);
-                data.moveToNext();
-            }
-            data.close();
-            return arr;
-        } else {
-            data.close();
-            return null;
+        Cursor cursor = mDataBase.rawQuery(mQuerySchedule, new String[]{String.valueOf(mUIN)});
+        int count = cursor.getCount();
+
+        if (count != 0 && cursor.moveToFirst()) {
+            EducationItem item;
+            do {
+                item = new EducationItem(cursor, false);
+                week.set(item.getDayOfTheWeek(), item);
+            } while (cursor.moveToNext());
+
         }
+
+        return week;
     }
 
 

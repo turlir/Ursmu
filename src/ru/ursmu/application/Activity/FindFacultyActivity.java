@@ -21,6 +21,8 @@ import ru.ursmu.application.Realization.ScheduleGroup;
 import ru.ursmu.application.Realization.ScheduleGroupFactory;
 import ru.ursmu.beta.application.R;
 
+import java.io.Serializable;
+
 public class FindFacultyActivity extends SherlockListActivity implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
     ServiceHelper mHelper;
     ProgressBar mBar;
@@ -52,7 +54,7 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
         }
 
         @Override
-        public void sendComplete(Object[] data) {
+        public void sendComplete(Serializable data) {
             changeIndicatorVisible(View.INVISIBLE);
             postProcessing((String[]) data);
             //ServiceHelper.removeCallback(mRequestId);
