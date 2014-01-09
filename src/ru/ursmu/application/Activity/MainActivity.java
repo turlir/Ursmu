@@ -5,8 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
@@ -17,6 +15,7 @@ import com.actionbarsherlock.widget.ShareActionProvider;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.beta.application.R;
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -48,7 +47,7 @@ public class MainActivity extends SherlockFragmentActivity {
         }
 
         @Override
-        public void sendComplete(Object[] data) {
+        public void sendComplete(Serializable data) {
             Toast.makeText(getApplicationContext(), "Обновление завершено успешно", Toast.LENGTH_LONG).show();
             findViewById(R.id.button_groups).setEnabled(true);
             findViewById(R.id.button_prof).setEnabled(true);
@@ -179,16 +178,6 @@ public class MainActivity extends SherlockFragmentActivity {
         }
     }
 
-
-    private void startUpdateDialog() {
-        DialogFragment mUpdateDialog = new UpdateDialog(mHandlerDialog);
-        mUpdateDialog.setCancelable(false);
-
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(mUpdateDialog, null);
-        ft.commitAllowingStateLoss();
-    }
-
     public void event(View v) {
         Intent i = new Intent(this, NewsActivity.class);
         startActivity(i);
@@ -205,6 +194,10 @@ public class MainActivity extends SherlockFragmentActivity {
 
     public void vkLogoClick(View v) {
         openLink("https://vk.com/ursmu_ru");
+    }
+
+    public void olenLogoClick(View v) {
+        openLink("http://vk.com/overhear_uggu");
     }
 
     private void openLink(String s) {
