@@ -26,7 +26,8 @@ public class NormalProcessor extends AbstractProcessor {
             Object[] data = getItem(mUrsmu);
             if (data != null) {
                 sendComplete((Serializable[]) data);
-            }
+            } else
+                sendFailure("Ошибка");
         }
 
         return null;
@@ -41,10 +42,10 @@ public class NormalProcessor extends AbstractProcessor {
             q = getParseBehavior().parse(s);
             return q;
         } catch (JSONException e) {
-            sendFailure(e.getMessage());
+            sendFailure("Ошибка разбора, повторите позже");
             e.printStackTrace();
         } catch (IOException e) {
-            sendFailure(e.getMessage());
+            sendFailure("Ошибка сети, повторите позже");
             e.printStackTrace();
         }
         return null;
