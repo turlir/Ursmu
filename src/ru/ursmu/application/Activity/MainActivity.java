@@ -8,22 +8,17 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
-import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.beta.application.R;
 
-import java.io.Serializable;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends SherlockFragmentActivity {
-    private static final String STATE_BTN_1 = "SATE_BTN_1";
-    private static final String STATE_BTN_2 = "SATE_BTN_2";
     private int mImageNumber = 1;
     private Timer mTimer;
 
@@ -38,30 +33,6 @@ public class MainActivity extends SherlockFragmentActivity {
         }
     };
 
-    private UniversalCallback mHandlerDialog = new UniversalCallback() {
-        @Override
-        public void sendError(String notify) {
-            Toast.makeText(getApplicationContext(), "Обновление завершено с ошибкой",
-                    Toast.LENGTH_LONG).show();
-            findViewById(R.id.button_groups).setEnabled(true);
-            findViewById(R.id.button_prof).setEnabled(true);
-        }
-
-        @Override
-        public void sendComplete(Serializable data) {
-            Toast.makeText(getApplicationContext(), "Обновление завершено успешно", Toast.LENGTH_LONG).show();
-            findViewById(R.id.button_groups).setEnabled(true);
-            findViewById(R.id.button_prof).setEnabled(true);
-        }
-
-
-        @Override
-        public void sendStart(long id) {
-            findViewById(R.id.button_groups).setEnabled(false);
-            findViewById(R.id.button_prof).setEnabled(false);
-        }
-    };
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,20 +44,6 @@ public class MainActivity extends SherlockFragmentActivity {
         }
 
         startNumberGeneration();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(STATE_BTN_1, findViewById(R.id.button_groups).isEnabled());
-        outState.putBoolean(STATE_BTN_2, findViewById(R.id.button_prof).isEnabled());
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        findViewById(R.id.button_groups).setEnabled(savedInstanceState.getBoolean(STATE_BTN_1));
-        findViewById(R.id.button_prof).setEnabled(savedInstanceState.getBoolean(STATE_BTN_2));
     }
 
     @Override
