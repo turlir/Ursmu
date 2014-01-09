@@ -31,7 +31,7 @@ public class ExtendedGroupAdapter extends ArrayAdapter<String> {
 
         String original = getItem(position);
         TextView gr_name = (TextView) v.findViewById(R.id.groupItem);
-/*        Pattern pattern = Pattern.compile(PATTERN_1);
+/*      Pattern pattern = Pattern.compile(PATTERN_1);
 
         Matcher matcher = pattern.matcher(original);
         String temp = "";

@@ -4,85 +4,65 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ProgressBar;
 import com.actionbarsherlock.app.SherlockListActivity;
-import ru.ursmu.beta.application.R;
+import com.actionbarsherlock.view.Window;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.Realization.KursList;
+import ru.ursmu.beta.application.R;
 
 import java.io.Serializable;
 
 public class FindKursActivity extends SherlockListActivity {
-    private ProgressBar mBar;
-    private String[] mKurs;
-    private long mRequestId;
-    private String faculty;
+    private String mFaculty;
     private UniversalCallback mHandler = new UniversalCallback() {
         @Override
         public void sendError(String notify) {
-            changeIndicatorVisible(View.INVISIBLE);
+            showNotification(notify);
+            setProgressBarIndeterminateVisibility(false);
         }
 
         @Override
         public void sendComplete(Serializable data) {
-            changeIndicatorVisible(View.INVISIBLE);
+            setProgressBarIndeterminateVisibility(false);
             postProcessing((String[]) data);
-            //ServiceHelper.removeCallback(mRequestId);
         }
 
         @Override
         public void sendStart(long id) {
-            changeIndicatorVisible(View.INVISIBLE);
+            setProgressBarIndeterminateVisibility(true);
         }
     };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.common);
 
-        ServiceHelper mHelper = ServiceHelper.getInstance(getApplicationContext());
-        //String faculty = mHelper.getPreference(ServiceHelper.FACULTY);
-        faculty = getIntent().getStringExtra(ServiceHelper.FACULTY);
+        ServiceHelper helper = ServiceHelper.getInstance(getApplicationContext());
 
-        mRequestId = mHelper.getUrsmuObject(new KursList(faculty), mHandler);
-    }
+        mFaculty = getIntent().getStringExtra(ServiceHelper.FACULTY);
 
-    @Override
-    protected void changeIndicatorVisible(int visibility) {
-        if (mBar == null) {
-            mBar = (ProgressBar) findViewById(R.id.commonProgressBar);
-        }
-        mBar.setVisibility(visibility);
-        if (visibility == View.INVISIBLE) {
-            mBar = null;
-        }
+        helper.getUrsmuObject(new KursList(mFaculty), mHandler);
+
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
     }
 
     @Override
     protected void postProcessing(String[] data) {
-        mKurs = data;
+        String[] l = data;
 
-        setListAdapter(new RomanAdapter(this, R.layout.kurs_adapter, mKurs));
-        getListView().setOnItemClickListener(kursClickListener);
+        setListAdapter(new RomanAdapter(this, R.layout.kurs_adapter, l));
+        getListView().setOnItemClickListener(mKursClickListener);
     }
 
-    AdapterView.OnItemClickListener kursClickListener = new AdapterView.OnItemClickListener() {
+    AdapterView.OnItemClickListener mKursClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
             Intent intent = new Intent(getApplicationContext(), FindGroupActivity.class);
-            intent.putExtra(ServiceHelper.FACULTY, faculty);
-            intent.putExtra(ServiceHelper.KURS, mKurs[position]);
+            intent.putExtra(ServiceHelper.FACULTY, mFaculty);
+            intent.putExtra(ServiceHelper.KURS, (String) parent.getItemAtPosition(position));
             startActivity(intent);
         }
     };
-
-   /* @Override
-    protected void showNotification() {
-        Toast.makeText(getApplicationContext(), getResources().getText(R.string.error_notif), Toast.LENGTH_LONG).show();
-    }*/
 
 
 }

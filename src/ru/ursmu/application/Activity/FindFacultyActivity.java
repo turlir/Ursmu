@@ -41,7 +41,7 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
         @Override
         public void sendError(String notify) {
             setProgressBarIndeterminateVisibility(false);
-            Toast.makeText(getApplicationContext(), notify, Toast.LENGTH_SHORT).show();
+            showNotification(notify);
             if (mLigth) {
                 View textHelp = findViewById(R.id.common_help);
                 textHelp.setVisibility(View.VISIBLE);

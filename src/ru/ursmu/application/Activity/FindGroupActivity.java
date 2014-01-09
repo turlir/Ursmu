@@ -4,37 +4,34 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ProgressBar;
 import com.actionbarsherlock.app.SherlockListActivity;
-import ru.ursmu.beta.application.R;
+import com.actionbarsherlock.view.Window;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.Realization.GroupList;
+import ru.ursmu.beta.application.R;
 
 import java.io.Serializable;
 
 public class FindGroupActivity extends SherlockListActivity {
+    private String mFaculty;
+    private String mKurs;
     private ServiceHelper mHelper;
-    private ProgressBar mBar;
-    private String[] mGroups;
-    private long mRequestId;
-    private String fac;
-    private String kur;
     private UniversalCallback mHandler = new UniversalCallback() {
         @Override
         public void sendError(String notify) {
-            changeIndicatorVisible(View.INVISIBLE);
+            showNotification(notify);
+            setProgressBarIndeterminateVisibility(false);
         }
 
         @Override
         public void sendComplete(Serializable data) {
-            changeIndicatorVisible(View.INVISIBLE);
+            setProgressBarIndeterminateVisibility(false);
             postProcessing((String[]) data);
-            //ServiceHelper.removeCallback(mRequestId);
         }
 
         @Override
         public void sendStart(long id) {
-            changeIndicatorVisible(View.INVISIBLE);
+            setProgressBarIndeterminateVisibility(true);
         }
 
     };
@@ -42,51 +39,36 @@ public class FindGroupActivity extends SherlockListActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.common);
 
         mHelper = ServiceHelper.getInstance(getApplicationContext());
 
-        fac = getIntent().getStringExtra(ServiceHelper.FACULTY);
-        kur = getIntent().getStringExtra(ServiceHelper.KURS);
+        mFaculty = getIntent().getStringExtra(ServiceHelper.FACULTY);
+        mKurs = getIntent().getStringExtra(ServiceHelper.KURS);
 
-        mHelper.getUrsmuObject(new GroupList(fac, kur), mHandler);
+        mHelper.getUrsmuObject(new GroupList(mFaculty, mKurs), mHandler);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
     }
 
     private AdapterView.OnItemClickListener groupsClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            mHelper.setThreeInfo(fac, kur, mGroups[position]);
+            String selected_group = (String) parent.getItemAtPosition(position);
+
+            mHelper.setThreeInfo(mFaculty, mKurs, selected_group);
+
             Intent i = new Intent(getApplicationContext(), GroupScheduleActivity.class);
-            //i.putExtra("FAVORITE_GROUP", true);
-            i.putExtra(ServiceHelper.FACULTY, fac);
-            i.putExtra(ServiceHelper.KURS, kur);
-            i.putExtra(ServiceHelper.GROUP, mGroups[position]);
+            i.putExtra(ServiceHelper.FACULTY, mFaculty);
+            i.putExtra(ServiceHelper.KURS, mKurs);
+            i.putExtra(ServiceHelper.GROUP, selected_group);
             i.putExtra("IS_HARD", true);
+
             startActivity(i);
         }
     };
 
     @Override
-    protected void changeIndicatorVisible(int visibility) {
-        if (mBar == null) {
-            mBar = (ProgressBar) findViewById(R.id.commonProgressBar);
-        }
-        mBar.setVisibility(visibility);
-        if (visibility == View.INVISIBLE) {
-            mBar = null;
-        }
-    }
-
-    @Override
     protected void postProcessing(String[] data) {
-        mGroups = data;
-
-        setListAdapter(new ExtendedGroupAdapter(this, R.layout.group_adapter, mGroups));
+        setListAdapter(new ExtendedGroupAdapter(this, R.layout.group_adapter, data));
         getListView().setOnItemClickListener(groupsClickListener);
     }
-
-    /*@Override
-    protected void showNotification() {
-        Toast.makeText(getApplicationContext(), getResources().getText(R.string.error_notif), Toast.LENGTH_LONG).show();
-    }*/
 }
