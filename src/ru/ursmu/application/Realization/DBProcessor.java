@@ -2,12 +2,11 @@ package ru.ursmu.application.Realization;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.os.ResultReceiver;
 import android.util.Log;
 import ru.ursmu.application.Abstraction.*;
 import ru.ursmu.application.Activity.UrsmuService;
-import ru.ursmu.application.JsonObject.EducationItem;
+import ru.ursmu.beta.application.R;
 
 import java.util.ArrayList;
 
@@ -56,7 +55,15 @@ public class DBProcessor extends AbstractProcessor {
             param = mObject.getParameters();
 
             s = down_agent.Download(uri, param);
+            if (s != null) {
+                sendFailure(mContext.getResources().getString(R.id.null_error));
+                return null;
+            }
             q = parse_agent.parseTwo(s);
+            if (q != null) {
+                sendFailure(mContext.getResources().getString(R.id.null_error));
+                return null;
+            }
 
             if (mHard) {
                 dbAgent.update(q);
@@ -77,6 +84,10 @@ public class DBProcessor extends AbstractProcessor {
 
         Log.d("URSMULOG", "DBProcessor streamStart");
         EducationWeek items = getDataBaseBehavior().getSchedule();
+        if (items == null) {
+            sendFailure(mContext.getResources().getString(R.id.null_error));
+            return;
+        }
         super.sendComplete(items);
         db_agent.close();
         mContext.stopService(new Intent(mContext, UrsmuService.class));
