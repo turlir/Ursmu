@@ -85,8 +85,6 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
                 pagerTabStrip.setDrawFullUnderline(true);
                 pagerTabStrip.setTabIndicatorColor(Color.parseColor("#33B5E5"));
                 pagerTabStrip.setVisibility(View.VISIBLE);
-            } else {
-                Toast.makeText(getApplicationContext(), getResources().getText(R.id.null_error), Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -94,6 +92,7 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
         public void sendStart(long id) {
             changeIndicatorVisible(View.VISIBLE);
             changeDescText(null);
+            mRequestId = id;
         }
 
 
@@ -212,15 +211,13 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
                 startActivity(i);
                 return true;
             case R.id.global_update:
-                if (mBar == null) {
-                    mBar = (ProgressBar) findViewById(R.id.schedule_prof_bar);
-                }
-                if (mRequestId == null) {
+                if (mRequestId == 0) {
                     startUpdateDialog();
+                    return true;
                 } else {
                     Toast.makeText(getApplicationContext(), "Дождитесь окончания операции", Toast.LENGTH_SHORT).show();
+                    return false;
                 }
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

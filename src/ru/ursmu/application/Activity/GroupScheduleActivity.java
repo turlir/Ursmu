@@ -51,9 +51,7 @@ public class GroupScheduleActivity extends SherlockFragmentActivity implements A
                 PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagerTabStrip);
                 pagerTabStrip.setDrawFullUnderline(true);
                 pagerTabStrip.setTabIndicatorColor(Color.parseColor("#33B5E5"));
-            } else
-                showNotification((String) getResources().getText(R.id.null_error));
-
+            }
         }
 
         @Override
@@ -169,11 +167,6 @@ public class GroupScheduleActivity extends SherlockFragmentActivity implements A
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-
-    protected void showNotification(String notify) {
-        Toast.makeText(getApplicationContext(), notify, Toast.LENGTH_LONG).show();
     }
 
     protected void changeIndicatorVisible(int visibility) {
