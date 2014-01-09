@@ -66,7 +66,7 @@ public class FindGroupActivity extends SherlockListActivity {
         }
     };
 
-    @Override
+
     protected void postProcessing(String[] data) {
         setListAdapter(new ExtendedGroupAdapter(this, R.layout.group_adapter, data));
         getListView().setOnItemClickListener(groupsClickListener);

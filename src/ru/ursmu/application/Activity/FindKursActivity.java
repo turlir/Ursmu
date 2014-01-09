@@ -46,7 +46,7 @@ public class FindKursActivity extends SherlockListActivity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
     }
 
-    @Override
+
     protected void postProcessing(String[] data) {
         String[] l = data;
 

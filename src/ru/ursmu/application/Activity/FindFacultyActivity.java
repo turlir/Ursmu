@@ -43,9 +43,9 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
             setProgressBarIndeterminateVisibility(false);
             showNotification(notify);
             if (mLigth) {
-                View textHelp = findViewById(R.id.common_help);
+                /*View textHelp = findViewById(R.id.common_help);
                 textHelp.setVisibility(View.VISIBLE);
-                ((TextView) textHelp).setText(getResources().getString(R.string.offline_search_help));
+                ((TextView) textHelp).setText(getResources().getString(R.string.offline_search_help));*/
             }
         }
 
@@ -149,7 +149,6 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
         return true;
     }
 
-    @Override
     protected void postProcessing(String[] data) {
         Faculty[] mFaculty = new Faculty[data.length];
         for (int i = 0; i < data.length; i++) {
