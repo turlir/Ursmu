@@ -7,11 +7,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.Window;
 import com.actionbarsherlock.widget.SearchView;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.JsonObject.Faculty;
@@ -25,26 +25,22 @@ import java.io.Serializable;
 
 public class FindFacultyActivity extends SherlockListActivity implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
     ServiceHelper mHelper;
-    ProgressBar mBar;
-    Faculty[] mFaculty;
     SearchView mSearchView;
     boolean mLigth = false;
-    Long mRequestId;
 
     private AdapterView.OnItemClickListener facultyClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             Intent intent = new Intent(getApplicationContext(), FindKursActivity.class);
-            intent.putExtra(ServiceHelper.FACULTY, mFaculty[i].getOriginalName());
+            intent.putExtra(ServiceHelper.FACULTY, ((Faculty)adapterView.getItemAtPosition(i)).getOriginalName());
             startActivity(intent);
-
         }
     };
 
     private UniversalCallback mHandler = new UniversalCallback() {
         @Override
         public void sendError(String notify) {
-            changeIndicatorVisible(View.INVISIBLE);
+            setProgressBarIndeterminateVisibility(false);
             Toast.makeText(getApplicationContext(), notify, Toast.LENGTH_SHORT).show();
             if (mLigth) {
                 View textHelp = findViewById(R.id.common_help);
@@ -55,14 +51,13 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
 
         @Override
         public void sendComplete(Serializable data) {
-            changeIndicatorVisible(View.INVISIBLE);
+            setProgressBarIndeterminateVisibility(false);
             postProcessing((String[]) data);
-            //ServiceHelper.removeCallback(mRequestId);
         }
 
         @Override
         public void sendStart(long id) {
-            changeIndicatorVisible(View.VISIBLE);
+            setProgressBarIndeterminateVisibility(true);
         }
     };
 
@@ -123,17 +118,14 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.common);
         mHelper = ServiceHelper.getInstance(getApplicationContext());
-        mRequestId = mHelper.getUrsmuObject(new FacultyList(), mHandler);
+        mHelper.getUrsmuObject(new FacultyList(), mHandler);
 
         ScheduleGroupFactory object = new ScheduleGroupFactory();
-/*        if (!(mLigth = object.check(getApplicationContext()))) {
-            //mSearchView.setEnabled(mLigth);
-        }*/
 
         mLigth = object.check(getApplicationContext());
 
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
     }
 
 
@@ -157,20 +149,9 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
         return true;
     }
 
-    protected void changeIndicatorVisible(int visibility) {
-        if (mBar == null) {
-            mBar = (ProgressBar) findViewById(R.id.commonProgressBar);
-        }
-        mBar.setVisibility(visibility);
-
-        if (visibility == View.INVISIBLE) {
-            mBar = null;
-        }
-    }
-
     @Override
     protected void postProcessing(String[] data) {
-        mFaculty = new Faculty[data.length];
+        Faculty[] mFaculty = new Faculty[data.length];
         for (int i = 0; i < data.length; i++) {
             Faculty one_f = FacultyFactory.create(data[i]);
             mFaculty[i] = one_f;
