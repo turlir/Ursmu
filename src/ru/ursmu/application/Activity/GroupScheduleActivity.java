@@ -50,7 +50,7 @@ public class GroupScheduleActivity extends SherlockFragmentActivity implements A
 
                 PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagerTabStrip);
                 pagerTabStrip.setDrawFullUnderline(true);
-                pagerTabStrip.setTabIndicatorColor(Color.parseColor("#33B5E5"));
+                pagerTabStrip.setTabIndicatorColor(Color.parseColor("#0099CC"));
             }
         }
 

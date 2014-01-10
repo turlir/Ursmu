@@ -83,7 +83,7 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
 
                 PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.professor_pagerTabStrip);
                 pagerTabStrip.setDrawFullUnderline(true);
-                pagerTabStrip.setTabIndicatorColor(Color.parseColor("#33B5E5"));
+                pagerTabStrip.setTabIndicatorColor(Color.parseColor("#0099CC"));
                 pagerTabStrip.setVisibility(View.VISIBLE);
             }
         }
