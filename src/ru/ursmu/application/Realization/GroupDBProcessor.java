@@ -7,11 +7,9 @@ import org.json.JSONException;
 import ru.ursmu.application.Abstraction.AbstractProcessor;
 import ru.ursmu.application.Abstraction.IGroupDBUrsmuObject;
 import ru.ursmu.application.Abstraction.IUrsmuDBObject;
-import ru.ursmu.application.JsonObject.EducationItem;
 import ru.ursmu.beta.application.R;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class GroupDBProcessor extends AbstractProcessor {
 
@@ -38,29 +36,29 @@ public class GroupDBProcessor extends AbstractProcessor {
         try {
             getDataBaseBehavior().clearTable();
 
-            boolean first = object.first();
+            object.first();
             ScheduleGroup next;
-            if (first) {
-
-                Object[] q;
-                String uri, param, s;
-                UrsmuPostDownload down_agent = new UrsmuPostDownload();
-                ScheduleParser parse_agent = new ScheduleParser();
-
-                while ((next = (ScheduleGroup) object.next()) != null) {
-                    uri = next.getUri();
-                    param = next.getParameters();
 
 
-                    s = down_agent.Download(uri, param);
-                    q = parse_agent.parse(s);
+            Object[] q;
+            String uri, param, s;
+            UrsmuPostDownload down_agent = new UrsmuPostDownload();
+            ScheduleParser parse_agent = new ScheduleParser();
 
-                    next.getDataBasingBehavior(mContext).add(q);
-                }
+            while ((next = (ScheduleGroup) object.next()) != null) {
+                uri = next.getUri();
+                param = next.getParameters();
 
-                object.setCheck(mContext);
-                super.sendComplete(new String[]{});
+
+                s = down_agent.Download(uri, param);
+                q = parse_agent.parse(s);
+
+                next.getDataBasingBehavior(mContext).add(q);
             }
+
+            object.setCheck(mContext);
+            super.sendComplete(new String[]{});
+
         } catch (IOException ex) {
             sendFailure(mContext.getResources().getString(R.id.network_error));
             ex.printStackTrace();
