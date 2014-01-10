@@ -9,7 +9,7 @@ public abstract class IParserBehavior<T> {
         return null;
     }
 
-    public ArrayList<T> parseTwo(String json) {
+    public ArrayList<T> parseTwo(String json) throws Exception {
         return null;
     }
 }

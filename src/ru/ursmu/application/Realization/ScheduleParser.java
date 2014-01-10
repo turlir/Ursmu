@@ -13,7 +13,10 @@ import java.util.Collections;
 public class ScheduleParser extends IParserBehavior<EducationItem> {
 
     @Override
-    public ArrayList<EducationItem> parseTwo(String json) {
+    public ArrayList<EducationItem> parseTwo(String json) throws Exception {
+        if (json==null) {
+            throw new Exception();
+        }
         JSONArray week = null;
         ArrayList<EducationItem> coll = new ArrayList<EducationItem>(48);
         try {

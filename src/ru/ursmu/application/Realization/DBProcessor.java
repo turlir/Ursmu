@@ -55,15 +55,7 @@ public class DBProcessor extends AbstractProcessor {
             param = mObject.getParameters();
 
             s = down_agent.Download(uri, param);
-            if (s != null) {
-                sendFailure(mContext.getResources().getString(R.id.null_error));
-                return null;
-            }
             q = parse_agent.parseTwo(s);
-            if (q != null) {
-                sendFailure(mContext.getResources().getString(R.id.null_error));
-                return null;
-            }
 
             if (mHard) {
                 dbAgent.update(q);

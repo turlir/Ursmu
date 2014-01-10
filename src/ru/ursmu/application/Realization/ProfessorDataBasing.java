@@ -100,7 +100,8 @@ public class ProfessorDataBasing extends IDatabasingBehavior {
     }
 
     @Override
-    public void update(ArrayList<Object> q) {
+    public void update(ArrayList<Object> q) throws Exception {
+        super.update(q);
         add(q);
     }
 

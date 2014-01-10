@@ -70,7 +70,8 @@ public class GroupDataBasing extends IDatabasingBehavior {
     }
 
     @Override
-    public void add(ArrayList<?> week) {
+    public void add(ArrayList<?> week) throws Exception {
+        super.add(week);
         ArrayList<EducationItem> temp = (ArrayList<EducationItem>) week;
         Long id = Math.abs(UUID.randomUUID().getLeastSignificantBits());
 
@@ -157,7 +158,8 @@ public class GroupDataBasing extends IDatabasingBehavior {
     }
 
     @Override
-    public void update(ArrayList<Object> q) {
+    public void update(ArrayList<Object> q) throws Exception {
+        super.update(q);
         if (check()) {
             if (mUIN != null) {
                 mDataBase.delete("ScheduleCommon", "UIN=?", new String[]{String.valueOf(mUIN)});
