@@ -43,7 +43,7 @@ public class UrsmuService extends Service {    //hands new Thread
             long id = intent.getLongExtra(ServiceHelper.REQUEST_ID, 0);
             IUrsmuObject to = intent.getParcelableExtra(ServiceHelper.TRANSFER_OBJECT);
 
-            AbstractProcessor processor = new NormalProcessor(to, callback, id);
+            AbstractProcessor processor = new NormalProcessor(to, callback, id, getApplicationContext());
             processor.execute();
         } else if (type == 3) {  //get DB object`s -> service
             Log.d("URSMULOG", "UrsmuService type 3");

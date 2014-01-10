@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.ResultReceiver;
 import android.util.Log;
+import org.json.JSONException;
 import ru.ursmu.application.Abstraction.*;
 import ru.ursmu.application.Activity.UrsmuService;
 import ru.ursmu.beta.application.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class DBProcessor extends AbstractProcessor {
@@ -41,7 +43,7 @@ public class DBProcessor extends AbstractProcessor {
 
         //если нет в базе или обновляем
         String s;
-        ArrayList<Object> q;
+        Object[] q;
 
         try {
             String uri;
@@ -55,7 +57,7 @@ public class DBProcessor extends AbstractProcessor {
             param = mObject.getParameters();
 
             s = down_agent.Download(uri, param);
-            q = parse_agent.parseTwo(s);
+            q = parse_agent.parse(s);
 
             if (mHard) {
                 dbAgent.update(q);
@@ -65,9 +67,20 @@ public class DBProcessor extends AbstractProcessor {
 
 
             start(dbAgent);
+        } catch (IOException ex) {
+            sendFailure(mContext.getResources().getString(R.id.network_error));
+            ex.printStackTrace();
+            return null;
+        } catch (JSONException ex){
+            sendFailure(mContext.getResources().getString(R.id.parse_error));
+            ex.printStackTrace();
+            return null;
         } catch (Exception ex) {
-            sendFailure(ex.getMessage());
+            sendFailure(mContext.getResources().getString(R.id.null_error));
+            ex.printStackTrace();
+            return null;
         }
+
         return null;
     }
 

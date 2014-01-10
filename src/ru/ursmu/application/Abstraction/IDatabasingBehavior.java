@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public abstract class IDatabasingBehavior {
 
-    public void add(ArrayList<?> week) throws Exception {
+    public void add(Object[] week) throws Exception {
         if (week==null)
             throw new Exception();
     }
@@ -29,7 +29,7 @@ public abstract class IDatabasingBehavior {
     public void clearTable() throws Exception {
     }
 
-    public void update(ArrayList<Object> q) throws Exception {
+    public void update(Object[] q) throws Exception {
         if (q==null)
             throw new Exception();
     }

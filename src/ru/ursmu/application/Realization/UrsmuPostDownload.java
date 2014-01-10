@@ -54,7 +54,7 @@ public class UrsmuPostDownload implements IDownloadBehavior {
             in.close();
 
         } else {
-            throw new IOException(responseCode + "!= HttpURLConnection.HTTP_OK " + uri + parameters);
+            throw new IOException();
         }
         // Log.d("URSMULOG", "UrsmuPostDownload stop");
         return resultString;

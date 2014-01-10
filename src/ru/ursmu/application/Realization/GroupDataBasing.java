@@ -70,9 +70,9 @@ public class GroupDataBasing extends IDatabasingBehavior {
     }
 
     @Override
-    public void add(ArrayList<?> week) throws Exception {
+    public void add(Object[] week) throws Exception {
         super.add(week);
-        ArrayList<EducationItem> temp = (ArrayList<EducationItem>) week;
+        EducationItem[] temp = (EducationItem[]) week;
         Long id = Math.abs(UUID.randomUUID().getLeastSignificantBits());
 
         Log.d("URSMULOG", mFaculty + " " + mKurs + " " + mGroup);
@@ -158,7 +158,7 @@ public class GroupDataBasing extends IDatabasingBehavior {
     }
 
     @Override
-    public void update(ArrayList<Object> q) throws Exception {
+    public void update(Object[] q) throws Exception {
         super.update(q);
         if (check()) {
             if (mUIN != null) {

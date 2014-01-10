@@ -3,4 +3,6 @@
     <string name="app_name">УГГУ beta</string>
     <string name="offline_search_help">Вы можете воспользоваться оффлайн поиском</string>
     <item name="null_error" type="id">Ошибка. Попробуйте снова</item>
+    <item name="network_error" type="id">Ошибка сети</item>
+    <item name="parse_error" type="id">Ошибка разбора</item>
 </resources>

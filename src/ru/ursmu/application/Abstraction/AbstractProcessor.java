@@ -19,7 +19,7 @@ public abstract class AbstractProcessor extends AsyncTask<Void, Void, Object[]> 
     private ResultReceiver mCallback;
     private Long mReqId;
 
-    public AbstractProcessor(IUrsmuObject object, Long RequestID, ResultReceiver receiver) {
+    public AbstractProcessor(IUrsmuObject object, Long RequestID, ResultReceiver receiver, Context context) {
         if (object == null || RequestID == null || receiver == null)
             throw new IllegalArgumentException("object == null || RequestID == null || receiver == null");
         mParseAgent = object.getParseBehavior();

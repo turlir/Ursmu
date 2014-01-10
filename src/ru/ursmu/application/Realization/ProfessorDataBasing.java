@@ -99,12 +99,6 @@ public class ProfessorDataBasing extends IDatabasingBehavior {
         return mDataBase.rawQuery(mQueryNonLimit, new String[]{"%" + mProfessor + "%"}); //trick
     }
 
-    @Override
-    public void update(ArrayList<Object> q) throws Exception {
-        super.update(q);
-        add(q);
-    }
-
     private EducationWeek getProfessorSchedule() {
         EducationWeek week = new EducationWeek();
 

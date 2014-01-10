@@ -1,21 +1,25 @@
 package ru.ursmu.application.Realization;
 
+import android.content.Context;
 import android.os.ResultReceiver;
 import android.util.Log;
 import org.json.JSONException;
 import ru.ursmu.application.Abstraction.AbstractProcessor;
 import ru.ursmu.application.Abstraction.IUrsmuObject;
+import ru.ursmu.beta.application.R;
 
 import java.io.IOException;
 import java.io.Serializable;
 
 public class NormalProcessor extends AbstractProcessor {
     IUrsmuObject mUrsmu;
+    Context mContext;
 
 
-    public NormalProcessor(IUrsmuObject object, ResultReceiver receiver, Long id) {
-        super(object, id, receiver);
+    public NormalProcessor(IUrsmuObject object, ResultReceiver receiver, Long id, Context con) {
+        super(object, id, receiver, con);
         mUrsmu = object;
+        mContext = con;
     }
 
 
@@ -26,8 +30,7 @@ public class NormalProcessor extends AbstractProcessor {
             Object[] data = getItem(mUrsmu);
             if (data != null) {
                 sendComplete((Serializable[]) data);
-            } else
-                sendFailure("Ошибка");
+            }
         }
 
         return null;
@@ -41,13 +44,14 @@ public class NormalProcessor extends AbstractProcessor {
             s = getDownloadBehavior().Download(item.getUri(), item.getParameters());
             q = getParseBehavior().parse(s);
             return q;
-        } catch (JSONException e) {
-            sendFailure("Ошибка разбора, повторите позже");
-            e.printStackTrace();
-        } catch (IOException e) {
-            sendFailure("Ошибка сети, повторите позже");
-            e.printStackTrace();
+        } catch (JSONException ex) {
+            sendFailure(mContext.getResources().getString(R.id.parse_error));
+            ex.printStackTrace();
+            return null;
+        } catch (IOException ex) {
+            sendFailure(mContext.getResources().getString(R.id.network_error));
+            ex.printStackTrace();
+            return null;
         }
-        return null;
     }
 }
