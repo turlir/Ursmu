@@ -40,18 +40,16 @@ public class GroupScheduleActivity extends SherlockFragmentActivity implements A
         public void sendComplete(Serializable data) {
             changeIndicatorVisible(View.INVISIBLE);
             mRequestId = 0;
-            if (data != null) {
-                MyPagerAdapter pager_adapter = new MyPagerAdapter(getSupportFragmentManager(), (EducationWeek) data, getApplicationContext(), false);
+            MyPagerAdapter pager_adapter = new MyPagerAdapter(getSupportFragmentManager(), (EducationWeek) data, getApplicationContext(), false);
 
-                ViewPager view_pager = (ViewPager) findViewById(R.id.viewpager);
-                view_pager.setVisibility(View.VISIBLE);
-                view_pager.setCurrentItem(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2, true);
-                view_pager.setAdapter(pager_adapter);
+            ViewPager view_pager = (ViewPager) findViewById(R.id.viewpager);
+            view_pager.setVisibility(View.VISIBLE);
+            view_pager.setAdapter(pager_adapter);
+            view_pager.setCurrentItem(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2, true);
 
-                PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagerTabStrip);
-                pagerTabStrip.setDrawFullUnderline(true);
-                pagerTabStrip.setTabIndicatorColor(Color.parseColor("#0099CC"));
-            }
+            PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagerTabStrip);
+            pagerTabStrip.setDrawFullUnderline(true);
+            pagerTabStrip.setTabIndicatorColor(Color.parseColor("#0099CC"));
         }
 
         @Override
@@ -60,18 +58,6 @@ public class GroupScheduleActivity extends SherlockFragmentActivity implements A
             mRequestId = id;
         }
     };
-
-    @Override
-    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        if (itemPosition == 0) {
-            Intent i = new Intent(this, FindFacultyActivity.class);
-            startActivity(i);
-            return true;
-        }
-
-        return false;
-    }
-
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,13 +83,15 @@ public class GroupScheduleActivity extends SherlockFragmentActivity implements A
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
-
-    private void start() {
-        if (mHelper == null) {
-            mHelper = ServiceHelper.getInstance(getApplicationContext());
+    @Override
+    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+        if (itemPosition == 0) {
+            Intent i = new Intent(this, FindFacultyActivity.class);
+            startActivity(i);
+            return true;
         }
 
-        mHelper.getUrsmuDBObject(mObject, mHandler);
+        return false;
     }
 
     @Override
@@ -127,19 +115,6 @@ public class GroupScheduleActivity extends SherlockFragmentActivity implements A
         provider.setShareIntent(createShareIntent());
 
         return true;
-    }
-
-    private Intent createShareIntent() {
-        Intent i = new Intent(Intent.ACTION_SEND);
-        i.setAction(Intent.ACTION_SEND);
-        i.setType("text/plain");
-        String text;
-        if (mObject != null) {
-            text = "Мое распиание на сайте УГГУ " + mObject.getUri() + "#" + mObject.getParameters();
-        } else
-            text = "Мое распиание на сайте УГГУ http://rasp.ursmu.ru";
-        i.putExtra(Intent.EXTRA_TEXT, text);
-        return i;
     }
 
     @Override
@@ -168,6 +143,29 @@ public class GroupScheduleActivity extends SherlockFragmentActivity implements A
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private void start() {
+        if (mHelper == null) {
+            mHelper = ServiceHelper.getInstance(getApplicationContext());
+        }
+
+        mHelper.getUrsmuDBObject(mObject, mHandler);
+    }
+
+    private Intent createShareIntent() {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setAction(Intent.ACTION_SEND);
+        i.setType("text/plain");
+        String text;
+        if (mObject != null) {
+            text = "Мое распиание на сайте УГГУ " + mObject.getUri() + "#" + mObject.getParameters();
+        } else
+            text = "Мое распиание на сайте УГГУ http://rasp.ursmu.ru";
+        i.putExtra(Intent.EXTRA_TEXT, text);
+        return i;
+    }
+
+
 
     protected void changeIndicatorVisible(int visibility) {
         if (mBar == null) {

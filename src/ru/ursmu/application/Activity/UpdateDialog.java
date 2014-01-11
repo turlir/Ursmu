@@ -1,56 +1,71 @@
 package ru.ursmu.application.Activity;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.ResultReceiver;
 import android.support.v4.app.DialogFragment;
+import android.widget.Toast;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.Realization.ScheduleGroupFactory;
+import ru.ursmu.beta.application.R;
+
+import java.io.Serializable;
 
 public class UpdateDialog extends DialogFragment {
 
-    private UniversalCallback mHandler;
+    private ResultReceiver mHandler;
+    private ProgressDialog mDialog;
+    private String mLastMiddle = "";
 
-    public UpdateDialog(UniversalCallback handler) {
-        mHandler = handler;
+    private UniversalCallback mHandlerDialog = new UniversalCallback() {
+        @Override
+        public void sendError(String notify) {
+            showNotification(notify);
+        }
+
+        @Override
+        public void sendComplete(Serializable data) {
+            showNotification(getResources().getString(R.id.upd_success));
+            mHandler.send(0, null);
+        }
+
+        @Override
+        public void sendStart(long id) {
+        }
+
+        @Override
+        public void sendMiddle(String s) {
+            if(mLastMiddle.isEmpty() || !mLastMiddle.equals(s)) {
+                mDialog.setMessage(s);
+                mLastMiddle = s;
+            }
+        }
+    };
+
+    public UpdateDialog(ResultReceiver success_callback) {
+        mHandler = success_callback;
     }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Light_Dialog);
-        //getDialog().setTitle("Обновить расписание?");
-    }
-
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                .setTitle("Обновить расписание?")
-                .setMessage("Для продолжения работы необходимо обновление. Будет израсходовано 2 мегабайта трафика.")
-                .setPositiveButton("ОК",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                update();
-                            }
-                        }
-                )
-                .setNegativeButton("Отмена",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                //mHandler.send(1, null);
-                            }
-                        }
-                );
-
-        return builder.create();
+        mDialog = new ProgressDialog(getActivity());
+        mDialog.setTitle(getResources().getString(R.id.upd_dialog_title));
+        mDialog.setMessage("");
+        mDialog.setCancelable(false);
+        mDialog.setCanceledOnTouchOutside(false);
+        return mDialog;
     }
 
-    private void update() {
-        ServiceHelper helper = ServiceHelper.getInstance(getDialog().getContext());
-        helper.setGroupDBObjects(new ScheduleGroupFactory(), mHandler);
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ServiceHelper.getInstance(getActivity()).setGroupDBObjects(new ScheduleGroupFactory(), mHandlerDialog);
     }
 
+    private void showNotification(String value) {
+        getDialog().dismiss();
+        Toast.makeText(getActivity().getApplicationContext(), value, Toast.LENGTH_SHORT).show();
+    }
 }

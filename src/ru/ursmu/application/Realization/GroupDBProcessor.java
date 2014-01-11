@@ -54,6 +54,8 @@ public class GroupDBProcessor extends AbstractProcessor {
                 q = parse_agent.parse(s);
 
                 next.getDataBasingBehavior(mContext).add(q);
+
+                sendMiddle(next.getFaculty());
             }
 
             object.setCheck(mContext);
@@ -74,5 +76,7 @@ public class GroupDBProcessor extends AbstractProcessor {
         }
         return null;
     }
+
+
 
 }

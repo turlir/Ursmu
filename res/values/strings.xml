@@ -5,4 +5,8 @@
     <item name="null_error" type="id">Ошибка. Попробуйте снова</item>
     <item name="network_error" type="id">Ошибка сети</item>
     <item name="parse_error" type="id">Ошибка разбора</item>
+    <item name="upd_success" type="id">Обновление успешно завершено</item>
+    <item name="quest_dialog_title" type="id">Обновить расписание?</item>
+    <item name="quest_dialog_desc" type="id">Для продолжения работы необходимо обновление. Будет израсходовано 2 мегабайта трафика.</item>
+    <item name="upd_dialog_title" type="id">Расписание обновляется</item>
 </resources>

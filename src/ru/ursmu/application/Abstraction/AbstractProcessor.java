@@ -3,7 +3,6 @@ package ru.ursmu.application.Abstraction;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.os.ResultReceiver;
 import android.util.Log;
 import ru.ursmu.application.Activity.ServiceHelper;
@@ -81,6 +80,13 @@ public abstract class AbstractProcessor extends AsyncTask<Void, Void, Object[]> 
         //bundle.putParcelableArray(ServiceHelper.PARSE_DATA, data);
         bundle.putSerializable(ServiceHelper.PARSE_DATA, data);
         mCallback.send(ServiceHelper.DOWNLOAD_COMPLETE, bundle);
+    }
+
+    public void sendMiddle(String msg) {
+        Bundle b = new Bundle(1);
+        b.putLong("REQUEST_ID", mReqId);
+        b.putString("MIDDLE_NOTIF", msg);
+        mCallback.send(ServiceHelper.DOWNLOAD_MIDDLE, b);
     }
 
     public IDownloadBehavior getDownloadBehavior() {

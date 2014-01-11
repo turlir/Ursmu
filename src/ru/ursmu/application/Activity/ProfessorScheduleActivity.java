@@ -1,10 +1,13 @@
 package ru.ursmu.application.Activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.ResultReceiver;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
@@ -31,36 +34,9 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
     ServiceHelper mHelper;
     private ProgressBar mBar;
     private TextView mDesc;
-    private boolean light = false;
+    private boolean mLight = false;
     private SearchView mSearchView;
     private Long mRequestId;
-
-    private UniversalCallback mHandlerDialog = new UniversalCallback() {
-        @Override
-        public void sendError(String notify) {
-            changeIndicatorVisible(View.INVISIBLE);
-            Toast.makeText(getApplicationContext(), "Обновление завершено с ошибкой", Toast.LENGTH_LONG).show();
-            changeDescText(null);
-        }
-
-        @Override
-        public void sendComplete(Serializable data) {
-            Toast.makeText(getApplicationContext(), "Обновление завершено успешно", Toast.LENGTH_LONG).show();
-            changeIndicatorVisible(View.INVISIBLE);
-            changeDescText(null);
-            light = true;
-            invalidateOptionsMenu();
-            nextStep();
-            mRequestId = null;
-        }
-
-        @Override
-        public void sendStart(long id) {
-            changeIndicatorVisible(View.VISIBLE);
-            changeDescText("Выполняется обновление");
-            mRequestId = id;
-        }
-    };
 
 
     private UniversalCallback mHandlerTwo = new UniversalCallback() {
@@ -78,8 +54,8 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
 
                 ViewPager view_pager = (ViewPager) findViewById(R.id.professor_viewpager);
                 view_pager.setVisibility(View.VISIBLE);
-                view_pager.setCurrentItem(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2, true);
                 view_pager.setAdapter(pager_adapter);
+                view_pager.setCurrentItem(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2, true);
 
                 PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.professor_pagerTabStrip);
                 pagerTabStrip.setDrawFullUnderline(true);
@@ -147,7 +123,7 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
 
         mProfessor = getIntent().getStringExtra("PROFESSOR");
 
-        if (!(light = object.check(getApplicationContext()))) {
+        if (!(mLight = object.check(getApplicationContext()))) {
             startUpdateDialog();
         } else {
             nextStep();
@@ -177,7 +153,6 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         changeIndicatorVisible(savedInstanceState.getInt("PROGRESS_BAR_STATE"));
-        changeDescText(savedInstanceState.getString("DESC_BAR_TEXT"));
     }
 
     @Override
@@ -189,13 +164,13 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
             mSearchView.setQueryHint("Поиск преподавателя");
             mSearchView.setOnQueryTextListener(this);
             mSearchView.setOnSuggestionListener(this);
-            mSearchView.setEnabled(light);
+            mSearchView.setEnabled(mLight);
 
 
             menu.add("Поиск")
-                    .setIcon(!light ? R.drawable.ic_search_inverse : R.drawable.abs__ic_search)
+                    .setIcon(!mLight ? R.drawable.ic_search_inverse : R.drawable.abs__ic_search)
                     .setActionView(mSearchView)
-                    .setEnabled(light)
+                    .setEnabled(mLight)
                     .setShowAsAction(com.actionbarsherlock.view.MenuItem.SHOW_AS_ACTION_IF_ROOM
                             | com.actionbarsherlock.view.MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
         }
@@ -211,7 +186,7 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
                 startActivity(i);
                 return true;
             case R.id.global_update:
-                if (mRequestId == 0) {
+                if (mRequestId == null) {
                     startUpdateDialog();
                     return true;
                 } else {
@@ -225,8 +200,21 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
 
     private void startUpdateDialog() {
         changeIndicatorVisible(View.INVISIBLE);
-        DialogFragment newFragment = new UpdateDialog(mHandlerDialog);
-        newFragment.show(getSupportFragmentManager(), "dialog");
+        DialogFragment quest_dialog = new QuestionDialog(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DialogFragment upd_dialog = new UpdateDialog(new ResultReceiver(null) {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        mLight = true;
+                        invalidateOptionsMenu();
+                        nextStep();
+                    }
+                });
+                upd_dialog.show(getSupportFragmentManager(), "upd_dialog");
+            }
+        });
+        quest_dialog.show(getSupportFragmentManager(), "quest_dialog");
     }
 
     private void nextStep() {
@@ -255,6 +243,7 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
     private void changeDescText(String txt) {
         if (mDesc == null) {
             mDesc = (TextView) findViewById(R.id.schedule_prof_desc);
+            mDesc.setTypeface(Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf"));
         }
         if (txt != null) {
             mDesc.setVisibility(View.VISIBLE);

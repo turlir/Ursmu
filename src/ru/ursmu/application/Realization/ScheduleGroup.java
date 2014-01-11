@@ -15,10 +15,7 @@ public class ScheduleGroup implements IUrsmuDBObject, IUrsmuObject {
 
     String uri = "http://mobrasp.ursmu.ru/";
 
-    public String mFaculty;
-    public String mKurs;
-    public String mGroup;
-    public String mParam;
+    private String mFaculty,mKurs, mGroup, mParam;
     private boolean mHard;
 
     public ScheduleGroup(String fak, String kur, String gro, boolean isHard) {
@@ -65,6 +62,18 @@ public class ScheduleGroup implements IUrsmuDBObject, IUrsmuObject {
     @Override
     public void setHard(boolean value) {
         mHard = value;
+    }
+
+    public String getFaculty(){
+        return mFaculty;
+    }
+
+    public String getKurs(){
+        return mKurs;
+    }
+
+    public String getGroup(){
+        return mGroup;
     }
 
     @Override

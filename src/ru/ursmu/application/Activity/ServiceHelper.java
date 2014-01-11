@@ -21,9 +21,10 @@ public class ServiceHelper {
     public static final String GROUP = "GroupName";
 
     //state processor
-    public static final int DOWNLOAD_START = 3;
-    public static final int DOWNLOAD_COMPLETE = 0;
-    public static final int PROCESSOR_FAILURE = 1;
+    public static final int DOWNLOAD_START = 0;
+    public static final int DOWNLOAD_MIDDLE = 1;
+    public static final int DOWNLOAD_COMPLETE = 2;
+    public static final int PROCESSOR_FAILURE = 3;
     public static final String PARSE_DATA = "PARSE_DATA";
     public static final String REQUEST_ID = "REQUEST_ID";
 
@@ -155,6 +156,9 @@ public class ServiceHelper {
                         break;
                     case DOWNLOAD_START:
                         callback.sendStart(id);
+                         break;
+                    case DOWNLOAD_MIDDLE:
+                        callback.sendMiddle(data.getString("MIDDLE_NOTIF"));
                 }
 
             }
