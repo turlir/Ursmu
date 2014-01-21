@@ -41,28 +41,4 @@ public class GroupList implements IUrsmuObject {
     public IParserBehavior getParseBehavior() {
         return new JsonArrayParser();
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mParam);
-    }
-
-    public static final Parcelable.Creator<IUrsmuObject> CREATOR = new Parcelable.Creator<IUrsmuObject>() {
-        public GroupList createFromParcel(Parcel in) {
-            return new GroupList(in);
-        }
-
-        public GroupList[] newArray(int size) {
-            return new GroupList[size];
-        }
-    };
-
-    private GroupList(Parcel parcel) {
-        mParam = parcel.readString();
-    }
 }

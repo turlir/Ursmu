@@ -33,7 +33,7 @@ public class UrsmuService extends Service {    //hands new Thread
             Log.d("URSMULOG", "UrsmuService type 2");
             ResultReceiver callback = intent.getParcelableExtra(ServiceHelper.CALLBACK);
             long id = intent.getLongExtra(ServiceHelper.REQUEST_ID, 0);
-            IUrsmuDBObject to = intent.getParcelableExtra(ServiceHelper.TRANSFER_OBJECT);
+            IUrsmuDBObject to = (IUrsmuDBObject) intent.getSerializableExtra(ServiceHelper.TRANSFER_OBJECT);
 
             AbstractProcessor processor = new DBProcessor(to, callback, id, getApplicationContext());
             processor.execute();
@@ -41,7 +41,7 @@ public class UrsmuService extends Service {    //hands new Thread
             Log.d("URSMULOG", "UrsmuService type 1");
             ResultReceiver callback = intent.getParcelableExtra(ServiceHelper.CALLBACK);
             long id = intent.getLongExtra(ServiceHelper.REQUEST_ID, 0);
-            IUrsmuObject to = intent.getParcelableExtra(ServiceHelper.TRANSFER_OBJECT);
+            IUrsmuObject to = (IUrsmuObject) intent.getSerializableExtra(ServiceHelper.TRANSFER_OBJECT);
 
             AbstractProcessor processor = new NormalProcessor(to, callback, id, getApplicationContext());
             processor.execute();

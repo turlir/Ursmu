@@ -2,7 +2,9 @@ package ru.ursmu.application.Abstraction;
 
 import android.os.Parcelable;
 
-public interface IUrsmuObject extends Parcelable {
+import java.io.Serializable;
+
+public interface IUrsmuObject extends Serializable {
 
     public String SERVER_1 = "http://mobrasp.ursmu.ru/getmobilerasp/";
 

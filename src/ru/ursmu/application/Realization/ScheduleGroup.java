@@ -86,43 +86,4 @@ public class ScheduleGroup implements IUrsmuDBObject, IUrsmuObject {
         //GroupDataBasing.mContext = c;
         return GroupDataBasing.getInstance(c, mFaculty, mKurs, mGroup);
     }
-
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(uri);
-
-        dest.writeString(mFaculty);
-        dest.writeString(mKurs);
-        dest.writeString(mGroup);
-        dest.writeString(mParam);
-        dest.writeByte((byte) (mHard ? 1 : 0));
-    }
-
-    public static final Parcelable.Creator<IUrsmuObject> CREATOR = new Parcelable.Creator<IUrsmuObject>() {
-        public ScheduleGroup createFromParcel(Parcel in) {
-            return new ScheduleGroup(in);
-        }
-
-        public ScheduleGroup[] newArray(int size) {
-            return new ScheduleGroup[size];
-        }
-    };
-
-    private ScheduleGroup(Parcel parcel) {
-        uri = parcel.readString();
-
-        mFaculty = parcel.readString();
-        mKurs = parcel.readString();
-        mGroup = parcel.readString();
-        mParam = parcel.readString();
-        mHard = parcel.readByte() == 1;
-    }
-
-
 }

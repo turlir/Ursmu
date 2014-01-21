@@ -11,11 +11,9 @@ import java.net.URLEncoder;
 public class KursList implements IUrsmuObject {
 
     private StringBuilder mParam = new StringBuilder("task=kurs" + "&fak=");
-    //private boolean mIsDB = false;
 
 
     public KursList(String kur) {
-        //String kurs = FacultyFactory.toShortName(number);
         mParam.append(Encode(kur));
     }
 
@@ -42,31 +40,5 @@ public class KursList implements IUrsmuObject {
     @Override
     public IParserBehavior getParseBehavior() {
         return new JsonArrayParser();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeSerializable(mParam);
-        //dest.writeByte((byte) (mIsDB ? 1 : 0));
-    }
-
-    public static final Parcelable.Creator<IUrsmuObject> CREATOR = new Parcelable.Creator<IUrsmuObject>() {
-        public KursList createFromParcel(Parcel in) {
-            return new KursList(in);
-        }
-
-        public KursList[] newArray(int size) {
-            return new KursList[size];
-        }
-    };
-
-    private KursList(Parcel parcel) {
-        mParam = (StringBuilder) parcel.readSerializable();
-        //mIsDB = (parcel.readByte() == 1);
     }
 }
