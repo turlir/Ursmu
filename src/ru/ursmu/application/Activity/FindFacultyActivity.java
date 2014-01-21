@@ -12,7 +12,6 @@ import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.Window;
 import com.actionbarsherlock.widget.SearchView;
-import ru.ursmu.application.Abstraction.Handler;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.JsonObject.Faculty;
 import ru.ursmu.application.Realization.FacultyFactory;

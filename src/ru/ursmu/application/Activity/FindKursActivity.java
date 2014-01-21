@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Window;
-import ru.ursmu.application.Abstraction.Handler;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.Realization.KursList;
 import ru.ursmu.beta.application.R;
