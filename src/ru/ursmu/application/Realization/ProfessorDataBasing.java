@@ -8,8 +8,6 @@ import ru.ursmu.application.Abstraction.IDatabasingBehavior;
 import ru.ursmu.application.Activity.DataBaseHelper;
 import ru.ursmu.application.JsonObject.EducationItem;
 
-import java.util.ArrayList;
-
 public class ProfessorDataBasing extends IDatabasingBehavior {
 
 
@@ -65,14 +63,14 @@ public class ProfessorDataBasing extends IDatabasingBehavior {
 
 
     @Override
-    public void clearTable() throws Exception {
+    public void clearTable() {
         if (!mDataBase.isDbLockedByCurrentThread() && !mDataBase.isDbLockedByOtherThreads()) {
+            Log.d("URSMULOG", "ProfessorDataBasing clearTable");
             mDataBase.rawQuery("DROP TABLE IF EXISTS ScheduleCommon", new String[]{});
             mDataBase.rawQuery("DROP TABLE IF EXISTS ScheduleDays", new String[]{});
         } else {
             String s = "ProfessorDataBasing blocked";
             Log.d("URSMULOG", s);
-            throw new Exception(s);
         }
         close();
     }

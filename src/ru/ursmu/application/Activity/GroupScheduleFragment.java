@@ -2,18 +2,21 @@ package ru.ursmu.application.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.view.*;
+import android.view.ContextMenu;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.actionbarsherlock.app.SherlockFragment;
 import ru.ursmu.application.JsonObject.EducationItem;
 import ru.ursmu.beta.application.R;
 
 import java.lang.ref.WeakReference;
 
-public class GroupScheduleFragment extends SherlockFragment {
+public class GroupScheduleFragment extends Fragment {
     public static final String MAIN_ARG = "MAIN_ARG";
     private WeakReference<ScheduleAdapter> mAdapter;
 
@@ -65,7 +68,6 @@ public class GroupScheduleFragment extends SherlockFragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getActivity().getMenuInflater();
-        inflater.inflate(R.menu.schedule_list_context_menu, menu);
+        getActivity().getMenuInflater().inflate(R.menu.schedule_item_group, menu);
     }
 }

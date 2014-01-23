@@ -1,0 +1,15 @@
+<menu   xmlns:myapp="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<item android:id="@+id/main_share"-->
+          <!--android:showAsAction="always"-->
+          <!--android:title="Рассказать"-->
+          <!--myapp:actionProviderClass="android.support.v7.widget.ShareActionProvider"-->
+          <!--myapp:showAsAction="ifRoom"/>-->
+
+    <item
+            android:id="@+id/about"
+            android:icon="@drawable/action_about"
+            android:title="О приложении"
+            myapp:showAsAction="always"
+            />
+</menu>

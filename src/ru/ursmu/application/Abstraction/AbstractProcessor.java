@@ -58,7 +58,7 @@ public abstract class AbstractProcessor extends AsyncTask<Void, Void, Object[]> 
     }
 
     public void sendFailure(String msg) {
-        Log.d("URSMULOG", "AbstractProcessor sendFailure()" + msg);
+        Log.d("URSMULOG", "AbstractProcessor sendFailure() " + msg);
         Bundle b = new Bundle(1);
         b.putLong("REQUEST_ID", mReqId);
         b.putString("ERROR_NOTIF", msg);

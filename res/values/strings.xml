@@ -2,11 +2,20 @@
 <resources>
     <string name="app_name">УГГУ beta</string>
     <string name="offline_search_help">Вы можете воспользоваться оффлайн поиском</string>
-    <item name="null_error" type="id">Ошибка. Попробуйте снова</item>
-    <item name="network_error" type="id">Ошибка сети</item>
-    <item name="parse_error" type="id">Ошибка разбора</item>
-    <item name="upd_success" type="id">Обновление успешно завершено</item>
-    <item name="quest_dialog_title" type="id">Обновить расписание?</item>
-    <item name="quest_dialog_desc" type="id">Для продолжения работы необходимо обновление. Будет израсходовано 2 мегабайта трафика.</item>
-    <item name="upd_dialog_title" type="id">Расписание обновляется</item>
+    <string name="null_error" type="id">Ошибка. Попробуйте снова</string>
+    <string name="network_error" type="id">Ошибка сети</string>
+    <string name="parse_error" type="id">Ошибка разбора</string>
+    <string name="upd_success" type="id">Обновление успешно завершено</string>
+    <string name="quest_dialog_title" type="id">Обновить расписание?</string>
+    <string name="quest_dialog_desc" type="id">Для продолжения работы необходимо обновление. Будет израсходовано 2 мегабайта трафика.</string>
+    <string name="upd_dialog_title" type="id">Расписание обновляется</string>
+    <string name="share_text_main_screen" type="id">
+        Расписание и новости УГГУ в одном Android приложении https://play.google.com/store/apps/details?id=ru.ursmu.application</string>
+
+    <string name="share_text_schedule_screen" type="id">
+        Мое расписание на сайте УГГУ</string>
+
+    <string name="about_text" type="id">
+        Идея и реализация: Осинцев Илья, ГМФ. \nОбратная связь:\nhttps://vk.com/turlir \nУчастие в процессе разработки\nhttps://github.com/turlir/Ursmu
+    </string>
 </resources>

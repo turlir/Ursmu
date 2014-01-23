@@ -6,14 +6,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.Realization.EducationWeek;
 import ru.ursmu.application.Realization.ScheduleGroup;
@@ -22,7 +22,7 @@ import ru.ursmu.beta.application.R;
 import java.io.Serializable;
 import java.util.Calendar;
 
-public class GroupScheduleActivity extends SherlockFragmentActivity implements ActionBar.OnNavigationListener {
+public class GroupScheduleActivity extends ActionBarActivity implements ActionBar.OnNavigationListener {
     private ScheduleGroup mObject;
     private ProgressBar mBar;
     private ServiceHelper mHelper;
@@ -56,12 +56,14 @@ public class GroupScheduleActivity extends SherlockFragmentActivity implements A
         public void sendStart(long id) {
             changeIndicatorVisible(View.VISIBLE);
             mRequestId = id;
+            findViewById(R.id.viewpager).setVisibility(View.INVISIBLE);
         }
     };
 
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_schedule_group);
+        setContentView(R.layout.group_schedule);
 
         Intent info = getIntent();
         String faculty = info.getStringExtra(ServiceHelper.FACULTY);
@@ -73,6 +75,7 @@ public class GroupScheduleActivity extends SherlockFragmentActivity implements A
         start();
 
         String[] list_navigation = new String[]{"Поиск", group};
+
         ActionBar bar = getSupportActionBar();
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         ArrayAdapter<String> adapter = new SimpleCustomArrayAdapter<String>(this,
@@ -108,13 +111,8 @@ public class GroupScheduleActivity extends SherlockFragmentActivity implements A
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.action_bar_schedule, menu);
-        MenuItem item = menu.findItem(R.id.schedule_group_button);
-        com.actionbarsherlock.widget.ShareActionProvider provider = (com.actionbarsherlock.widget.ShareActionProvider) item.getActionProvider();
-        provider.setShareHistoryFileName(com.actionbarsherlock.widget.ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
-        provider.setShareIntent(createShareIntent());
-
-        return true;
+        getMenuInflater().inflate(R.menu.action_bar_group_schedule, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -152,20 +150,6 @@ public class GroupScheduleActivity extends SherlockFragmentActivity implements A
         mHelper.getUrsmuDBObject(mObject, mHandler);
     }
 
-    private Intent createShareIntent() {
-        Intent i = new Intent(Intent.ACTION_SEND);
-        i.setAction(Intent.ACTION_SEND);
-        i.setType("text/plain");
-        String text;
-        if (mObject != null) {
-            text = "Мое распиание на сайте УГГУ " + mObject.getUri() + "#" + mObject.getParameters();
-        } else
-            text = "Мое распиание на сайте УГГУ http://rasp.ursmu.ru";
-        i.putExtra(Intent.EXTRA_TEXT, text);
-        return i;
-    }
-
-
 
     protected void changeIndicatorVisible(int visibility) {
         if (mBar == null) {
@@ -175,5 +159,9 @@ public class GroupScheduleActivity extends SherlockFragmentActivity implements A
         if (visibility == View.INVISIBLE) {
             mBar = null;
         }
+    }
+
+    private void showNotification(String notify) {
+        Toast.makeText(getApplicationContext(), notify, Toast.LENGTH_SHORT).show();
     }
 }

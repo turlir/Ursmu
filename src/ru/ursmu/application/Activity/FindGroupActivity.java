@@ -2,17 +2,19 @@ package ru.ursmu.application.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
-import com.actionbarsherlock.app.SherlockListActivity;
-import com.actionbarsherlock.view.Window;
+import android.widget.ListView;
+import android.widget.Toast;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.Realization.GroupList;
 import ru.ursmu.beta.application.R;
 
 import java.io.Serializable;
 
-public class FindGroupActivity extends SherlockListActivity {
+public class FindGroupActivity extends ActionBarActivity {
     private String mFaculty;
     private String mKurs;
     private ServiceHelper mHelper;
@@ -39,6 +41,8 @@ public class FindGroupActivity extends SherlockListActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setContentView(R.layout.common);
 
         mHelper = ServiceHelper.getInstance(getApplicationContext());
 
@@ -46,7 +50,6 @@ public class FindGroupActivity extends SherlockListActivity {
         mKurs = getIntent().getStringExtra(ServiceHelper.KURS);
 
         mHelper.getUrsmuObject(new GroupList(mFaculty, mKurs), mHandler);
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
     }
 
     private AdapterView.OnItemClickListener groupsClickListener = new AdapterView.OnItemClickListener() {
@@ -68,7 +71,15 @@ public class FindGroupActivity extends SherlockListActivity {
 
 
     protected void postProcessing(String[] data) {
-        setListAdapter(new ExtendedGroupAdapter(this, R.layout.group_adapter, data));
+        getListView().setAdapter(new ExtendedGroupAdapter(this, R.layout.group_adapter, data));
         getListView().setOnItemClickListener(groupsClickListener);
+    }
+
+    private void showNotification(String notify) {
+        Toast.makeText(getApplicationContext(), notify, Toast.LENGTH_SHORT).show();
+    }
+
+    private ListView getListView() {
+        return (ListView) findViewById(R.id.listItem);
     }
 }

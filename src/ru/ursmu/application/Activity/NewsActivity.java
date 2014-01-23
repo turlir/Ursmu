@@ -3,10 +3,10 @@ package ru.ursmu.application.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
-import com.actionbarsherlock.app.SherlockActivity;
 import ru.ursmu.application.Abstraction.IUrsmuObject;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.JsonObject.ListItem;
@@ -17,7 +17,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class NewsActivity extends SherlockActivity {
+public class NewsActivity extends ActionBarActivity {
     ServiceHelper mHelper;
     ArrayList<ListItem> mSource;
     ProgressBar mBar;
@@ -71,7 +71,6 @@ public class NewsActivity extends SherlockActivity {
     }
 
 
-    @Override
     protected void changeIndicatorVisible(int visibility) {
         if (mBar == null) {
             mBar = (ProgressBar) findViewById(R.id.progress_news);

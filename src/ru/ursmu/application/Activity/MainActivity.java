@@ -5,20 +5,20 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.ShareActionProvider;
 import ru.ursmu.beta.application.R;
 
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends SherlockFragmentActivity {
+public class MainActivity extends ActionBarActivity {
     private int mImageNumber = 1;
     private Timer mTimer;
 
@@ -42,7 +42,7 @@ public class MainActivity extends SherlockFragmentActivity {
             mImageNumber = savedInstanceState.getInt(LOGO_NUMBER);
             displayLogo();
         }
-
+        //setShareIntent(createShareIntent());
         startNumberGeneration();
     }
 
@@ -56,11 +56,13 @@ public class MainActivity extends SherlockFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.main_action_bar, menu);
-        MenuItem item = menu.findItem(R.id.main_share);
-        ShareActionProvider provider = (ShareActionProvider) item.getActionProvider();
-        provider.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
-        provider.setShareIntent(createShareIntent());
+        getMenuInflater().inflate(R.menu.action_bar_main, menu);
+
+//        MenuItem item = menu.findItem(R.id.main_share);
+//
+//        ShareActionProvider myShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+//        myShareActionProvider.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
+//        myShareActionProvider.setShareIntent(createShareIntent());
 
         return true;
     }
@@ -69,12 +71,30 @@ public class MainActivity extends SherlockFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.about:
-                Intent i = new Intent(this, AboutActivity.class);
-                startActivity(i);
+                showInfoDialog();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showInfoDialog() {
+//        TextView about_view = new TextView(getApplicationContext());
+//        final SpannableString s = new SpannableString(getApplicationContext().getText(R.string.about_text));
+//        Linkify.addLinks(s, Linkify.WEB_URLS);
+//        about_view.setTextColor(ColorStateList.valueOf(android.R.color.black));
+//        about_view.setText(s);
+//        about_view.setMovementMethod(LinkMovementMethod.getInstance());
+//
+//        new AlertDialog.Builder(this)
+//                .setTitle("О приложении")
+//                .setMessage(getResources().getString(R.string.about_text))
+//                .setView(about_view)
+//                .setPositiveButton(android.R.string.ok, null)
+//                .show();
+
+        DialogFragment about_dialog = new AboutDialog();
+        about_dialog.show(getSupportFragmentManager(), "about_dialog");
     }
 
     @Override
@@ -116,7 +136,7 @@ public class MainActivity extends SherlockFragmentActivity {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setAction(Intent.ACTION_SEND);
         i.setType("text/plain");
-        i.putExtra(Intent.EXTRA_TEXT, "Расписание и новости УГГУ в одном Android приложении https://play.google.com/store/apps/details?id=ru.ursmu.application");
+        i.putExtra(Intent.EXTRA_TEXT, R.string.share_text_main_screen);
         return i;
     }
 

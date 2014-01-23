@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.widget.Toast;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.Realization.ScheduleGroupFactory;
@@ -26,7 +27,7 @@ public class UpdateDialog extends DialogFragment {
 
         @Override
         public void sendComplete(Serializable data) {
-            showNotification(getResources().getString(R.id.upd_success));
+            showNotification(getResources().getString(R.string.upd_success));
             mHandler.send(0, null);
         }
 
@@ -36,7 +37,7 @@ public class UpdateDialog extends DialogFragment {
 
         @Override
         public void sendMiddle(String s) {
-            if(mLastMiddle.isEmpty() || !mLastMiddle.equals(s)) {
+            if(!mLastMiddle.equals(s) || TextUtils.isEmpty(mLastMiddle)) {
                 mDialog.setMessage(s);
                 mLastMiddle = s;
             }
@@ -50,7 +51,7 @@ public class UpdateDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         mDialog = new ProgressDialog(getActivity());
-        mDialog.setTitle(getResources().getString(R.id.upd_dialog_title));
+        mDialog.setTitle(getResources().getString(R.string.upd_dialog_title));
         mDialog.setMessage("");
         mDialog.setCancelable(false);
         mDialog.setCanceledOnTouchOutside(false);

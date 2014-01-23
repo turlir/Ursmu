@@ -10,7 +10,6 @@ import ru.ursmu.application.Abstraction.IDatabasingBehavior;
 import ru.ursmu.application.Activity.DataBaseHelper;
 import ru.ursmu.application.JsonObject.EducationItem;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 public class GroupDataBasing extends IDatabasingBehavior {
@@ -181,17 +180,15 @@ public class GroupDataBasing extends IDatabasingBehavior {
 
     @Override
     public void clearTable() {
-        if (!mDataBase.isDbLockedByCurrentThread()) {
+        if (!mDataBase.isDbLockedByCurrentThread() && !mDataBase.isDbLockedByOtherThreads()) {
             Log.d("URSMULOG", "GroupDataBasing clearTable");
             mDataBase.delete("ScheduleCommon", "", new String[]{});
             mDataBase.delete("ScheduleDays", "", new String[]{});
-
-            mDataBase.close();
-            mUIN = null;
-            mLastGroup = null;
         } else {
-            Log.d("URSMULOG", "GroupDataBasing clearTable mDataBase.isDbLockedByCurrentThread() " + mDataBase.isDbLockedByCurrentThread());
+            String s = "GroupDataBasing blocked";
+            Log.d("URSMULOG", s);
         }
+        close();
     }
 
 

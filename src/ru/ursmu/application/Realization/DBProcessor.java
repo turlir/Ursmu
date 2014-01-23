@@ -10,7 +10,6 @@ import ru.ursmu.application.Activity.UrsmuService;
 import ru.ursmu.beta.application.R;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class DBProcessor extends AbstractProcessor {
     IUrsmuDBObject mObject;
@@ -68,15 +67,15 @@ public class DBProcessor extends AbstractProcessor {
 
             start(dbAgent);
         } catch (IOException ex) {
-            sendFailure(mContext.getResources().getString(R.id.network_error));
+            sendFailure(mContext.getResources().getString(R.string.network_error));
             ex.printStackTrace();
             return null;
         } catch (JSONException ex){
-            sendFailure(mContext.getResources().getString(R.id.parse_error));
+            sendFailure(mContext.getResources().getString(R.string.parse_error));
             ex.printStackTrace();
             return null;
         } catch (Exception ex) {
-            sendFailure(mContext.getResources().getString(R.id.null_error));
+            sendFailure(mContext.getResources().getString(R.string.null_error));
             ex.printStackTrace();
             return null;
         }
@@ -90,7 +89,7 @@ public class DBProcessor extends AbstractProcessor {
         Log.d("URSMULOG", "DBProcessor streamStart");
         EducationWeek items = getDataBaseBehavior().getSchedule();
         if (items == null) {
-            sendFailure(mContext.getResources().getString(R.id.null_error));
+            sendFailure(mContext.getResources().getString(R.string.null_error));
             return;
         }
         super.sendComplete(items);

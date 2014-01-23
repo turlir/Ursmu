@@ -2,17 +2,19 @@ package ru.ursmu.application.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
-import com.actionbarsherlock.app.SherlockListActivity;
-import com.actionbarsherlock.view.Window;
+import android.widget.ListView;
+import android.widget.Toast;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.Realization.KursList;
 import ru.ursmu.beta.application.R;
 
 import java.io.Serializable;
 
-public class FindKursActivity extends SherlockListActivity {
+public class FindKursActivity extends ActionBarActivity {
     private String mFaculty;
     private UniversalCallback mHandler = new UniversalCallback() {
         @Override
@@ -36,22 +38,25 @@ public class FindKursActivity extends SherlockListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setContentView(R.layout.common);
         ServiceHelper helper = ServiceHelper.getInstance(getApplicationContext());
 
         mFaculty = getIntent().getStringExtra(ServiceHelper.FACULTY);
 
         helper.getUrsmuObject(new KursList(mFaculty), mHandler);
-
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
     }
 
 
     protected void postProcessing(String[] data) {
         String[] l = data;
 
-        setListAdapter(new RomanAdapter(this, R.layout.kurs_adapter, l));
+        getListView().setAdapter(new RomanAdapter(this, R.layout.kurs_adapter, l));
         getListView().setOnItemClickListener(mKursClickListener);
+    }
+
+    private ListView getListView() {
+        return (ListView) findViewById(R.id.listItem);
     }
 
     AdapterView.OnItemClickListener mKursClickListener = new AdapterView.OnItemClickListener() {
@@ -65,4 +70,7 @@ public class FindKursActivity extends SherlockListActivity {
     };
 
 
+    private void showNotification(String notify) {
+        Toast.makeText(getApplicationContext(), notify, Toast.LENGTH_SHORT).show();
+    }
 }

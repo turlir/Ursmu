@@ -37,7 +37,7 @@ public class ProfessorScheduleFragment extends Fragment {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getActivity().getMenuInflater();
-        inflater.inflate(R.menu.schedule_professor_item, menu);
+        inflater.inflate(R.menu.schedule_item_professor, menu);
     }
 
     @Override

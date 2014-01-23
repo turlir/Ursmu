@@ -29,16 +29,13 @@ public class GroupDBProcessor extends AbstractProcessor {
     @Override
     protected Object[] doInBackground(Void... params) {
         Log.d("URSMULOG", "GroupDBProcessor start");
-
         sendStart();
 
+        getDataBaseBehavior().clearTable();
 
         try {
-            getDataBaseBehavior().clearTable();
-
             object.first();
             ScheduleGroup next;
-
 
             Object[] q;
             String uri, param, s;
@@ -48,7 +45,6 @@ public class GroupDBProcessor extends AbstractProcessor {
             while ((next = (ScheduleGroup) object.next()) != null) {
                 uri = next.getUri();
                 param = next.getParameters();
-
 
                 s = down_agent.Download(uri, param);
                 q = parse_agent.parse(s);
@@ -62,21 +58,18 @@ public class GroupDBProcessor extends AbstractProcessor {
             super.sendComplete(new String[]{});
 
         } catch (IOException ex) {
-            sendFailure(mContext.getResources().getString(R.id.network_error));
+            sendFailure(mContext.getResources().getString(R.string.network_error));
             ex.printStackTrace();
-            return null;
         } catch (JSONException ex) {
-            sendFailure(mContext.getResources().getString(R.id.parse_error));
+            sendFailure(mContext.getResources().getString(R.string.parse_error));
             ex.printStackTrace();
-            return null;
         } catch (Exception ex) {
-            sendFailure(mContext.getResources().getString(R.id.null_error));
+            sendFailure(mContext.getResources().getString(R.string.null_error));
             ex.printStackTrace();
+        } finally {
             return null;
         }
-        return null;
     }
-
 
 
 }

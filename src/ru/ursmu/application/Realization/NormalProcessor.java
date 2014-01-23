@@ -45,11 +45,11 @@ public class NormalProcessor extends AbstractProcessor {
             q = getParseBehavior().parse(s);
             return q;
         } catch (JSONException ex) {
-            sendFailure(mContext.getResources().getString(R.id.parse_error));
+            sendFailure(mContext.getResources().getString(R.string.parse_error));
             ex.printStackTrace();
             return null;
         } catch (IOException ex) {
-            sendFailure(mContext.getResources().getString(R.id.network_error));
+            sendFailure(mContext.getResources().getString(R.string.network_error));
             ex.printStackTrace();
             return null;
         }

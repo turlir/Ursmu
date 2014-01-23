@@ -29,15 +29,15 @@ public class FacultyFactory {
     };
 
     public static String[] mColor = new String[]{
-            "#007ab2",
-            "#a12331",
-            "#c3952a",
-            "#00a871",
-            "#387b45",
-            "#9e6544",
-            "#907534",
-            "#9e6544",
-            "#bd62b3"
+            "#046ab4",
+            "#a50f20",
+            "#dcb900",
+            "#1e8333",
+            "#3c6134",
+            "#845c40",
+            "#99854e",
+            "#845c40",
+            "#cd873a"
     };
 
     public static Faculty create(String value) {

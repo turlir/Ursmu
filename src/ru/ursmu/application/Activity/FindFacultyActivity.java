@@ -4,14 +4,17 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
-import com.actionbarsherlock.app.SherlockListActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.Window;
-import com.actionbarsherlock.widget.SearchView;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.JsonObject.Faculty;
 import ru.ursmu.application.Realization.FacultyFactory;
@@ -22,7 +25,7 @@ import ru.ursmu.beta.application.R;
 
 import java.io.Serializable;
 
-public class FindFacultyActivity extends SherlockListActivity implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
+public class FindFacultyActivity extends ActionBarActivity implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
     ServiceHelper mHelper;
     SearchView mSearchView;
     boolean mLigth = false;
@@ -31,7 +34,7 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             Intent intent = new Intent(getApplicationContext(), FindKursActivity.class);
-            intent.putExtra(ServiceHelper.FACULTY, ((Faculty)adapterView.getItemAtPosition(i)).getOriginalName());
+            intent.putExtra(ServiceHelper.FACULTY, ((Faculty) adapterView.getItemAtPosition(i)).getOriginalName());
             startActivity(intent);
         }
     };
@@ -41,12 +44,8 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
         public void sendError(String notify) {
             setProgressBarIndeterminateVisibility(false);
             showNotification(notify);
-            if (mLigth) {
-                /*View textHelp = findViewById(R.id.common_help);
-                textHelp.setVisibility(View.VISIBLE);
-                ((TextView) textHelp).setText(getResources().getString(R.string.offline_search_help));*/
-            }
         }
+
 
         @Override
         public void sendComplete(Serializable data) {
@@ -117,6 +116,8 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setContentView(R.layout.common);
         mHelper = ServiceHelper.getInstance(getApplicationContext());
         mHelper.getUrsmuObject(new FacultyList(), mHandler);
 
@@ -124,28 +125,24 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
 
         mLigth = object.check(getApplicationContext());
 
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
-            Log.d("URSMULOG", "SearchView yes");
-            mSearchView = new SearchView(getSupportActionBar().getThemedContext());
-            mSearchView.setQueryHint("Поиск группы");
+            getMenuInflater().inflate(R.menu.action_bar_faculty, menu);
+
+            MenuItem searchItem = menu.findItem(R.id.search_professor_faculty_list);
+            searchItem.setEnabled(mLigth);
+            searchItem.setIcon(!mLigth ? R.drawable.ic_search_inverse : R.drawable.abc_ic_search);
+
+            mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+            mSearchView.setQueryHint("Поиск преподавателя");
             mSearchView.setOnQueryTextListener(this);
             mSearchView.setOnSuggestionListener(this);
-            mSearchView.setEnabled(mLigth);
-
-            menu.add("Поиск")
-                    .setIcon(!mLigth ? R.drawable.ic_search_inverse : R.drawable.abs__ic_search)
-                    .setActionView(mSearchView)
-                    .setEnabled(mLigth)
-                    .setShowAsAction(com.actionbarsherlock.view.MenuItem.SHOW_AS_ACTION_IF_ROOM | com.actionbarsherlock.view.MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
         }
-
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     protected void postProcessing(String[] data) {
@@ -155,8 +152,16 @@ public class FindFacultyActivity extends SherlockListActivity implements SearchV
             mFaculty[i] = one_f;
         }
 
-        setListAdapter(new FacultyAdapter(getApplicationContext(), R.layout.faculty_adapter, mFaculty));
+        getListView().setAdapter(new FacultyAdapter(getApplicationContext(), R.layout.faculty_adapter, mFaculty));
         getListView().setOnItemClickListener(facultyClickListener);
+    }
+
+    private ListView getListView() {
+        return (ListView) findViewById(R.id.listItem);
+    }
+
+    private void showNotification(String notify) {
+        Toast.makeText(getApplicationContext(), notify, Toast.LENGTH_SHORT).show();
     }
 
 

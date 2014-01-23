@@ -4,22 +4,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.SearchView;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.Realization.EducationWeek;
 import ru.ursmu.application.Realization.ProfessorSchedule;
@@ -29,7 +29,7 @@ import ru.ursmu.beta.application.R;
 import java.io.Serializable;
 import java.util.Calendar;
 
-public class ProfessorScheduleActivity extends SherlockFragmentActivity implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
+public class ProfessorScheduleActivity extends ActionBarActivity implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
     String mProfessor;
     ServiceHelper mHelper;
     private ProgressBar mBar;
@@ -124,7 +124,7 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
         mProfessor = getIntent().getStringExtra("PROFESSOR");
 
         if (!(mLight = object.check(getApplicationContext()))) {
-            startUpdateDialog();
+            startQuestDialog();
         } else {
             nextStep();
         }
@@ -158,23 +158,18 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
-            Log.d("URSMULOG", "SearchView yes");
-            getSupportMenuInflater().inflate(R.menu.professor_action_bar, menu);
-            mSearchView = new SearchView(getSupportActionBar().getThemedContext());
+            getMenuInflater().inflate(R.menu.action_bar_professor_schedule, menu);
+
+            MenuItem searchItem = menu.findItem(R.id.search_professor_activity);
+            searchItem.setEnabled(mLight);
+            searchItem.setIcon(!mLight ? R.drawable.ic_search_inverse : R.drawable.abc_ic_search);
+
+            mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
             mSearchView.setQueryHint("Поиск преподавателя");
             mSearchView.setOnQueryTextListener(this);
             mSearchView.setOnSuggestionListener(this);
-            mSearchView.setEnabled(mLight);
-
-
-            menu.add("Поиск")
-                    .setIcon(!mLight ? R.drawable.ic_search_inverse : R.drawable.abs__ic_search)
-                    .setActionView(mSearchView)
-                    .setEnabled(mLight)
-                    .setShowAsAction(com.actionbarsherlock.view.MenuItem.SHOW_AS_ACTION_IF_ROOM
-                            | com.actionbarsherlock.view.MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
         }
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -187,7 +182,7 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
                 return true;
             case R.id.global_update:
                 if (mRequestId == null) {
-                    startUpdateDialog();
+                    startQuestDialog();
                     return true;
                 } else {
                     Toast.makeText(getApplicationContext(), "Дождитесь окончания операции", Toast.LENGTH_SHORT).show();
@@ -198,23 +193,29 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
         }
     }
 
-    private void startUpdateDialog() {
+    private void startQuestDialog() {
         changeIndicatorVisible(View.INVISIBLE);
         DialogFragment quest_dialog = new QuestionDialog(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                DialogFragment upd_dialog = new UpdateDialog(new ResultReceiver(null) {
-                    @Override
-                    protected void onReceiveResult(int resultCode, Bundle resultData) {
-                        mLight = true;
-                        invalidateOptionsMenu();
-                        nextStep();
-                    }
-                });
-                upd_dialog.show(getSupportFragmentManager(), "upd_dialog");
+                startUpdDialog();
             }
         });
         quest_dialog.show(getSupportFragmentManager(), "quest_dialog");
+        mRequestId = (long) 1;
+    }
+
+    private void startUpdDialog() {
+        DialogFragment upd_dialog = new UpdateDialog(new ResultReceiver(null) {
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                mLight = true;
+                invalidateOptionsMenu();
+                mRequestId = null;
+                nextStep();
+            }
+        });
+        upd_dialog.show(getSupportFragmentManager(), "upd_dialog");
     }
 
     private void nextStep() {
@@ -243,7 +244,7 @@ public class ProfessorScheduleActivity extends SherlockFragmentActivity implemen
     private void changeDescText(String txt) {
         if (mDesc == null) {
             mDesc = (TextView) findViewById(R.id.schedule_prof_desc);
-            mDesc.setTypeface(Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf"));
+            //mDesc.setTypeface(Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf"));
         }
         if (txt != null) {
             mDesc.setVisibility(View.VISIBLE);

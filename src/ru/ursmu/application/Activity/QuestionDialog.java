@@ -28,8 +28,8 @@ public class QuestionDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                .setTitle(getResources().getString(R.id.quest_dialog_title))
-                .setMessage(getResources().getString(R.id.quest_dialog_desc))
+                .setTitle(getResources().getString(R.string.quest_dialog_title))
+                .setMessage(getResources().getString(R.string.quest_dialog_desc))
                 .setPositiveButton(android.R.string.ok, mPositive)
                 .setNegativeButton(android.R.string.cancel,
                         new DialogInterface.OnClickListener() {

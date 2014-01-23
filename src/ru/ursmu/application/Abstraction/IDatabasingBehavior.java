@@ -1,10 +1,7 @@
 package ru.ursmu.application.Abstraction;
 
 import android.database.Cursor;
-import ru.ursmu.application.JsonObject.EducationItem;
 import ru.ursmu.application.Realization.EducationWeek;
-
-import java.util.ArrayList;
 
 public abstract class IDatabasingBehavior {
 
@@ -26,7 +23,7 @@ public abstract class IDatabasingBehavior {
         return true;
     }
 
-    public void clearTable() throws Exception {
+    public void clearTable() {
     }
 
     public void update(Object[] q) throws Exception {

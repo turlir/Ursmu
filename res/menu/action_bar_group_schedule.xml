@@ -1,0 +1,22 @@
+<menu xmlns:myapp="http://schemas.android.com/apk/res-auto"
+      xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/schedule_group_update"
+            android:title="Обновить"
+            android:icon="@drawable/navigation_refresh"
+            myapp:showAsAction="ifRoom"/>
+
+    <!--<item android:id="@+id/schedule_group_button"-->
+    <!--android:showAsAction="always"-->
+    <!--android:title="Рассказать"-->
+    <!--myapp:actionProviderClass="android.support.v7.widget.ShareActionProvider"-->
+    <!--myapp:showAsAction="ifRoom"/>-->
+
+    <item
+            android:id="@+id/schedule_group_site"
+            android:title="На сайт"
+            android:showAsAction="never"
+            />
+
+</menu>

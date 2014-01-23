@@ -16,8 +16,9 @@
     <orderEntry type="jdk" jdkName="Android 4.0.3 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="universal-image-loader-1.8.6" level="project" />
-    <orderEntry type="library" name="libs" level="project" />
-    <orderEntry type="module" module-name="actionbarsherlock" />
+    <orderEntry type="library" name="android-support-v4" level="application" />
+    <orderEntry type="library" name="android-support-v7-appcompat (2)" level="application" />
+    <orderEntry type="module" module-name="appcompat" />
   </component>
 </module>
 
