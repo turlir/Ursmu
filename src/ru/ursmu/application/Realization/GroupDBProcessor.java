@@ -12,18 +12,13 @@ import ru.ursmu.beta.application.R;
 import java.io.IOException;
 
 public class GroupDBProcessor extends AbstractProcessor {
-
     IGroupDBUrsmuObject<IUrsmuDBObject> object;
     Context mContext;
-    //ResultReceiver mCallback;
-    //Long mReqId;
 
     public GroupDBProcessor(IGroupDBUrsmuObject<IUrsmuDBObject> to, ResultReceiver callback, long id, Context c) {
         super(to, callback, id, c);
         object = to;
         mContext = c;
-        //mCallback = callback;
-        //mReqId = id;
     }
 
     @Override
@@ -43,15 +38,17 @@ public class GroupDBProcessor extends AbstractProcessor {
             ScheduleParser parse_agent = new ScheduleParser();
 
             while ((next = (ScheduleGroup) object.next()) != null) {
-                uri = next.getUri();
-                param = next.getParameters();
+                if (!next.getGroup().equals("ПБ.к-11з") && !next.getGroup().equals("ГИГ-4з") && !next.getGroup().equals("ГИГ-5з")) {
+                    uri = next.getUri();
+                    param = next.getParameters();
 
-                s = down_agent.Download(uri, param);
-                q = parse_agent.parse(s);
+                    s = down_agent.Download(uri, param);
+                    q = parse_agent.parse(s);
 
-                next.getDataBasingBehavior(mContext).add(q);
+                    next.getDataBasingBehavior(mContext).add(q);
 
-                sendMiddle(next.getFaculty());
+                    sendMiddle(next.getFaculty());
+                }
             }
 
             object.setCheck(mContext);
@@ -66,9 +63,9 @@ public class GroupDBProcessor extends AbstractProcessor {
         } catch (Exception ex) {
             sendFailure(mContext.getResources().getString(R.string.null_error));
             ex.printStackTrace();
-        } finally {
-            return null;
         }
+
+        return null;
     }
 
 
