@@ -43,6 +43,7 @@ public class ProfessorScheduleActivity extends ActionBarActivity implements Sear
         @Override
         public void sendError(String notify) {
             Toast.makeText(getApplicationContext(), notify, Toast.LENGTH_SHORT).show();
+            findViewById(R.id.viewpager).setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -69,6 +70,7 @@ public class ProfessorScheduleActivity extends ActionBarActivity implements Sear
             changeIndicatorVisible(View.VISIBLE);
             changeDescText(null);
             mRequestId = id;
+            findViewById(R.id.professor_viewpager).setVisibility(View.INVISIBLE);
         }
 
 
@@ -104,8 +106,6 @@ public class ProfessorScheduleActivity extends ActionBarActivity implements Sear
 
     @Override
     public boolean onSuggestionClick(int position) {
-        //mCursor.moveToPosition(position);
-        //mProfessor = mCursor.getString(mCursor.getColumnIndexOrThrow("normalProfessor"));
         mProfessor = ((SuggestionsAdapter) mSearchView.getSuggestionsAdapter()).getString(position);
         Log.d("URSMULOG", mProfessor);
         nextStep();

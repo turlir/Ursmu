@@ -34,6 +34,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
             changeIndicatorVisible(View.INVISIBLE);
             showNotification(notify);
             mRequestId = 0;
+            findViewById(R.id.viewpager).setVisibility(View.VISIBLE);
         }
 
         @Override

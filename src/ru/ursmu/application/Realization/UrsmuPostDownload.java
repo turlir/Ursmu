@@ -12,7 +12,6 @@ import java.net.URL;
 public class UrsmuPostDownload implements IDownloadBehavior {
 
     public String Download(String uri, String parameters) throws IOException {
-        // Log.d("URSMULOG", "UrsmuPostDownload start");
 
         String resultString;
         URL url = new URL(uri);
@@ -43,11 +42,8 @@ public class UrsmuPostDownload implements IDownloadBehavior {
             StringBuilder sb = new StringBuilder();
             int c;
             while ((c = isr.read()) != -1) {
-                //data.append((char) c);
                 sb.append((char) c);
-                //Log.d("URSMULOG", "add char");
             }
-            //resultString = new String(data.toString());
             resultString = sb.toString();
             sb = null;
             isr.close();
