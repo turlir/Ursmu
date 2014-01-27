@@ -50,16 +50,17 @@ public class MainActivity extends ActionBarActivity {
     public void scheduleGroup(View v) {
         ServiceHelper helper = ServiceHelper.getInstance(getApplicationContext());
 
-        if (helper.getBooleanPreference("first_run")) {      //true
-            Log.d("URSMULOG", "MainActivity scheduleGroup first_run");
-            citizenErased(helper);
-            return;
-        }
-
         if (TextUtils.isEmpty(helper.getPreference(ServiceHelper.GROUP))) {
             Intent i = new Intent(this, FindFacultyActivity.class);
             startActivity(i);
         } else {
+
+            if (helper.getBooleanPreference("first_run")) {      //true
+                Log.d("URSMULOG", "MainActivity scheduleGroup first_run");
+                citizenErased(helper);
+                return;
+            }
+
             Intent i = new Intent(this, GroupScheduleActivity.class);
             String[] info = helper.getThreeInfo();
             i.putExtra("IS_HARD", false);
