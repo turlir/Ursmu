@@ -1,13 +1,16 @@
 package ru.ursmu.application.Activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -148,7 +151,26 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
             mHelper = ServiceHelper.getInstance(getApplicationContext());
         }
 
+        if (mHelper.getBooleanPreference("IS_QUEST_PUSH_SUBSCRIPTION")) {
+            DialogInterface.OnClickListener positiveHandler = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    pushSubscribe();
+                }
+            };
+            DialogFragment quest_dialog = new QuestionDialog(positiveHandler,
+                    getResources().getString(R.string.subsrc_dialog_title), getResources().getString(R.string.subsrc_dialog_desc));
+
+            quest_dialog.show(getSupportFragmentManager(), "quest_dialog");
+        }
+
+
         mHelper.getUrsmuDBObject(mObject, mHandler);
+    }
+
+    private void pushSubscribe() {
+        Log.d("URSMULOG", "pushSubscribe");
+        mHelper.setBooleanPreferences("IS_QUEST_PUSH_SUBSCRIPTION", false);
     }
 
 

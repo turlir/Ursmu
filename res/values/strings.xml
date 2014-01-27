@@ -18,4 +18,6 @@
     <string name="about_text" type="id">
         Идея и реализация: Осинцев Илья, ГМФ. \nОбратная связь:\nhttps://vk.com/turlir \nУчастие в процессе разработки\nhttps://github.com/turlir/Ursmu
     </string>
+    <string name="subsrc_dialog_title">Подписаться на обновления?</string>
+    <string name="subsrc_dialog_desc">Подпишитесь на push уведомения об обновлении расписания.</string>
 </resources>

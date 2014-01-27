@@ -195,14 +195,19 @@ public class ProfessorScheduleActivity extends ActionBarActivity implements Sear
 
     private void startQuestDialog() {
         changeIndicatorVisible(View.INVISIBLE);
-        DialogFragment quest_dialog = new QuestionDialog(new DialogInterface.OnClickListener() {
+
+        DialogInterface.OnClickListener positiveHandler = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                mRequestId = (long) 1;
                 startUpdDialog();
             }
-        });
+        };
+
+        DialogFragment quest_dialog = new QuestionDialog(positiveHandler,
+                getResources().getString(R.string.quest_dialog_title), getResources().getString(R.string.quest_dialog_desc));
+
         quest_dialog.show(getSupportFragmentManager(), "quest_dialog");
-        mRequestId = (long) 1;
     }
 
     private void startUpdDialog() {

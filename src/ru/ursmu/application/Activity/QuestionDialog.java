@@ -7,14 +7,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.KeyEvent;
-import ru.ursmu.beta.application.R;
 
 public class QuestionDialog extends DialogFragment {
 
     DialogInterface.OnClickListener mPositive;
+    String mTitle, mMessage;
 
-    public QuestionDialog(DialogInterface.OnClickListener positiveHandler) {
+    public QuestionDialog(DialogInterface.OnClickListener positiveHandler,
+                          String title,
+                          String message) {
         mPositive = positiveHandler;
+
+        mTitle = title;
+        mMessage = message;
     }
 
     @Override
@@ -28,16 +33,10 @@ public class QuestionDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                .setTitle(getResources().getString(R.string.quest_dialog_title))
-                .setMessage(getResources().getString(R.string.quest_dialog_desc))
+                .setTitle(mTitle)
+                .setMessage(mMessage)
                 .setPositiveButton(android.R.string.ok, mPositive)
-                .setNegativeButton(android.R.string.cancel,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                closeDialogOpenMainActivity();
-                            }
-                        }
-                )
+                .setNegativeButton(android.R.string.cancel, null)
                 .setOnKeyListener(new DialogInterface.OnKeyListener() {
                     @Override
                     public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
