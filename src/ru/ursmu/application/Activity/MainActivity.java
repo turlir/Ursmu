@@ -153,8 +153,8 @@ public class MainActivity extends ActionBarActivity {
             protected void onPreExecute() {
                 super.onPreExecute();
                 dialog = new ProgressDialog(MainActivity.this);
-                dialog.setTitle("Title");
-                dialog.setMessage("Message");
+                dialog.setTitle("Подождите");
+                dialog.setMessage("Идет обработка");
                 dialog.show();
             }
 
