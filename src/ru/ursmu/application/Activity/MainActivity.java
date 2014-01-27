@@ -1,7 +1,9 @@
 package ru.ursmu.application.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import ru.ursmu.application.Realization.ProfessorDataBasing;
 import ru.ursmu.beta.application.R;
 
 import java.util.Random;
@@ -57,13 +60,6 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.action_bar_main, menu);
-
-//        MenuItem item = menu.findItem(R.id.main_share);
-//
-//        ShareActionProvider myShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-//        myShareActionProvider.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
-//        myShareActionProvider.setShareIntent(createShareIntent());
-
         return true;
     }
 
@@ -79,20 +75,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void showInfoDialog() {
-//        TextView about_view = new TextView(getApplicationContext());
-//        final SpannableString s = new SpannableString(getApplicationContext().getText(R.string.about_text));
-//        Linkify.addLinks(s, Linkify.WEB_URLS);
-//        about_view.setTextColor(ColorStateList.valueOf(android.R.color.black));
-//        about_view.setText(s);
-//        about_view.setMovementMethod(LinkMovementMethod.getInstance());
-//
-//        new AlertDialog.Builder(this)
-//                .setTitle("О приложении")
-//                .setMessage(getResources().getString(R.string.about_text))
-//                .setView(about_view)
-//                .setPositiveButton(android.R.string.ok, null)
-//                .show();
-
         DialogFragment about_dialog = new AboutDialog();
         about_dialog.show(getSupportFragmentManager(), "about_dialog");
     }
@@ -132,16 +114,14 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    private Intent createShareIntent() {
-        Intent i = new Intent(Intent.ACTION_SEND);
-        i.setAction(Intent.ACTION_SEND);
-        i.setType("text/plain");
-        i.putExtra(Intent.EXTRA_TEXT, R.string.share_text_main_screen);
-        return i;
-    }
-
     public void scheduleGroup(View v) {
         ServiceHelper helper = ServiceHelper.getInstance(getApplicationContext());
+
+        if (helper.getBooleanPreference("first_run")) {      //true
+            Log.d("URSMULOG", "MainActivity scheduleGroup first_run");
+            citizenErased(helper);
+            return;
+        }
 
         if (TextUtils.isEmpty(helper.getPreference(ServiceHelper.GROUP))) {
             Intent i = new Intent(this, FindFacultyActivity.class);
@@ -155,6 +135,44 @@ public class MainActivity extends ActionBarActivity {
             i.putExtra(ServiceHelper.GROUP, info[2]);
             startActivity(i);
         }
+    }
+
+
+    private void citizenErased(ServiceHelper helper) {
+        Log.d("URSMULOG", "MainActivity scheduleGroup citizenErased");
+        //delete all info - very shortly
+        helper.setThreeInfo("", "", "");
+        helper.setBooleanPreferences("first_run", false);
+        helper.setBooleanPreferences("PROF", true);
+
+        //drop dataBase
+        new AsyncTask<Void, Void, Void>() {
+            ProgressDialog dialog;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                dialog = new ProgressDialog(MainActivity.this);
+                dialog.setTitle("Title");
+                dialog.setMessage("Message");
+                dialog.show();
+            }
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                ProfessorDataBasing db_agent = ProfessorDataBasing.getInstance(getApplicationContext(), "");
+                db_agent.clearTable();    //.close() exclusive
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                dialog.dismiss();
+                scheduleGroup(null);       //open FindFaculty
+            }
+        }.execute(null, null, null);
     }
 
     public void event(View v) {
