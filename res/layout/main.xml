@@ -91,9 +91,10 @@
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageView" android:src="@drawable/new_vk"
+                    android:id="@+id/imageView"
                     android:layout_gravity="center_horizontal|bottom" android:clickable="true"
-                    android:onClick="vkLogoClick" android:layout_weight="1" android:layout_marginRight="18dp"/>
+                    android:onClick="vkLogoClick" android:layout_weight="1" android:layout_marginRight="18dp"
+                    android:src="@drawable/new_vk"/>
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
