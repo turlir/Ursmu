@@ -69,6 +69,7 @@ public class MainActivity extends ActionBarActivity {
             i.putExtra(ServiceHelper.GROUP, info[2]);
             startActivity(i);
         }
+        helper.setBooleanPreferences("first_run", false);
     }
 
 
@@ -76,7 +77,7 @@ public class MainActivity extends ActionBarActivity {
         Log.d("URSMULOG", "MainActivity scheduleGroup citizenErased");
         //delete all info - very shortly
         helper.setThreeInfo("", "", "");
-        helper.setBooleanPreferences("first_run", false);
+
         helper.setBooleanPreferences("PROF", true);
 
         //drop dataBase
