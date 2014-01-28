@@ -50,7 +50,7 @@ public class DBProcessor extends AbstractProcessor {
             IDownloadBehavior down_agent = getDownloadBehavior();
             IParserBehavior parse_agent = getParseBehavior();
 
-            Log.d("URSMULOG", "DBProcessor size=");
+            Log.d("URSMULOG", "DBProcessor begin");
 
             uri = mObject.getUri();
             param = mObject.getParameters();
