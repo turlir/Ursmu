@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import ru.ursmu.beta.application.R;
 
-public class SimpleCustomArrayAdapter<T> extends ArrayAdapter<String> {
+public class SimpleCustomArrayAdapter extends ArrayAdapter<String> {
     private int mResID;
     android.content.Context mContext;
 
