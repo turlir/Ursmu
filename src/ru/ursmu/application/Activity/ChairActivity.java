@@ -26,7 +26,7 @@ import java.io.Serializable;
 
 public class ChairActivity extends ActionBarActivity implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
     ServiceHelper mHelper;
-    boolean mLigth = true;
+    boolean mLight = true;
     SearchView mSearchView;
     private UniversalCallback mCallback = new UniversalCallback() {
         @Override
@@ -129,8 +129,8 @@ public class ChairActivity extends ActionBarActivity implements SearchView.OnQue
             getMenuInflater().inflate(R.menu.action_bar_faculty, menu);
 
             MenuItem searchItem = menu.findItem(R.id.search_professor_faculty_list);
-            searchItem.setEnabled(mLigth);
-            searchItem.setIcon(!mLigth ? R.drawable.ic_search_inverse : R.drawable.abc_ic_search);
+            searchItem.setEnabled(mLight);
+            searchItem.setIcon(!mLight ? R.drawable.ic_search_inverse : R.drawable.abc_ic_search);
 
             mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
             mSearchView.setQueryHint("Поиск кафедры");

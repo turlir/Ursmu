@@ -28,7 +28,7 @@ import java.io.Serializable;
 public class FindFacultyActivity extends ActionBarActivity implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
     ServiceHelper mHelper;
     SearchView mSearchView;
-    boolean mLigth = false;
+    boolean mLight = false;
 
     private AdapterView.OnItemClickListener facultyClickListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -123,7 +123,7 @@ public class FindFacultyActivity extends ActionBarActivity implements SearchView
 
         ScheduleGroupFactory object = new ScheduleGroupFactory();
 
-        mLigth = object.check(getApplicationContext());
+        mLight = object.check(getApplicationContext());
 
     }
 
@@ -134,8 +134,8 @@ public class FindFacultyActivity extends ActionBarActivity implements SearchView
             getMenuInflater().inflate(R.menu.action_bar_faculty, menu);
 
             MenuItem searchItem = menu.findItem(R.id.search_professor_faculty_list);
-            searchItem.setEnabled(mLigth);
-            searchItem.setIcon(!mLigth ? R.drawable.ic_search_inverse : R.drawable.abc_ic_search);
+            searchItem.setEnabled(mLight);
+            searchItem.setIcon(!mLight ? R.drawable.ic_search_inverse : R.drawable.abc_ic_search);
 
             mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
             mSearchView.setQueryHint("Поиск преподавателя");
