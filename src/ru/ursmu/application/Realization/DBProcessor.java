@@ -87,7 +87,7 @@ public class DBProcessor extends AbstractProcessor {
     public void start(IDatabasingBehavior db_agent) {
 
         Log.d("URSMULOG", "DBProcessor streamStart");
-        EducationWeek items = getDataBaseBehavior().getSchedule();
+        Object items = getDataBaseBehavior().getSchedule();
         if (items == null) {
             sendFailure(mContext.getResources().getString(R.string.null_error));
             return;

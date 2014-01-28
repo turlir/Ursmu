@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
 import ru.ursmu.application.Activity.ServiceHelper;
-import ru.ursmu.application.Realization.EducationWeek;
 import ru.ursmu.application.Realization.UrsmuPostDownload;
 
 import java.io.Serializable;
@@ -65,11 +64,11 @@ public abstract class AbstractProcessor extends AsyncTask<Void, Void, Object[]> 
         mCallback.send(ServiceHelper.PROCESSOR_FAILURE, b);
     }
 
-    public void sendComplete(EducationWeek data) {
+    public void sendComplete(Object data) {
         Log.d("URSMULOG", "AbstractProcessor sendComplete()");
         Bundle bundle = new Bundle(2);
         bundle.putLong("REQUEST_ID", mReqId);
-        bundle.putSerializable(ServiceHelper.PARSE_DATA, data);
+        bundle.putSerializable(ServiceHelper.PARSE_DATA, (Serializable) data);
         mCallback.send(ServiceHelper.DOWNLOAD_COMPLETE, bundle);
     }
 

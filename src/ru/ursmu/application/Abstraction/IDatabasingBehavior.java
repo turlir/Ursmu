@@ -1,7 +1,6 @@
 package ru.ursmu.application.Abstraction;
 
 import android.database.Cursor;
-import ru.ursmu.application.Realization.EducationWeek;
 
 public abstract class IDatabasingBehavior {
 
@@ -13,7 +12,7 @@ public abstract class IDatabasingBehavior {
 
     public abstract void close();
 
-    public abstract EducationWeek getSchedule();
+    public abstract Object getSchedule();
 
     public Cursor get() {
         return null;
