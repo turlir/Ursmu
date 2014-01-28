@@ -7,20 +7,11 @@
 
     <LinearLayout android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
-
                   android:orientation="vertical">
         <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="125dp"
                 android:id="@+id/LogoLayout" android:orientation="vertical" android:background="@drawable/img1">
-
-            <!--            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="fill_parent"
-                                android:id="@+id/image_header" android:layout_centerHorizontal="true"
-                                android:layout_centerVertical="true" android:src="@drawable/gerb_ursmu"
-                                android:visibility="invisible"/>-->
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -35,21 +26,21 @@
                     android:text="Ваше расписание"
                     android:id="@+id/textView" android:textSize="22sp"
                     android:typeface="serif"/>
-            <!--Всегда под рукой-->
             <Button
-                    android:layout_width="130dp"
+                    android:layout_width="155dp"
                     android:layout_height="48dp"
                     android:drawableLeft="@drawable/new_social_group"
                     android:text="Группа"
                     android:id="@+id/button_groups"
                     android:onClick="scheduleGroup"
                     style="@style/ButtonAppTheme"
-                    android:typeface="monospace" android:layout_alignLeft="@+id/textView"
+                    android:typeface="monospace"
+                    android:layout_alignLeft="@+id/textView"
                     android:layout_below="@+id/textView"/>
 
             <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="155dp"
+                    android:layout_height="48dp"
                     android:text="Профессор"
                     android:id="@+id/button_prof"
                     android:layout_alignParentRight="true"
@@ -66,24 +57,50 @@
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:background="#7fa87f"
-                />
+                android:layout_marginLeft="16dp" android:layout_marginRight="16dp"/>
+
         <RelativeLayout android:layout_width="fill_parent" android:layout_height="80dp" android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp" android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp" android:id="@+id/group_two">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                      android:text="Наши новости" android:id="@+id/textView1" android:textSize="22sp"
-                      android:typeface="serif"/>
-            <Button style="@style/ButtonAppTheme" android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/news_icon" android:text="События" android:id="@+id/event"
-                    android:typeface="monospace" android:layout_alignLeft="@+id/textView1"
-                    android:layout_below="@+id/textView1" android:onClick="event"/>
-            <Button style="@style/ButtonAppTheme" android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Горный ТВ" android:layout_alignParentRight="true"
-                    android:layout_alignTop="@+id/event" android:drawableLeft="@drawable/video_camera"
-                    android:typeface="monospace" android:id="@+id/tv" android:onClick="tv"/>
+                        android:layout_marginBottom="8dp" android:id="@+id/group_university">
+
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Деканат"
+                      android:textSize="22sp"
+                      android:typeface="serif" android:id="@+id/textView2"/>
+            <Button
+                    style="@style/ButtonAppTheme"
+                    android:layout_width="155dp"
+                    android:layout_height="48dp"
+                    android:text="Кафедры"
+                    android:id="@+id/button"
+                    android:drawableLeft="@drawable/chair"
+                    android:layout_below="@+id/textView2"
+                    android:layout_alignParentLeft="true"
+                    android:typeface="monospace"
+                    android:layout_alignLeft="@+id/textView2" android:onClick="chair"/>
+            <Button
+                    android:layout_width="155dp"
+                    android:layout_height="48dp"
+                    android:text="События"
+                    android:typeface="monospace"
+                    android:id="@+id/button2"
+                    android:layout_alignBottom="@+id/button"
+                    android:layout_alignParentRight="true"
+                    android:onClick="event"
+                    style="@style/ButtonAppTheme"
+                    android:drawableLeft="@drawable/news_icon"/>
+
+
         </RelativeLayout>
+
+        <View
+                android:id="@+id/line"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="#7fa87f"
+                android:layout_marginLeft="16dp" android:layout_marginRight="16dp"/>
+
         <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="16dp"
                       android:layout_marginRight="16dp" android:layout_marginTop="8dp"
                       android:id="@+id/footer" android:orientation="horizontal"

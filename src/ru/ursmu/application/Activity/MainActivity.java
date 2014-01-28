@@ -2,6 +2,7 @@ package ru.ursmu.application.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import ru.ursmu.application.Realization.ProfessorDataBasing;
 import ru.ursmu.beta.application.R;
 
@@ -21,6 +23,13 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         Log.d("URSMULOG", "MainActivity onCreate");
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf");
+        ((TextView)findViewById(R.id.textView)).setTypeface(typeface);
+
+
+        //typeface = Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf");
+        ((TextView)findViewById(R.id.textView2)).setTypeface(typeface);
     }
 
 
@@ -115,13 +124,13 @@ public class MainActivity extends ActionBarActivity {
         startActivity(i);
     }
 
-    public void tv(View v) {
-        openLink("https://www.youtube.com/user/TheUrsmu?feature=watch");
-    }
-
     public void scheduleProf(View v) {
         Intent i = new Intent(this, ProfessorScheduleActivity.class);
         startActivity(i);
+    }
+
+    public void chair (View v) {
+
     }
 
     public void vkLogoClick(View v) {
