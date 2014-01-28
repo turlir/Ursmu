@@ -25,8 +25,10 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import ru.ursmu.application.Abstraction.IUrsmuObject;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.Realization.EducationWeek;
+import ru.ursmu.application.Realization.PushRegister;
 import ru.ursmu.application.Realization.ScheduleGroup;
 import ru.ursmu.beta.application.R;
 
@@ -39,6 +41,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
     private ProgressBar mBar;
     private ServiceHelper mHelper;
     private long mRequestId;
+    private String mFaculty;
 
     private UniversalCallback mHandler = new UniversalCallback() {
         @Override
@@ -79,12 +82,12 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
         setContentView(R.layout.group_schedule);
 
         Intent info = getIntent();
-        String faculty = info.getStringExtra(ServiceHelper.FACULTY);
+        mFaculty = info.getStringExtra(ServiceHelper.FACULTY);
         String kurs = info.getStringExtra(ServiceHelper.KURS);
         String group = info.getStringExtra(ServiceHelper.GROUP);
         boolean isHard = info.getBooleanExtra("IS_HARD", true);
 
-        mObject = new ScheduleGroup(faculty, kurs, group, isHard);
+        mObject = new ScheduleGroup(mFaculty, kurs, group, isHard);
         start();
 
         String[] list_navigation = new String[]{"Поиск", group};
@@ -232,6 +235,25 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
 
     private void sendRegistrationIdToBackend(String regid) {
         Log.d("URSMULOG", "sendRegistrationIdToBackend " + regid);
+        IUrsmuObject reg_obj = new PushRegister(getApplicationContext(), mFaculty, regid);
+        if (mHelper != null) {
+            mHelper.getUrsmuObject(reg_obj, new UniversalCallback() {
+                @Override
+                public void sendError(String notify) {
+
+                }
+
+                @Override
+                public void sendComplete(Serializable data) {
+
+                }
+
+                @Override
+                public void sendStart(long id) {
+
+                }
+            });
+        }
     }
 
     private void storeRegistrationId(Context context, String regId) {
