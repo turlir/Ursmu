@@ -28,7 +28,7 @@ public class MainActivity extends ActionBarActivity {
         ((TextView)findViewById(R.id.textView)).setTypeface(typeface);
 
 
-        //typeface = Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf");
+        //mTypeface = Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf");
         ((TextView)findViewById(R.id.textView2)).setTypeface(typeface);
     }
 

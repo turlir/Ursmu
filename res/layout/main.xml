@@ -27,7 +27,7 @@
                     android:id="@+id/textView" android:textSize="22sp"
                     android:typeface="serif"/>
             <Button
-                    android:layout_width="155dp"
+                    android:layout_width="135dp"
                     android:layout_height="48dp"
                     android:drawableLeft="@drawable/new_social_group"
                     android:text="Группа"
@@ -70,7 +70,7 @@
                       android:typeface="serif" android:id="@+id/textView2"/>
             <Button
                     style="@style/ButtonAppTheme"
-                    android:layout_width="155dp"
+                    android:layout_width="135dp"
                     android:layout_height="48dp"
                     android:text="Кафедры"
                     android:id="@+id/button"
@@ -80,7 +80,7 @@
                     android:typeface="monospace"
                     android:layout_alignLeft="@+id/textView2" android:onClick="chair"/>
             <Button
-                    android:layout_width="155dp"
+                    android:layout_width="135dp"
                     android:layout_height="48dp"
                     android:text="События"
                     android:typeface="monospace"
