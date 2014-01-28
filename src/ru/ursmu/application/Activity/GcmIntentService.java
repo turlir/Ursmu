@@ -22,7 +22,7 @@ import ru.ursmu.beta.application.R;
 public class GcmIntentService extends IntentService {
 
     public GcmIntentService() {
-        super("");
+        super(ServiceHelper.SENDER_ID);
     }
 
     public static final String TAG = "URSMULOG";
@@ -67,8 +67,14 @@ public class GcmIntentService extends IntentService {
     }
 
     private Intent getIntentNotify() {
+        ServiceHelper helper = ServiceHelper.getInstance(getApplicationContext());
+
         Intent i = new Intent(this, GroupScheduleActivity.class);
-        i.setFlags(32);
+        String[] info = helper.getThreeInfo();
+        i.putExtra("IS_HARD", true);               //only true - special update
+        i.putExtra(ServiceHelper.FACULTY, info[0]);
+        i.putExtra(ServiceHelper.KURS, info[1]);
+        i.putExtra(ServiceHelper.GROUP, info[2]);
         return i;
     }
 }

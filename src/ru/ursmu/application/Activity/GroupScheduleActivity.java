@@ -183,10 +183,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
 
 
     //<editor-fold desc="Google Cloud Messages">
-    private static final String PROPERTY_REG_ID = "";
-    private static final String PROPERTY_APP_VERSION = "1.0";
-    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-    private static final String SENDER_ID = "";
+
 
     private void pushSubscribe() {
         Log.d("URSMULOG", "pushSubscribe");
@@ -214,7 +211,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
                 try {
                     GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
 
-                    String regid = gcm.register(SENDER_ID);
+                    String regid = gcm.register(ServiceHelper.SENDER_ID);
                     msg = "Device registered, registration ID=" + regid;
 
                     sendRegistrationIdToBackend(regid);
@@ -236,24 +233,29 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
     private void sendRegistrationIdToBackend(String regid) {
         Log.d("URSMULOG", "sendRegistrationIdToBackend " + regid);
         IUrsmuObject reg_obj = new PushRegister(getApplicationContext(), mFaculty, regid);
-        if (mHelper != null) {
-            mHelper.getUrsmuObject(reg_obj, new UniversalCallback() {
-                @Override
-                public void sendError(String notify) {
 
-                }
-
-                @Override
-                public void sendComplete(Serializable data) {
-
-                }
-
-                @Override
-                public void sendStart(long id) {
-
-                }
-            });
+        if (mHelper == null) {
+            mHelper = ServiceHelper.getInstance(getApplicationContext());
         }
+
+       /* mHelper.getUrsmuObject(reg_obj, new UniversalCallback() {
+            @Override
+            public void sendError(String notify) {
+
+            }
+
+            @Override
+            public void sendComplete(Serializable data) {
+
+            }
+
+            @Override
+            public void sendStart(long id) {
+
+            }
+        });*/
+
+
     }
 
     private void storeRegistrationId(Context context, String regId) {
@@ -263,8 +265,8 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
             mHelper = ServiceHelper.getInstance(getApplicationContext());
         }
 
-        mHelper.setPreferences(PROPERTY_REG_ID, regId);
-        mHelper.setIntPreference(PROPERTY_APP_VERSION, appVersion);
+        mHelper.setPreferences(ServiceHelper.PROPERTY_REG_ID, regId);
+        mHelper.setIntPreference(ServiceHelper.PROPERTY_APP_VERSION, appVersion);
     }
 
     private boolean checkPlayServices() {
@@ -273,7 +275,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
 
                 GooglePlayServicesUtil.getErrorDialog(resultCode, this,
-                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+                        ServiceHelper.PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
                 Log.i("URSMULOG", "This device is not supported.");
                 finish();
@@ -288,13 +290,13 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
             mHelper = ServiceHelper.getInstance(getApplicationContext());
         }
 
-        String registrationId = mHelper.getPreference(PROPERTY_REG_ID);
+        String registrationId = mHelper.getPreference(ServiceHelper.PROPERTY_REG_ID);
 
         if (TextUtils.isEmpty(registrationId)) {
             Log.i("URSMULOG", "Registration not found.");
             return "";
         }
-        int registeredVersion = mHelper.getIntPreference(PROPERTY_APP_VERSION, Integer.MIN_VALUE);
+        int registeredVersion = mHelper.getIntPreference(ServiceHelper.PROPERTY_APP_VERSION, Integer.MIN_VALUE);
         int currentVersion = getAppVersion(context);
         if (registeredVersion != currentVersion) {
             Log.i("URSMULOG", "App version changed.");

@@ -28,6 +28,12 @@ public class ServiceHelper {
     public static final String PARSE_DATA = "PARSE_DATA";
     public static final String REQUEST_ID = "REQUEST_ID";
 
+    ///google cloud messages
+    public static final String PROPERTY_REG_ID = "";
+    public static final String PROPERTY_APP_VERSION = "1.0";
+    public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    public static final String SENDER_ID = "";
+
     private static ServiceHelper ourInstance = new ServiceHelper();
     private static Context mActivity;
     private static HashMap<Long, UniversalCallback> handlers = new HashMap<Long, UniversalCallback>();
