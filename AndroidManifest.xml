@@ -6,12 +6,18 @@
           android:versionName="1.0">
     <uses-sdk
             android:targetSdkVersion="15"
-            android:minSdkVersion="6"/>
+            android:minSdkVersion="8"/>
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <permission android:name="ru.ursmu.beta.application.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission android:name="ru.ursmu.beta.application.permission.C2D_MESSAGE" />
 
     <supports-screens
             android:largeScreens="false"
@@ -44,5 +50,20 @@
                   android:label="Новости УГГУ"/>
 
         <service android:name="ru.ursmu.application.Activity.UrsmuService"/>
+
+        <receiver
+                android:name="ru.ursmu.application.Activity.GcmBroadcastReceiver"
+                android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.example.pushApp" />
+            </intent-filter>
+        </receiver>
+        <service android:name="ru.ursmu.application.Activity.GcmIntentService" />
+
+
+        <meta-data android:name="com.google.android.gms.version"
+                   android:value="@integer/google_play_services_version" />
+
     </application>
 </manifest>

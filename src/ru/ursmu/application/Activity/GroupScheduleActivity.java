@@ -1,15 +1,20 @@
 package ru.ursmu.application.Activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,11 +22,15 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.Realization.EducationWeek;
 import ru.ursmu.application.Realization.ScheduleGroup;
 import ru.ursmu.beta.application.R;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
 
@@ -155,6 +164,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
             DialogInterface.OnClickListener positiveHandler = new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    mHelper.setBooleanPreferences("IS_QUEST_PUSH_SUBSCRIPTION", false);
                     pushSubscribe();
                 }
             };
@@ -168,11 +178,119 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
         mHelper.getUrsmuDBObject(mObject, mHandler);
     }
 
+
+    //<editor-fold desc="Google Cloud Messages">
+    private static final String PROPERTY_REG_ID = "";
+    private static final String PROPERTY_APP_VERSION = "1.0";
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private static final String SENDER_ID = "";
+
     private void pushSubscribe() {
         Log.d("URSMULOG", "pushSubscribe");
-        mHelper.setBooleanPreferences("IS_QUEST_PUSH_SUBSCRIPTION", false);
+
+        if (checkPlayServices()) {
+            GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
+            String regid = getRegistrationId(getApplicationContext());
+
+            if (TextUtils.isEmpty(regid) ||
+                    !ApplicationVersionHelper.isApplicationVersionCodeEqualsSavedApplicationVersionCode(getApplicationContext())) {
+                registerInBackground();
+            }
+        } else {
+            Log.i("URSMULOG", "No valid Google Play Services APK found.");
+        }
+
     }
 
+    private void registerInBackground() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                String msg = "";
+                Context context = getApplicationContext();
+                try {
+                    GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
+
+                    String regid = gcm.register(SENDER_ID);
+                    msg = "Device registered, registration ID=" + regid;
+
+                    sendRegistrationIdToBackend(regid);
+
+                    storeRegistrationId(context, regid);
+                } catch (IOException ex) {
+                    msg = "Error :" + ex.getMessage();
+                }
+                return msg;
+            }
+
+            @Override
+            protected void onPostExecute(String msg) {
+                Log.d("URSMULOG", msg);
+            }
+        }.execute(null, null, null);
+    }
+
+    private void sendRegistrationIdToBackend(String regid) {
+        Log.d("URSMULOG", "sendRegistrationIdToBackend " + regid);
+    }
+
+    private void storeRegistrationId(Context context, String regId) {
+        int appVersion = getAppVersion(context);
+        Log.i("URSMULOG", "Saving regId on app version " + appVersion);
+        if (mHelper == null) {
+            mHelper = ServiceHelper.getInstance(getApplicationContext());
+        }
+
+        mHelper.setPreferences(PROPERTY_REG_ID, regId);
+        mHelper.setIntPreference(PROPERTY_APP_VERSION, appVersion);
+    }
+
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Log.i("URSMULOG", "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    private String getRegistrationId(Context context) {
+        if (mHelper == null) {
+            mHelper = ServiceHelper.getInstance(getApplicationContext());
+        }
+
+        String registrationId = mHelper.getPreference(PROPERTY_REG_ID);
+
+        if (TextUtils.isEmpty(registrationId)) {
+            Log.i("URSMULOG", "Registration not found.");
+            return "";
+        }
+        int registeredVersion = mHelper.getIntPreference(PROPERTY_APP_VERSION, Integer.MIN_VALUE);
+        int currentVersion = getAppVersion(context);
+        if (registeredVersion != currentVersion) {
+            Log.i("URSMULOG", "App version changed.");
+            return "";
+        }
+        return registrationId;
+    }
+
+    private static int getAppVersion(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            // should never happen
+            throw new RuntimeException("Could not get package name: " + e);
+        }
+    }
+    //</editor-fold>
 
     protected void changeIndicatorVisible(int visibility) {
         if (mBar == null) {

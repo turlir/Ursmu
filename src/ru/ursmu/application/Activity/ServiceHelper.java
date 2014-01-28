@@ -224,4 +224,15 @@ public class ServiceHelper {
     }
 
 
+    public int getIntPreference(String propertyAppVersion, int minValue) {
+        return mActivity.getSharedPreferences("UrsmuPreferences", Context.MODE_PRIVATE).getInt
+                (propertyAppVersion, minValue);
+    }
+
+    public void setIntPreference(String name, int value) {
+        mActivity.getSharedPreferences("UrsmuPreferences", Context.MODE_PRIVATE)
+                .edit()
+                .putInt(name, value)
+                .commit();
+    }
 }

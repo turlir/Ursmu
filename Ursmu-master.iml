@@ -19,6 +19,8 @@
     <orderEntry type="library" name="android-support-v4" level="application" />
     <orderEntry type="library" name="android-support-v7-appcompat (2)" level="application" />
     <orderEntry type="module" module-name="appcompat" />
+    <orderEntry type="module" module-name="google-play-services_lib" />
+    <orderEntry type="library" name="google-play-services" level="project" />
   </component>
 </module>
 
