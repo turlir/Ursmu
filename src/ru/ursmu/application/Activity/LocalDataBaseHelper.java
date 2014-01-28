@@ -15,7 +15,6 @@ import java.sql.SQLException;
 public class LocalDataBaseHelper extends SQLiteOpenHelper{
 
     // путь к базе данных вашего приложения
-    private static String DB_PATH = "/data/data/ru.ursmu.application/databases/";
     private static String new_DB_PATH;
     private static String DB_NAME = "localChairDB";
     private SQLiteDatabase myDataBase;
