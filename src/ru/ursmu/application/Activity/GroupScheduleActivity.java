@@ -91,7 +91,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
 
         ActionBar bar = getSupportActionBar();
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        ArrayAdapter<String> adapter = new SimpleCustomArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new SimpleCustomArrayAdapter(this,
                 R.layout.simple_action_menu, list_navigation);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         bar.setListNavigationCallbacks(adapter, this);

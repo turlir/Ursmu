@@ -29,6 +29,17 @@ public class ChairDataBasing extends IDatabasingBehavior {
     }
 
     public static ChairDataBasing getInstance(Context c, int z) {
+        init(c);
+        return new ChairDataBasing(z);
+    }
+
+
+    public static ChairDataBasing getInstance(Context c, String s) {
+        init(c);
+        return new ChairDataBasing(s);
+    }
+
+    private static void init(Context c) {
         if (mContext == null || mDataBase == null) {
             Log.d("URSMULOG", "GroupDataBasing getInstance");
             mContext = c;
@@ -45,7 +56,6 @@ public class ChairDataBasing extends IDatabasingBehavior {
             }
             mDataBase.setLockingEnabled(false);  //DB use only one thread
         }
-        return new ChairDataBasing(z);
     }
 
 
@@ -59,6 +69,14 @@ public class ChairDataBasing extends IDatabasingBehavior {
         if (mContext != null) {
             mContext = null;
         }
+    }
+
+    @Override
+    public Cursor get() {
+        if (mNameChair != null) {
+            return mDataBase.rawQuery("SELECT * FROM department WHERE name LIKE ?", new String[]{"%" + mNameChair + "%"});
+        } else
+            return null;
     }
 
     @Override
