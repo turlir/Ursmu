@@ -130,7 +130,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void chair (View v) {
-
+        Intent i = new Intent(this, ChairActivity.class);
+        startActivity(i);
     }
 
     public void vkLogoClick(View v) {
