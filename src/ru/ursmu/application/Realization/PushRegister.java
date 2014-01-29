@@ -35,7 +35,7 @@ public class PushRegister implements IUrsmuObject {
 
     @Override
     public String getParameters() {
-        return "id=" + mId + "&faculty=" + mFaculty + "mEmail=" + mEmail;
+        return "id=" + mId + "&faculty=" + mFaculty + "email=" + mEmail;
     }
 
     @Override
