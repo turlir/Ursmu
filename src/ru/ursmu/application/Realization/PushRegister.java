@@ -7,6 +7,8 @@ import android.util.Patterns;
 import ru.ursmu.application.Abstraction.IParserBehavior;
 import ru.ursmu.application.Abstraction.IUrsmuObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.regex.Pattern;
 
 
@@ -30,16 +32,26 @@ public class PushRegister implements IUrsmuObject {
 
     @Override
     public String getUri() {
-        return null;
+        return "http://192.168.0.100:8871/register";
     }
 
     @Override
     public String getParameters() {
-        return "id=" + mId + "&faculty=" + mFaculty + "email=" + mEmail;
+        return "id=" + Encode(mId) + "&faculty=" + Encode(mFaculty) + "&email=" + Encode(mEmail);
     }
 
     @Override
     public IParserBehavior getParseBehavior() {
         return new EmptyParse();
+    }
+
+    private String Encode(String original) {
+        String r = null;
+        try {
+            r = URLEncoder.encode(original, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+
+        }
+        return r;
     }
 }

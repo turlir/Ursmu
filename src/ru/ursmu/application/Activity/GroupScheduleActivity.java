@@ -208,24 +208,27 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
             protected String doInBackground(Void... params) {
                 String msg = "";
                 Context context = getApplicationContext();
+                String regid = null;
                 try {
                     GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
 
-                    String regid = gcm.register(ServiceHelper.SENDER_ID);
-                    msg = "Device registered, registration ID=" + regid;
-
-                    sendRegistrationIdToBackend(regid);
+                    regid = gcm.register(ServiceHelper.SENDER_ID);
 
                     storeRegistrationId(context, regid);
                 } catch (IOException ex) {
                     msg = "Error :" + ex.getMessage();
+                    Log.d("URSMULOG", "registerInBackground " + msg);
                 }
-                return msg;
+                return regid;
             }
 
             @Override
             protected void onPostExecute(String msg) {
-                Log.d("URSMULOG", msg);
+                if (msg != null) {
+                    Log.d("URSMULOG registerInBackground onPostExecute", msg);
+                    sendRegistrationIdToBackend(msg);
+                }   else
+                    Log.d("URSMULOG", "onPostExecute error msg != null");
             }
         }.execute(null, null, null);
     }
@@ -238,22 +241,22 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
             mHelper = ServiceHelper.getInstance(getApplicationContext());
         }
 
-       /* mHelper.getUrsmuObject(reg_obj, new UniversalCallback() {
+        mHelper.getUrsmuObject(reg_obj, new UniversalCallback() {
             @Override
             public void sendError(String notify) {
-
+                Log.d("URSMULOG", "sendRegistrationIdToBackend sendError" + notify);
             }
 
             @Override
             public void sendComplete(Serializable data) {
-
+                Log.d("URSMULOG", "sendRegistrationIdToBackend sendComplete");
             }
 
             @Override
             public void sendStart(long id) {
-
+                Log.d("URSMULOG", "sendRegistrationIdToBackend sendStart");
             }
-        });*/
+        });
 
 
     }
