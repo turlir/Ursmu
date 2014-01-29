@@ -8,10 +8,10 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Кафедра автоматики и компьютерных технологий"
-            android:id="@+id/name_chair" android:layout_marginBottom="8dp" android:textColor="@android:color/black"
-            android:layout_marginLeft="16dp" android:layout_marginRight="16dp"/>
+            android:id="@+id/name_chair" android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
     <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
@@ -56,7 +56,6 @@
                 android:layout_below="@+id/e_mail_chair"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="8dp"
-                android:textColor="@android:color/black"
                 android:singleLine="true"/>
         <TextView
                 android:layout_width="fill_parent"
@@ -65,7 +64,6 @@
                 android:text="Лапин Эдуард Самуилович"
                 android:id="@+id/cover_title_chair"
                 android:gravity="center_horizontal|left"
-                android:textColor="@android:color/black"
                 android:singleLine="true"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/cover_src_chair"/>
@@ -73,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="ГМФ"
+                android:text="ГМФ>"
                 android:id="@+id/faculty_chair"
                 android:layout_below="@+id/audition_chair"
                 android:layout_alignParentRight="true"

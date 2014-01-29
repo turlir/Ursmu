@@ -1,6 +1,7 @@
 package ru.ursmu.application.Activity;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,17 +10,15 @@ import android.widget.TextView;
 import ru.ursmu.beta.application.R;
 
 public class ExtendedGroupAdapter extends ArrayAdapter<String> {
-    Context mContext;
+    private final Typeface mTypefaceDesc;
     int mResId;
-    String[] mData;
-
     private static final String PATTERN_1 = "(\\d+)";  //GB-12 GHB-12
 
-    public ExtendedGroupAdapter(FindGroupActivity context, int layoutID, String[] data) {
+    public ExtendedGroupAdapter(Context context, int layoutID, String[] data) {
         super(context, layoutID, data);
-        mContext = context;
         mResId = layoutID;
-        mData = data;
+
+        mTypefaceDesc = Typeface.createFromAsset(context.getAssets(), "Roboto-Light.ttf");
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -41,6 +40,7 @@ public class ExtendedGroupAdapter extends ArrayAdapter<String> {
             }
         }*/
 
+        gr_name.setTypeface(mTypefaceDesc);
         gr_name.setText(original); //temp
 
         return v;

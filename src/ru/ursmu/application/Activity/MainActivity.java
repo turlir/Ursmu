@@ -24,11 +24,11 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.main);
         Log.d("URSMULOG", "MainActivity onCreate");
 
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf");
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf");
         ((TextView)findViewById(R.id.textView)).setTypeface(typeface);
 
 
-        //mTypeface = Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf");
+        //mTypefaceContext = Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf");
         ((TextView)findViewById(R.id.textView2)).setTypeface(typeface);
     }
 

@@ -2,26 +2,25 @@ package ru.ursmu.application.Activity;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.text.TextUtils;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import ru.ursmu.beta.application.R;
 import ru.ursmu.application.JsonObject.Faculty;
+import ru.ursmu.beta.application.R;
 
 public class FacultyAdapter extends ArrayAdapter<Faculty> {
-    Context mContext;
+    private final Typeface mTypefaceDesc;
     int mResId;
-    Faculty[] mData;
 
     public FacultyAdapter(Context context, int textViewResourceId, Faculty[] objects) {
         super(context, textViewResourceId, objects);
-        mContext = context;
         mResId = textViewResourceId;
-        mData = objects;
+
+        mTypefaceDesc = Typeface.createFromAsset(context.getAssets(), "Roboto-Light.ttf");
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -36,23 +35,16 @@ public class FacultyAdapter extends ArrayAdapter<Faculty> {
         if (item != null) {
             String color = item.getColor();
 
-            String name =  item.getFullName();
+            String name = item.getFullName();
 
             ImageView fc = (ImageView) v.findViewById(R.id.faculty_color);
             fc.setBackgroundColor(Color.parseColor(color));
 
             TextView fn = (TextView) v.findViewById(R.id.faculty_name);
+            fn.setTypeface(mTypefaceDesc);
             fn.setText(name);
         }
 
         return v;
     }
-
-
-//    @Override
-//    public Faculty getItem(int position) {
-//        return mData[position];
-//    }
-
-
 }

@@ -29,7 +29,7 @@ public class ChairAdapter extends ArrayAdapter<ChairItem> {
     int mResId;
     private final ImageLoader mImageLoader;
 
-    static Typeface mTypeface;
+    private Typeface mTypefaceDesc, mTypefaceTitle;
 
 
     public ChairAdapter(Context context, int textViewResourceId, ChairItem[] objects) {
@@ -50,8 +50,8 @@ public class ChairAdapter extends ArrayAdapter<ChairItem> {
                 .build();
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-                .memoryCacheExtraOptions(105, 140) // default = device screen dimensions
-                .discCacheExtraOptions(105, 140, Bitmap.CompressFormat.JPEG, 100, null)
+                .memoryCacheExtraOptions(140, 187) // default = device screen dimensions
+                .discCacheExtraOptions(140, 187, Bitmap.CompressFormat.JPEG, 100, null)
                 .threadPoolSize(3) // default
                 .threadPriority(Thread.NORM_PRIORITY - 1) // default
                 .memoryCache(new UsingFreqLimitedMemoryCache(memory_cache_size)) // default
@@ -66,8 +66,8 @@ public class ChairAdapter extends ArrayAdapter<ChairItem> {
 
         mImageLoader.init(config);
 
-        mTypeface = Typeface.createFromAsset(mContext.getAssets(), "Roboto-Light.ttf");
-
+        mTypefaceDesc = Typeface.createFromAsset(mContext.getAssets(), "Roboto-Light.ttf");
+        mTypefaceTitle = Typeface.createFromAsset(mContext.getAssets(), "Roboto-Regular.ttf");
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -81,25 +81,30 @@ public class ChairAdapter extends ArrayAdapter<ChairItem> {
 
         if (item != null) {
             TextView name = (TextView) v.findViewById(R.id.name_chair);
-            name.setTypeface(mTypeface);
+            name.setTypeface(mTypefaceTitle);
             name.setText(item.getName());
 
             TextView cover_title = (TextView) v.findViewById(R.id.cover_title_chair);
+            cover_title.setTypeface(mTypefaceDesc);
             cover_title.setText(item.getCoverTitle());
 
             TextView phone = (TextView) v.findViewById(R.id.phone_chair);
+            phone.setTypeface(mTypefaceDesc);
             phone.setText(item.getPhone());
 
             TextView mail = (TextView) v.findViewById(R.id.e_mail_chair);
+            mail.setTypeface(mTypefaceDesc);
             mail.setText(item.getMail());
 
             TextView address = (TextView) v.findViewById(R.id.audition_chair);
+            address.setTypeface(mTypefaceDesc);
             address.setText(item.getAddress());
 
 
             TextView faculty = (TextView) v.findViewById(R.id.faculty_chair);
             Faculty fac_item = FacultyFactory.create(item.getFaculty());
             faculty.setText(fac_item.getOriginalName());
+            faculty.setTypeface(mTypefaceDesc);
             faculty.setBackgroundColor(Color.parseColor(fac_item.getColor()));
 
             mImageLoader.displayImage(item.getCoverSrc(), (ImageView) v.findViewById(R.id.cover_src_chair));

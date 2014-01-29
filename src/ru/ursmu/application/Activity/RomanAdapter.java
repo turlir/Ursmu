@@ -1,6 +1,7 @@
 package ru.ursmu.application.Activity;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +11,14 @@ import ru.ursmu.application.JsonObject.RomanNumeral;
 import ru.ursmu.beta.application.R;
 
 public class RomanAdapter extends ArrayAdapter<String> {
-    Context mContext;
+    private final Typeface mTypefaceDesc;
     int mResId;
-    String[] mData;
 
-    public RomanAdapter(FindKursActivity context, int adapter_id_layout, String[] data) {
+    public RomanAdapter(Context context, int adapter_id_layout, String[] data) {
         super(context, adapter_id_layout, data);
 
-        //mContext = context;
         mResId = adapter_id_layout;
-        //mData = data;
+        mTypefaceDesc = Typeface.createFromAsset(context.getAssets(), "Roboto-Light.ttf");
     }
 
 
@@ -38,6 +37,7 @@ public class RomanAdapter extends ArrayAdapter<String> {
         }
 
         TextView textRoman = (TextView) v.findViewById(R.id.kursItem);
+        textRoman.setTypeface(mTypefaceDesc);
         textRoman.setText(item);
 
 
