@@ -15,9 +15,10 @@
     <string name="share_text_schedule_screen" type="id">
         Мое расписание на сайте УГГУ</string>
 
+    <string name="about_title" type="id">О приложении</string>
     <string name="about_text" type="id">
-        Идея и реализация: Осинцев Илья, ГМФ. \nОбратная связь:\nhttps://vk.com/turlir \nУчастие в процессе разработки\nhttps://github.com/turlir/Ursmu
+        Идея и реализация: Осинцев Илья, ГМФ. \nОбратная связь:\nhttps://vk.com/turlir \nУчастие в процессе разработки:\nhttps://github.com/turlir/Ursmu\nЛицензия:GPLv2
     </string>
     <string name="subsrc_dialog_title">Подписаться на обновления?</string>
-    <string name="subsrc_dialog_desc">Будьте в курсе с push уведомениями об обновлении расписания</string>
+    <string name="subsrc_dialog_desc">Будь в курсе с push уведомениями об обновлении расписания</string>
 </resources>

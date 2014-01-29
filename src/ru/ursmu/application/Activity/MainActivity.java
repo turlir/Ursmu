@@ -105,7 +105,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             protected Void doInBackground(Void... params) {
                 ProfessorDataBasing db_agent = ProfessorDataBasing.getInstance(getApplicationContext(), "");
-                db_agent.clearTable();    //.close() exclusive
+                db_agent.clearTable();    //.close() inclusive
 
                 return null;
             }

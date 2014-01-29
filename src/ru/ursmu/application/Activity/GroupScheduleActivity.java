@@ -167,7 +167,6 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
             DialogInterface.OnClickListener positiveHandler = new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    mHelper.setBooleanPreferences("IS_QUEST_PUSH_SUBSCRIPTION", false);
                     pushSubscribe();
                 }
             };
@@ -175,6 +174,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
                     getResources().getString(R.string.subsrc_dialog_title), getResources().getString(R.string.subsrc_dialog_desc));
 
             quest_dialog.show(getSupportFragmentManager(), "quest_dialog");
+            mHelper.setBooleanPreferences("IS_QUEST_PUSH_SUBSCRIPTION", false);
         }
 
 

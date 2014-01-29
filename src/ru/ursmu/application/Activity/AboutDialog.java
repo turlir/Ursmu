@@ -22,7 +22,7 @@ public class AboutDialog extends DialogFragment {
         builder.setView(view);
 
         builder.setPositiveButton(android.R.string.ok, null);
-        builder.setTitle("О приложении");
+        builder.setTitle(getActivity().getResources().getString(R.string.about_title));
 
         return builder.create();
     }
