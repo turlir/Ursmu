@@ -1,7 +1,5 @@
 package ru.ursmu.application.Realization;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import ru.ursmu.application.Abstraction.IParserBehavior;
 import ru.ursmu.application.Abstraction.IUrsmuObject;
 

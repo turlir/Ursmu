@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.provider.BaseColumns;
 import android.util.Log;
 import ru.ursmu.application.Abstraction.IDatabasingBehavior;
 import ru.ursmu.application.Activity.DataBaseHelper;
@@ -31,17 +32,17 @@ public class GroupDataBasing extends IDatabasingBehavior {
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * ");
         sb.append("FROM ScheduleDays ");
-        sb.append("WHERE (ScheduleDays.GroupID = ?) ");
+        sb.append("WHERE (GroupID = ?) ");
         //mQuery.append("AND (ScheduleDays.room !='')");          //show empty pair?
-        sb.append("ORDER BY ScheduleDays.DayIndex, ScheduleDays.numerPair");
+        sb.append("ORDER BY DayIndex, numerPair");
         mQuerySchedule = sb.toString();
 
         sb = new StringBuilder();
-        sb.append("SELECT ScheduleCommon.GroupName, ScheduleCommon._id, ScheduleCommon.FACULTY, ScheduleCommon.KURS ");
-        sb.append("FROM ScheduleCommon ");
+        sb.append("SELECT " + DataBaseHelper.GROUP + " ," + BaseColumns._ID + " ," + DataBaseHelper.FACULTY + " ," + DataBaseHelper.KURS);
+        sb.append(" FROM ScheduleCommon ");
         sb.append("WHERE ");
-        sb.append("(ScheduleCommon.GroupName LIKE ?) ");
-        sb.append("GROUP BY ScheduleCommon.GroupName ");
+        sb.append("(" + DataBaseHelper.GROUP + " LIKE ?) ");
+        sb.append("GROUP BY " + DataBaseHelper.GROUP);
         mQueryGroupList = sb.toString();
     }
 
@@ -140,9 +141,9 @@ public class GroupDataBasing extends IDatabasingBehavior {
         if (mUIN != null && mGroup.equals(mLastGroup)) {
             return;
         }
-        Cursor c = mDataBase.rawQuery("SELECT ScheduleCommon.UIN FROM ScheduleCommon WHERE (ScheduleCommon.GroupName = ?)", new String[]{mGroup});
+        Cursor c = mDataBase.rawQuery("SELECT " + DataBaseHelper.UIN + " FROM ScheduleCommon WHERE (" + DataBaseHelper.GROUP + " = ?)", new String[]{mGroup});
         try {
-            int uin_index = c.getColumnIndexOrThrow("UIN");
+            int uin_index = c.getColumnIndexOrThrow(DataBaseHelper.UIN);
             if (c.moveToFirst()) {
                 Long uin = c.getLong(uin_index);
                 c.close();

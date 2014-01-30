@@ -14,7 +14,7 @@
             android:layout_height="50dp"
             android:singleLine="true"
             android:text=""
-            android:textAppearance="@android:style/TextAppearance.Holo.Medium.Inverse"
+            android:textAppearance="?android:attr/textAppearanceMediumInverse"
             android:gravity="center_vertical"
             android:textColor="@android:color/white"/>
 

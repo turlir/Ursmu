@@ -1,11 +1,12 @@
 package ru.ursmu.application.JsonObject;
 
 import android.database.Cursor;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
+import ru.ursmu.application.Activity.DataBaseHelper;
 
-public class EducationItem implements Parcelable {
+import java.io.Serializable;
+
+public class EducationItem implements Serializable {
     private String mGroupName;
     private String mFaculty;
     private String mKurs;
@@ -34,9 +35,9 @@ public class EducationItem implements Parcelable {
     public EducationItem(Cursor cursor, boolean f) {        //db
         if (f) {
             if (groupName_in == 0 || faculty_in == 0 || kurs_in == 0) {
-                groupName_in = cursor.getColumnIndex("GroupName");
-                faculty_in = cursor.getColumnIndex("FACULTY");
-                kurs_in = cursor.getColumnIndex("KURS");
+                groupName_in = cursor.getColumnIndex(DataBaseHelper.GROUP);
+                faculty_in = cursor.getColumnIndex(DataBaseHelper.FACULTY);
+                kurs_in = cursor.getColumnIndex(DataBaseHelper.KURS);
             }
             mGroupName = cursor.getString(groupName_in);
             mFaculty = cursor.getString(faculty_in);
@@ -54,7 +55,7 @@ public class EducationItem implements Parcelable {
         }
 
         mPredmet = cursor.getString(name_in);
-        mDayNumber = cursor.getInt(dayNumber_in);   //6
+        mDayNumber = cursor.getInt(dayNumber_in);
 
         mTeacher = cursor.getString(teacher_in);
         mRoom = cursor.getString(audition_in);
@@ -108,43 +109,6 @@ public class EducationItem implements Parcelable {
 
     public  String getKurs() {
         return mKurs;
-    }
-
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(mDayNumber);
-        dest.writeString(mPredmet);
-        dest.writeString(mTeacher);
-        dest.writeString(mRoom);
-        dest.writeInt(mNumberPar);
-        //dest.writeString(normalProfessor);
-        dest.writeString(mGroupName);
-    }
-
-    public static final Parcelable.Creator<Object> CREATOR = new Parcelable.Creator<Object>() {
-        public EducationItem createFromParcel(Parcel in) {
-            return new EducationItem(in);
-        }
-
-        public EducationItem[] newArray(int size) {
-            return new EducationItem[size];
-        }
-    };
-
-    private EducationItem(Parcel parcel) {
-        mDayNumber = parcel.readInt();
-        mPredmet = parcel.readString();
-        mTeacher = parcel.readString();
-        mRoom = parcel.readString();
-        mNumberPar = parcel.readInt();
-        //normalProfessor = parcel.readString();
-        mGroupName = parcel.readString();
     }
 
 }

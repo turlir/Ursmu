@@ -1,7 +1,5 @@
 package ru.ursmu.application.Realization;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import ru.ursmu.application.Abstraction.IParserBehavior;
 import ru.ursmu.application.Abstraction.IUrsmuObject;
 
@@ -12,7 +10,7 @@ public class GroupList implements IUrsmuObject {
 
     //private StringBuilder mParam = new StringBuilder("task=group"+"&fak=" + faculty + "&kurs=" + kurs);
 
-    private String mParam;;
+    private String mParam;
 
     public GroupList(String f, String k) {
         mParam = "task=group" + "&fak=" + Encode(f) + "&kurs=" + Encode(k);

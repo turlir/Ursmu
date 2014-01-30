@@ -1,10 +1,9 @@
-package ru.ursmu.application.JsonObject;
+package ru.ursmu.application.Realization;
 
 import android.content.Context;
 import ru.ursmu.application.Abstraction.IDatabasingBehavior;
 import ru.ursmu.application.Abstraction.IParserBehavior;
 import ru.ursmu.application.Abstraction.IUrsmuDBObject;
-import ru.ursmu.application.Realization.ChairDataBasing;
 
 
 public class SpecificChairList implements IUrsmuDBObject {

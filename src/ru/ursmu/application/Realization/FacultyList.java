@@ -1,14 +1,11 @@
 package ru.ursmu.application.Realization;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import ru.ursmu.application.Abstraction.IParserBehavior;
 import ru.ursmu.application.Abstraction.IUrsmuObject;
 
 public class FacultyList implements IUrsmuObject {
 
 
-    private String mParam = "task=fak";
     //private boolean mIsDB = false;
 
     public FacultyList() {
@@ -22,7 +19,7 @@ public class FacultyList implements IUrsmuObject {
 
     @Override
     public String getParameters() {
-        return mParam;
+        return "task=fak";
     }
 
     @Override

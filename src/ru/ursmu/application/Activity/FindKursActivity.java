@@ -49,9 +49,8 @@ public class FindKursActivity extends ActionBarActivity {
 
 
     protected void postProcessing(String[] data) {
-        String[] l = data;
 
-        getListView().setAdapter(new RomanAdapter(this, R.layout.kurs_adapter, l));
+        getListView().setAdapter(new RomanAdapter(this, R.layout.kurs_adapter, data));
         getListView().setOnItemClickListener(mKursClickListener);
     }
 

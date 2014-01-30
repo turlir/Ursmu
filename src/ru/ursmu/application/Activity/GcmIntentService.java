@@ -37,9 +37,9 @@ public class GcmIntentService extends IntentService {
 
         if (!extras.isEmpty()) {
             if (GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-                //
+                Log.d("URSMULOG", "GcmIntentService GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR");
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_DELETED.equals(messageType)) {
-                //
+                Log.d("URSMULOG", "GcmIntentService GoogleCloudMessaging.MESSAGE_TYPE_DELETED");
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                 sendNotification(extras.getString("param1"), extras.getString("param2"));
                 Log.i(TAG, "Received: " + extras.toString());
@@ -71,7 +71,7 @@ public class GcmIntentService extends IntentService {
 
         Intent i = new Intent(this, GroupScheduleActivity.class);
         String[] info = helper.getThreeInfo();
-        i.putExtra("IS_HARD", true);               //only true - special update
+        i.putExtra(ServiceHelper.IS_HARD, true);               //only true - special update
         i.putExtra(ServiceHelper.FACULTY, info[0]);
         i.putExtra(ServiceHelper.KURS, info[1]);
         i.putExtra(ServiceHelper.GROUP, info[2]);

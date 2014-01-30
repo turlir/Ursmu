@@ -1,8 +1,6 @@
 package ru.ursmu.application.Realization;
 
 import android.content.Context;
-import android.os.Parcel;
-import android.os.Parcelable;
 import ru.ursmu.application.Abstraction.IDatabasingBehavior;
 import ru.ursmu.application.Abstraction.IParserBehavior;
 import ru.ursmu.application.Abstraction.IUrsmuDBObject;
@@ -15,7 +13,7 @@ public class ScheduleGroup implements IUrsmuDBObject, IUrsmuObject {
 
     String uri = "http://mobrasp.ursmu.ru/";
 
-    private String mFaculty,mKurs, mGroup, mParam;
+    private String mFaculty, mKurs, mGroup, mParam;
     private boolean mHard;
 
     public ScheduleGroup(String fak, String kur, String gro, boolean isHard) {
@@ -64,15 +62,15 @@ public class ScheduleGroup implements IUrsmuDBObject, IUrsmuObject {
         mHard = value;
     }
 
-    public String getFaculty(){
+    public String getFaculty() {
         return mFaculty;
     }
 
-    public String getKurs(){
+    public String getKurs() {
         return mKurs;
     }
 
-    public String getGroup(){
+    public String getGroup() {
         return mGroup;
     }
 

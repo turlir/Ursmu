@@ -58,23 +58,23 @@ public class EducationWeek implements Serializable {
     public EducationItem[] get(int i) {
         switch (i) {
             case 0:
-                return mMonday.toArray(new EducationItem[]{});
+                return mMonday.toArray(new EducationItem[mMonday.size()]);
 
             case 1:
-                return mTuesday.toArray(new EducationItem[]{});
+                return mTuesday.toArray(new EducationItem[mTuesday.size()]);
 
             case 2:
-                return mWednesday.toArray(new EducationItem[]{});
+                return mWednesday.toArray(new EducationItem[mWednesday.size()]);
 
             case 3:
-                return mThursday.toArray(new EducationItem[]{});
+                return mThursday.toArray(new EducationItem[mThursday.size()]);
 
             case 4:
-                return mFriday.toArray(new EducationItem[]{});
+                return mFriday.toArray(new EducationItem[mFriday.size()]);
 
             case 5:
-                return mSaturday.toArray(new EducationItem[]{});
 
+                return mSaturday.toArray(new EducationItem[mSaturday.size()]);
             default:
                 return new EducationItem[]{};
         }

@@ -12,6 +12,6 @@
             android:singleLine="false"
             android:text=""
             android:textColor="@android:color/white"
-            android:textAppearance="@android:style/TextAppearance.Holo.Medium.Inverse"/>
+            android:textAppearance="?android:attr/textAppearanceMediumInverse"/>
 
 </LinearLayout>

@@ -37,8 +37,8 @@ public class NormalProcessor extends AbstractProcessor {
     }
 
     private Object[] getItem(IUrsmuObject item) {
-        String s = null;
-        Object[] q = null;
+        String s;
+        Object[] q;
         try {
             Log.d("URSMULOG", item.getParameters());
             s = getDownloadBehavior().Download(item.getUri(), item.getParameters());

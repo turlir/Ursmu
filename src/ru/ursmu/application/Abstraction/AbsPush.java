@@ -6,6 +6,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 public abstract class AbsPush implements IUrsmuObject {
+    private static final String PUSH_URI = "http://192.168.0.100:8871/";
+
     protected abstract boolean getFlag();
 
     protected String mFaculty, mId, mGroup;
@@ -28,9 +30,9 @@ public abstract class AbsPush implements IUrsmuObject {
     @Override
     public String getUri() {
         if (!getFlag()) {
-            return "http://192.168.0.100:8871/register";
+            return PUSH_URI + "register";
         } else {
-            return "http://192.168.0.100:8871/re_register";
+            return PUSH_URI + "re_register";
         }
     }
 

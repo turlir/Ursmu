@@ -5,10 +5,8 @@ import android.os.Parcelable;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public interface IGroupDBUrsmuObject<T extends IUrsmuDBObject> extends Parcelable {        //factory db object; only add
-
 
 
     boolean check(Context c);

@@ -3,7 +3,9 @@ package ru.ursmu.application.JsonObject;
 
 import android.database.Cursor;
 
-public class ChairItem {
+import java.io.Serializable;
+
+public class ChairItem implements Serializable {
     private static final String PREFIX_URL = "http://edu.ursmu.ru";
     private static int fac_in, name_in, phone_in, address_in, mail_in, cover_src_in, cover_title_in;
 

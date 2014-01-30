@@ -90,7 +90,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
         mFaculty = info.getStringExtra(ServiceHelper.FACULTY);
         String kurs = info.getStringExtra(ServiceHelper.KURS);
         mGroup = info.getStringExtra(ServiceHelper.GROUP);
-        boolean isHard = info.getBooleanExtra("IS_HARD", true);
+        boolean isHard = info.getBooleanExtra(ServiceHelper.IS_HARD, true);
 
         mObject = new ScheduleGroup(mFaculty, kurs, mGroup, isHard);
         mContext = getApplicationContext();
@@ -208,7 +208,6 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
 
     private void pushSubscribe() {
         Log.d("URSMULOG", "pushSubscribe");
-        GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
         String regid = getRegistrationId(getApplicationContext());
 
         if (TextUtils.isEmpty(regid) ||
@@ -271,7 +270,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
             mHelper = ServiceHelper.getInstance(getApplicationContext());
         }
 
-        IUrsmuObject reg_obj = null;
+        IUrsmuObject reg_obj;
         if (!re_register) {
             reg_obj = new PushRegister(regid, mFaculty, mGroup);
         } else {

@@ -2,12 +2,12 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/schedule_prof_item_alarm"
-          android:showAsAction="always"
+          android:showAsAction="ifRoom"
           android:title="Будильник"
             />
 
     <item android:id="@+id/schedule_prof_item_group"
-          android:showAsAction="always"
+          android:showAsAction="ifRoom"
           android:title="Группа"
             />
 </menu>

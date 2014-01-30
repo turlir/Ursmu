@@ -8,6 +8,12 @@ import android.util.Log;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
+    //ScheduleCommon
+    public static final String FACULTY = "faculty";
+    public static final String KURS = "kurs";
+    public static final String GROUP = "group_name";  //not sqlite service expression  'group'
+    public static final String UIN = "uin";
+
     public DataBaseHelper(Context context) {
         super(context, "DataBaseHelper", null, 1);
     }
@@ -32,21 +38,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 ");");
 
         db.execSQL("create table ScheduleCommon(" +
-                BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +    //1
-                ServiceHelper.FACULTY + " STRING," +                                     //2
-                ServiceHelper.KURS + " INTEGER," +                                       //3
-                ServiceHelper.GROUP + " STRING," +                                       //4
-                "UIN" + " INTEGER" +                                        //5
-
+                BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +  //1
+                FACULTY + " STRING," +                                     //2
+                KURS + " INTEGER," +                                       //3
+                GROUP + " STRING," +                                       //4
+                UIN + " INTEGER" +                                         //5
                 ");");
-
-        //db.execSQL("CREATE INDEX trackindex ON ScheduleCommon(UIN);");
     }
 
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+          //db.execSQL("DROP TABLE ScheduleCommon, ScheduleDays");
     }
 
 

@@ -51,7 +51,6 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            //Log.d("URSMULOG", "ScheduleAdapter getView view == null");
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(mResID, parent, false);
 
@@ -66,8 +65,7 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-
-        EducationItem item = mData[position];
+        EducationItem item = getItem(position);
         int current_pair = item.getNumberPar();
 
         holder.nametv.setText(item.getPredmet());
@@ -127,9 +125,7 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
 
             int n = (numberPair == 0 ? 0 : numberPair - 1);
             if (n < start.length && n < stop.length) {
-                int hour = current_hour;
-                int minute = current_min;
-                int i2 = hour * 60 + minute;   //current
+                int i2 = current_hour * 60 + current_min;   //current
 
                 double begin = start[n];
                 int[] x = timeArrayItemConvert(begin);
@@ -179,11 +175,6 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
         i.putExtra(AlarmClock.EXTRA_MINUTES, minute);
         i.putExtra(AlarmClock.EXTRA_SKIP_UI, false);
         mContext.startActivity(i);
-    }
-
-    public void setData(EducationItem[] newData) {
-        mData = newData;
-        this.notifyDataSetChanged();
     }
 
     private static class ViewHolder {

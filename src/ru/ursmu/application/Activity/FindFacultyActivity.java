@@ -69,17 +69,17 @@ public class FindFacultyActivity extends ActionBarActivity implements SearchView
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if (newText.length() < 6) {
+        if (newText.length() > 3) {
             ScheduleGroup prof = new ScheduleGroup(newText, false); //Upper Case
             Cursor c = prof.getDataBasingBehavior(getApplicationContext()).get();
 
-            SuggestionsAdapter adapter = new SuggestionsAdapter(getSupportActionBar().getThemedContext(), c, "GroupName", R.drawable.white_social_group);
+            SuggestionsAdapter adapter = new SuggestionsAdapter(getSupportActionBar().getThemedContext(), c,
+                    DataBaseHelper.GROUP,
+                    R.drawable.white_social_group);
             mSearchView.setSuggestionsAdapter(adapter);
             return true;
-        } else {
-            Toast.makeText(getApplicationContext(), "А по короче?", Toast.LENGTH_SHORT).show();
+        } else
             return false;
-        }
     }
 
     @Override
@@ -92,12 +92,12 @@ public class FindFacultyActivity extends ActionBarActivity implements SearchView
         //String groupName = ((SuggestionsAdapter) mSearchView.getSuggestionsAdapter()).getString(position);
         Cursor all_item = mSearchView.getSuggestionsAdapter().getCursor();
         if (all_item.moveToPosition(position)) {
-            String fac = all_item.getString(all_item.getColumnIndexOrThrow("FACULTY"));
-            String kurs = all_item.getString(all_item.getColumnIndexOrThrow("KURS"));
-            String gro = all_item.getString(all_item.getColumnIndexOrThrow("GroupName"));
+            String fac = all_item.getString(all_item.getColumnIndexOrThrow(DataBaseHelper.FACULTY));
+            String kurs = all_item.getString(all_item.getColumnIndexOrThrow(DataBaseHelper.KURS));
+            String gro = all_item.getString(all_item.getColumnIndexOrThrow(DataBaseHelper.GROUP));
 
             Intent i = new Intent(this, GroupScheduleActivity.class);
-            i.putExtra("IS_HARD", false);
+            i.putExtra(ServiceHelper.IS_HARD, false);
             i.putExtra(ServiceHelper.FACULTY, fac);
             i.putExtra(ServiceHelper.KURS, kurs);
             i.putExtra(ServiceHelper.GROUP, gro);

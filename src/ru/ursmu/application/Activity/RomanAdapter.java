@@ -29,7 +29,7 @@ public class RomanAdapter extends ArrayAdapter<String> {
             v = inflater.inflate(mResId, null);
         }
 
-        String item = null;
+        String item;
         try {
             item = new RomanNumeral(Integer.parseInt(getItem(position))).toString();
         } catch (NumberFormatException e) {

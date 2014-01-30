@@ -60,7 +60,6 @@ public class NewsActivity extends ActionBarActivity {
         setContentView(R.layout.news_activity);
         mHelper = ServiceHelper.getInstance(getApplicationContext());
         IUrsmuObject object = new UrsmuNews(1);
-        long mReqId = mHelper.getUrsmuObject(object, mCallback);
 
         mSource = new ArrayList<ListItem>(19);
         ListView newsList = (ListView) findViewById(R.id.list_news);

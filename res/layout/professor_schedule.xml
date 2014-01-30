@@ -9,7 +9,7 @@
             android:id="@+id/professor_viewpager"
             android:layout_height="fill_parent"
             android:layout_width="fill_parent"
-            android:layout_below="@+id/navigation_bar_prof_sche">
+>
         <android.support.v4.view.PagerTabStrip
                 android:id="@+id/professor_pagerTabStrip"
                 android:layout_width="match_parent"

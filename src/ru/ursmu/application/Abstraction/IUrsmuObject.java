@@ -1,7 +1,5 @@
 package ru.ursmu.application.Abstraction;
 
-import android.os.Parcelable;
-
 import java.io.Serializable;
 
 public interface IUrsmuObject extends Serializable {

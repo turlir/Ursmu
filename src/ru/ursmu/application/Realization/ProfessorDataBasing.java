@@ -10,11 +10,9 @@ import ru.ursmu.application.JsonObject.EducationItem;
 
 public class ProfessorDataBasing extends IDatabasingBehavior {
 
-
     private static Context mContext;
     private static SQLiteDatabase mDataBase;
     private static String mQueryNonLimit;
-    //private static StringBuilder mStringBuffer;
     private String mProfessor;
     private static String mQueryLimit;
 
@@ -27,22 +25,21 @@ public class ProfessorDataBasing extends IDatabasingBehavior {
         sb.append("ScheduleDays._id, ");
         sb.append("ScheduleDays.normalProfessor, ");
         sb.append("ScheduleDays.DayIndex, ");
-        sb.append("ScheduleCommon.GroupName, ");
-        sb.append("ScheduleCommon.FACULTY, ");
-        sb.append("ScheduleCommon.KURS ");
+        sb.append("ScheduleCommon." + DataBaseHelper.GROUP + ",");
+        sb.append("ScheduleCommon." + DataBaseHelper.FACULTY + ", ");
+        sb.append("ScheduleCommon." + DataBaseHelper.KURS + " ");
         sb.append("FROM ScheduleCommon, ScheduleDays ");
-        sb.append("WHERE (ScheduleCommon.UIN = ScheduleDays.GroupID) ");
+        sb.append("WHERE (ScheduleCommon." + DataBaseHelper.UIN + " = ScheduleDays.GroupID) ");
         sb.append("AND (ScheduleDays.normalProfessor = ?) ");
         sb.append("ORDER BY ScheduleDays.DayIndex, ScheduleDays.numerPair");
         mQueryLimit = sb.toString();
 
 
         sb = new StringBuilder();
-        sb.append("SELECT ScheduleDays.normalProfessor, ScheduleDays._id ");
+        sb.append("SELECT normalProfessor, _id ");
         sb.append("FROM ScheduleDays ");
-        sb.append("WHERE (ScheduleDays.normalProfessor LIKE ?) ");
-        //sb.append("'%" + "?" + "%')");
-        sb.append("GROUP BY ScheduleDays.normalProfessor");
+        sb.append("WHERE (normalProfessor LIKE ?) ");
+        sb.append("GROUP BY normalProfessor");
         //sb.append(" ORDER BY ScheduleDays.numerPair");
         mQueryNonLimit = sb.toString();
     }

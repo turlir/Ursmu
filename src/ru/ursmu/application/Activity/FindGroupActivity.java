@@ -71,7 +71,7 @@ public class FindGroupActivity extends ActionBarActivity {
             i.putExtra(ServiceHelper.FACULTY, mFaculty);
             i.putExtra(ServiceHelper.KURS, mKurs);
             i.putExtra(ServiceHelper.GROUP, selected_group);
-            i.putExtra("IS_HARD", true);
+            i.putExtra(ServiceHelper.IS_HARD, true);
             i.putExtra("RE_REGISTER", re_register);
 
             startActivity(i);

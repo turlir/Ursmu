@@ -52,22 +52,22 @@ public abstract class AbstractProcessor extends AsyncTask<Void, Void, Object[]> 
     public void sendStart() {
         Log.d("URSMULOG", "AbstractProcessor sendStart()");
         Bundle b = new Bundle(1);
-        b.putLong("REQUEST_ID", mReqId);
+        b.putLong(ServiceHelper.REQUEST_ID, mReqId);
         mCallback.send(ServiceHelper.DOWNLOAD_START, b);
     }
 
     public void sendFailure(String msg) {
         Log.d("URSMULOG", "AbstractProcessor sendFailure() " + msg);
         Bundle b = new Bundle(1);
-        b.putLong("REQUEST_ID", mReqId);
-        b.putString("ERROR_NOTIF", msg);
-        mCallback.send(ServiceHelper.PROCESSOR_FAILURE, b);
+        b.putLong(ServiceHelper.REQUEST_ID, mReqId);
+        b.putString(ServiceHelper.ERROR_NOTIFY, msg);
+        mCallback.send(ServiceHelper.DOWNLOAD_FAILURE, b);
     }
 
     public void sendComplete(Object data) {
         Log.d("URSMULOG", "AbstractProcessor sendComplete()");
         Bundle bundle = new Bundle(2);
-        bundle.putLong("REQUEST_ID", mReqId);
+        bundle.putLong(ServiceHelper.REQUEST_ID, mReqId);
         bundle.putSerializable(ServiceHelper.PARSE_DATA, (Serializable) data);
         mCallback.send(ServiceHelper.DOWNLOAD_COMPLETE, bundle);
     }
@@ -75,16 +75,15 @@ public abstract class AbstractProcessor extends AsyncTask<Void, Void, Object[]> 
     public void sendComplete(Serializable[] data) {
         Log.d("URSMULOG", "AbstractProcessor sendComplete()");
         Bundle bundle = new Bundle(2);
-        bundle.putLong("REQUEST_ID", mReqId);
-        //bundle.putParcelableArray(ServiceHelper.PARSE_DATA, data);
+        bundle.putLong(ServiceHelper.REQUEST_ID, mReqId);
         bundle.putSerializable(ServiceHelper.PARSE_DATA, data);
         mCallback.send(ServiceHelper.DOWNLOAD_COMPLETE, bundle);
     }
 
     public void sendMiddle(String msg) {
         Bundle b = new Bundle(1);
-        b.putLong("REQUEST_ID", mReqId);
-        b.putString("MIDDLE_NOTIF", msg);
+        b.putLong(ServiceHelper.REQUEST_ID, mReqId);
+        b.putString(ServiceHelper.MIDDLE_NOTIFY, msg);
         mCallback.send(ServiceHelper.DOWNLOAD_MIDDLE, b);
     }
 

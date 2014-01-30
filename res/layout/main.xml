@@ -53,7 +53,7 @@
         </RelativeLayout>
 
         <View
-                android:id="@+id/line"
+                android:id="@+id/line_one"
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:background="#7fa87f"
@@ -95,7 +95,7 @@
         </RelativeLayout>
 
         <View
-                android:id="@+id/line"
+                android:id="@+id/line_two"
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:background="#7fa87f"

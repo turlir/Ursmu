@@ -62,7 +62,7 @@ public class UpdateDialog extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        ServiceHelper.getInstance(getActivity()).setGroupDBObjects(new ScheduleGroupFactory(), mHandlerDialog);
+        ServiceHelper.getInstance(getActivity()).getGroupDBObjects(new ScheduleGroupFactory(), mHandlerDialog);
     }
 
     private void showNotification(String value) {

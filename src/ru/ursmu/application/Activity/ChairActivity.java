@@ -17,7 +17,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.JsonObject.ChairItem;
-import ru.ursmu.application.JsonObject.SpecificChairList;
+import ru.ursmu.application.Realization.SpecificChairList;
 import ru.ursmu.application.Realization.RandomChairList;
 import ru.ursmu.beta.application.R;
 
@@ -81,7 +81,6 @@ public class ChairActivity extends ActionBarActivity implements SearchView.OnQue
     public boolean onSuggestionClick(int position) {
         Cursor all_item = mSearchView.getSuggestionsAdapter().getCursor();
         if (all_item.moveToPosition(position)) {
-            String name = all_item.getString(all_item.getColumnIndexOrThrow("name"));
 
             postProcessing(new ChairItem[]{
                     new ChairItem(all_item)

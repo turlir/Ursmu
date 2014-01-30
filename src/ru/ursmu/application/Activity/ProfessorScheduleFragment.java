@@ -55,7 +55,7 @@ public class ProfessorScheduleFragment extends Fragment {
                     i.putExtra(ServiceHelper.FACULTY, faculty);
                     i.putExtra(ServiceHelper.KURS, kurs);
                     i.putExtra(ServiceHelper.GROUP, groupName);
-                    i.putExtra("IS_HARD", false);
+                    i.putExtra(ServiceHelper.IS_HARD, false);
                     startActivity(i);
                 } else {
                     Toast.makeText(getActivity().getApplicationContext(), "Выберите пару", Toast.LENGTH_SHORT).show();

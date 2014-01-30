@@ -32,12 +32,10 @@ public class DBProcessor extends AbstractProcessor {
         sendStart();
 
         IDatabasingBehavior dbAgent = getDataBaseBehavior();
-        if (mCallback != null) {
-            if (dbAgent.check() && !mHard) {
-                Log.d("URSMULOG", "DBProcessor check true");
-                start(dbAgent); //есть в базе И не обновляем
-                return null;
-            }
+        if (dbAgent.check() && !mHard) {
+            Log.d("URSMULOG", "DBProcessor check true");
+            start(dbAgent); //есть в базе И не обновляем
+            return null;
         }
 
         //если нет в базе или обновляем
@@ -70,7 +68,7 @@ public class DBProcessor extends AbstractProcessor {
             sendFailure(mContext.getResources().getString(R.string.network_error));
             ex.printStackTrace();
             return null;
-        } catch (JSONException ex){
+        } catch (JSONException ex) {
             sendFailure(mContext.getResources().getString(R.string.parse_error));
             ex.printStackTrace();
             return null;
@@ -85,7 +83,6 @@ public class DBProcessor extends AbstractProcessor {
 
 
     public void start(IDatabasingBehavior db_agent) {
-
         Log.d("URSMULOG", "DBProcessor streamStart");
         Object items = getDataBaseBehavior().getSchedule();
         if (items == null) {

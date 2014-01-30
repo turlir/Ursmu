@@ -39,7 +39,7 @@ public class LocalDataBaseHelper extends SQLiteOpenHelper{
         boolean dbExist = checkDataBase();
 
         if(dbExist){
-            //ничего не делать - база уже есть
+           return;
         }else{
             //вызывая этот метод создаем пустую базу, позже она будет перезаписана
             this.getReadableDatabase();
