@@ -28,6 +28,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import ru.ursmu.application.Abstraction.IUrsmuObject;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.Realization.EducationWeek;
+import ru.ursmu.application.Realization.PushReRegister;
 import ru.ursmu.application.Realization.PushRegister;
 import ru.ursmu.application.Realization.ScheduleGroup;
 import ru.ursmu.beta.application.R;
@@ -66,6 +67,8 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
             PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagerTabStrip);
             pagerTabStrip.setDrawFullUnderline(true);
             pagerTabStrip.setTabIndicatorColor(Color.parseColor("#0099CC"));
+
+            prePushSubscribe();
         }
 
         @Override
@@ -75,6 +78,8 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
             findViewById(R.id.viewpager).setVisibility(View.INVISIBLE);
         }
     };
+    private String mGroup;
+    private Context mContext;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -84,13 +89,14 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
         Intent info = getIntent();
         mFaculty = info.getStringExtra(ServiceHelper.FACULTY);
         String kurs = info.getStringExtra(ServiceHelper.KURS);
-        String group = info.getStringExtra(ServiceHelper.GROUP);
+        mGroup = info.getStringExtra(ServiceHelper.GROUP);
         boolean isHard = info.getBooleanExtra("IS_HARD", true);
 
-        mObject = new ScheduleGroup(mFaculty, kurs, group, isHard);
+        mObject = new ScheduleGroup(mFaculty, kurs, mGroup, isHard);
+        mContext = getApplicationContext();
         start();
 
-        String[] list_navigation = new String[]{"Поиск", group};
+        String[] list_navigation = new String[]{"Поиск", mGroup};
 
         ActionBar bar = getSupportActionBar();
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
@@ -160,23 +166,8 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
 
     private void start() {
         if (mHelper == null) {
-            mHelper = ServiceHelper.getInstance(getApplicationContext());
+            mHelper = ServiceHelper.getInstance(mContext);
         }
-
-        if (mHelper.getBooleanPreference("IS_QUEST_PUSH_SUBSCRIPTION")) {
-            DialogInterface.OnClickListener positiveHandler = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    pushSubscribe();
-                }
-            };
-            DialogFragment quest_dialog = new QuestionDialog(positiveHandler,
-                    getResources().getString(R.string.subsrc_dialog_title), getResources().getString(R.string.subsrc_dialog_desc));
-
-            quest_dialog.show(getSupportFragmentManager(), "quest_dialog");
-            mHelper.setBooleanPreferences("IS_QUEST_PUSH_SUBSCRIPTION", false);
-        }
-
 
         mHelper.getUrsmuDBObject(mObject, mHandler);
     }
@@ -184,29 +175,52 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
 
     //<editor-fold desc="Google Cloud Messages">
 
+    private void prePushSubscribe() {
+        if (!checkPlayServices()) {
+            Log.i("URSMULOG", "No valid Google Play Services APK found. prePushSubscribe fail");
+            return;
+        }
+
+        if (mHelper == null) {
+            mHelper = ServiceHelper.getInstance(mContext);
+        }
+
+        String current_id;
+        if (mHelper.getBooleanPreference("IS_QUEST_PUSH_SUBSCRIPTION")) {
+            DialogInterface.OnClickListener positiveHandler = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    pushSubscribe();
+                }
+            };
+
+            DialogFragment quest_dialog = new QuestionDialog(positiveHandler,
+                    getResources().getString(R.string.subsrc_dialog_title), getResources().getString(R.string.subsrc_dialog_desc));
+
+            quest_dialog.show(getSupportFragmentManager(), "quest_dialog");
+            mHelper.setBooleanPreferences("IS_QUEST_PUSH_SUBSCRIPTION", false);
+
+        } else if (getIntent().getBooleanExtra("RE_REGISTER", false) && !(current_id = getRegistrationId(mContext)).equals("")) {
+            Log.d("URSMULOG", "GroupScheduleActivity push re Register init");
+            sendRegistrationIdToBackend(current_id, true);
+        }
+    }
 
     private void pushSubscribe() {
         Log.d("URSMULOG", "pushSubscribe");
+        GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
+        String regid = getRegistrationId(getApplicationContext());
 
-        if (checkPlayServices()) {
-            GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
-            String regid = getRegistrationId(getApplicationContext());
-
-            if (TextUtils.isEmpty(regid) ||
-                    !ApplicationVersionHelper.isApplicationVersionCodeEqualsSavedApplicationVersionCode(getApplicationContext())) {
-                registerInBackground();
-            }
-        } else {
-            Log.i("URSMULOG", "No valid Google Play Services APK found.");
+        if (TextUtils.isEmpty(regid) ||
+                !ApplicationVersionHelper.isApplicationVersionCodeEqualsSavedApplicationVersionCode(getApplicationContext())) {
+            registerInBackground();
         }
-
     }
 
     private void registerInBackground() {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
-                String msg = "";
                 Context context = getApplicationContext();
                 String regid = null;
                 try {
@@ -216,49 +230,55 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
 
                     storeRegistrationId(context, regid);
                 } catch (IOException ex) {
-                    msg = "Error :" + ex.getMessage();
+                    String msg = "Error :" + ex.getMessage();
                     Log.d("URSMULOG", "registerInBackground " + msg);
+                } finally {
+                    return regid;
                 }
-                return regid;
             }
 
             @Override
             protected void onPostExecute(String msg) {
                 if (msg != null) {
                     Log.d("URSMULOG registerInBackground onPostExecute", msg);
-                    sendRegistrationIdToBackend(msg);
-                }   else
+                    sendRegistrationIdToBackend(msg, false);
+                } else
                     Log.d("URSMULOG", "onPostExecute error msg != null");
             }
         }.execute(null, null, null);
     }
 
-    private void sendRegistrationIdToBackend(String regid) {
+    private void sendRegistrationIdToBackend(String regid, boolean re_register) {
         Log.d("URSMULOG", "sendRegistrationIdToBackend " + regid);
-        IUrsmuObject reg_obj = new PushRegister(getApplicationContext(), mFaculty, regid);
+        UniversalCallback push_reg_callback = new UniversalCallback() {
+            @Override
+            public void sendError(String notify) {
+                Log.d("URSMULOG", "push_reg_callback sendError" + notify);
+            }
+
+            @Override
+            public void sendComplete(Serializable data) {
+                Log.d("URSMULOG", "push_reg_callback sendComplete");
+            }
+
+            @Override
+            public void sendStart(long id) {
+                Log.d("URSMULOG", "push_reg_callback sendStart");
+            }
+        };
 
         if (mHelper == null) {
             mHelper = ServiceHelper.getInstance(getApplicationContext());
         }
 
-        mHelper.getUrsmuObject(reg_obj, new UniversalCallback() {
-            @Override
-            public void sendError(String notify) {
-                Log.d("URSMULOG", "sendRegistrationIdToBackend sendError" + notify);
-            }
+        IUrsmuObject reg_obj = null;
+        if (!re_register) {
+            reg_obj = new PushRegister(mFaculty, regid, mGroup);
+        } else {
+            reg_obj = new PushReRegister(mFaculty, regid, mGroup);
+        }
 
-            @Override
-            public void sendComplete(Serializable data) {
-                Log.d("URSMULOG", "sendRegistrationIdToBackend sendComplete");
-            }
-
-            @Override
-            public void sendStart(long id) {
-                Log.d("URSMULOG", "sendRegistrationIdToBackend sendStart");
-            }
-        });
-
-
+        mHelper.getUrsmuObject(reg_obj, push_reg_callback);
     }
 
     private void storeRegistrationId(Context context, String regId) {

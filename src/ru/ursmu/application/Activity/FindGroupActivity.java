@@ -3,6 +3,7 @@ package ru.ursmu.application.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -57,6 +58,13 @@ public class FindGroupActivity extends ActionBarActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             String selected_group = (String) parent.getItemAtPosition(position);
 
+            String current_fac = mHelper.getPreference(ServiceHelper.FACULTY);
+            boolean re_register = false;
+            if (!current_fac.equals(mFaculty) && !current_fac.equals("")) {
+                Log.d("URSMULOG", "FindGroupActivity re Register push flag");
+                re_register = true;
+            }
+
             mHelper.setThreeInfo(mFaculty, mKurs, selected_group);
 
             Intent i = new Intent(getApplicationContext(), GroupScheduleActivity.class);
@@ -64,6 +72,7 @@ public class FindGroupActivity extends ActionBarActivity {
             i.putExtra(ServiceHelper.KURS, mKurs);
             i.putExtra(ServiceHelper.GROUP, selected_group);
             i.putExtra("IS_HARD", true);
+            i.putExtra("RE_REGISTER", re_register);
 
             startActivity(i);
         }
