@@ -273,9 +273,9 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
 
         IUrsmuObject reg_obj = null;
         if (!re_register) {
-            reg_obj = new PushRegister(mFaculty, regid, mGroup);
+            reg_obj = new PushRegister(regid, mFaculty, mGroup);
         } else {
-            reg_obj = new PushReRegister(mFaculty, regid, mGroup);
+            reg_obj = new PushReRegister(regid, mFaculty, mGroup);
         }
 
         mHelper.getUrsmuObject(reg_obj, push_reg_callback);

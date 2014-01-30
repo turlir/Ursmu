@@ -11,6 +11,15 @@ public abstract class AbsPush implements IUrsmuObject {
     protected String mFaculty, mId, mGroup;
 
     public AbsPush(String i, String j, String k) {
+        if (i==null) {
+            i = "";
+        }
+        if (j == null) {
+            j = "";
+        }
+        if (k==null) {
+            k = "";
+        }
         mId = i;
         mFaculty = j;
         mGroup = k;
