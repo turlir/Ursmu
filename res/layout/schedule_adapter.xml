@@ -20,17 +20,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="9:00"
-                android:id="@+id/time_schedule_start" android:textSize="22sp" android:textColor="@android:color/black"
-                android:gravity="left" android:layout_alignParentLeft="true" android:layout_marginLeft="0dp"
-                android:layout_alignParentTop="true" android:layout_marginTop="0dp" android:textIsSelectable="false"/>
+                android:id="@+id/time_schedule_start"
+                android:textColor="@android:color/black"
+                android:gravity="left" android:layout_alignParentLeft="true"
+                android:layout_marginLeft="0dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="0dp"
+                android:textIsSelectable="false"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                />
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10:50"
-                android:id="@+id/time_schedule_stop" android:textSize="18sp" android:textColor="#33B5E5"
+                android:id="@+id/time_schedule_stop"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#33B5E5"
                 android:gravity="left"
                 android:layout_alignParentBottom="true"
-                android:layout_alignWithParentIfMissing="true" android:layout_alignBottom="@+id/time_schedule_start"/>
+                android:layout_alignWithParentIfMissing="true"
+                android:layout_alignBottom="@+id/time_schedule_start"/>
     </RelativeLayout>
 
 
@@ -44,26 +53,31 @@
                 android:layout_height="wrap_content"
                 android:text="1"
                 android:id="@+id/schedule_name"
-
-                android:textSize="22sp" android:singleLine="true"
-                android:textColor="@android:color/black" android:layout_weight="1" android:gravity="center_vertical"/>
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:singleLine="true"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textColor="@android:color/black"
+                />
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="5"
                 android:id="@+id/schedule_professor"
-
-                android:textSize="18sp" android:textColor="@android:color/black" android:layout_weight="1"
-                android:gravity="center_vertical" android:singleLine="true"/>
+                android:textSize="18sp" android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:singleLine="true" android:textColor="@android:color/black"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="3"
                 android:id="@+id/schedule_aud"
-
                 android:textSize="18sp"
-                android:textColor="@android:color/black" android:textStyle="italic" android:layout_weight="1"
-                android:layout_gravity="center_vertical" android:gravity="center_vertical" android:singleLine="true"/>
+                android:textStyle="italic"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:singleLine="true" android:textColor="@android:color/black"/>
     </LinearLayout>
 
 

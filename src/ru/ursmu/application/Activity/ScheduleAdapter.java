@@ -2,6 +2,7 @@ package ru.ursmu.application.Activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.provider.AlarmClock;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,12 +18,9 @@ import java.text.DecimalFormatSymbols;
 import java.util.Calendar;
 
 public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
-
-
     private Context mContext;
     private int mResID;
     private boolean isProfessor;
-    private EducationItem[] mData;
 
     protected static final double[] start = new double[]{9.00, 10.50, 12.40, 14.30, 16.10, 17.40, 19.10, 20.40};
     protected static final double[] stop = new double[]{10.30, 12.20, 14.10, 16.00, 17.30, 19.00, 20.30, 22.10};
@@ -31,6 +29,8 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
 
     private static Calendar mCalendar = Calendar.getInstance();
     private static final DecimalFormat mDecimalFormatter;
+
+    private final Typeface mRegular, mLight;
 
     static {
         mDecimalFormatter = new DecimalFormat("00.00");
@@ -45,7 +45,9 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
         mContext = context;
         mResID = layout;
         isProfessor = isProf;
-        mData = data;
+
+        mLight = Typeface.createFromAsset(mContext.getAssets(), "Roboto-Light.ttf");
+        mRegular = Typeface.createFromAsset(mContext.getAssets(), "Roboto-Regular.ttf");
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -58,8 +60,13 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
             holder.nametv = (TextView) convertView.findViewById(R.id.schedule_name);
             holder.teacher = (TextView) convertView.findViewById(R.id.schedule_professor);
             holder.room = (TextView) convertView.findViewById(R.id.schedule_aud);
+
             holder.timeStart = (TextView) convertView.findViewById(R.id.time_schedule_start);
+            holder.timeStart.setTypeface(mRegular);
+
             holder.timeStop = (TextView) convertView.findViewById(R.id.time_schedule_stop);
+            holder.timeStop.setTypeface(mLight);
+
             holder.flag = convertView.findViewById(R.id.viewColor_sc);
             convertView.setTag(holder);
         } else {

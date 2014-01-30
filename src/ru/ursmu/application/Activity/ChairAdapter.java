@@ -29,7 +29,7 @@ public class ChairAdapter extends ArrayAdapter<ChairItem> {
     int mResId;
     private final ImageLoader mImageLoader;
 
-    private Typeface mTypefaceDesc, mTypefaceTitle;
+    private final Typeface mTypefaceDesc, mTypefaceTitle;
 
 
     public ChairAdapter(Context context, int textViewResourceId, ChairItem[] objects) {
