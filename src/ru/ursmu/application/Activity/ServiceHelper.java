@@ -36,10 +36,10 @@ public class ServiceHelper {
     public static final String ERROR_NOTIFY = "ERROR_NOTIFY";
 
     ///google cloud messages
-    public static final String PROPERTY_REG_ID = "learned-iris-472";
+    public static final String PROPERTY_REG_ID = "";
     public static final String PROPERTY_APP_VERSION = "1.0";
     public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-    public static final String SENDER_ID = "1065420254076";
+    public static final String SENDER_ID = "";
 
     private static final String URSMU_PREFERENCES = "UrsmuPreferences";
     private static ServiceHelper ourInstance = new ServiceHelper();
