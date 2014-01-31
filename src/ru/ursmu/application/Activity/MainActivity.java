@@ -22,11 +22,11 @@ public class MainActivity extends ActionBarActivity {
         Log.d("URSMULOG", "MainActivity onCreate");
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf");
-        ((TextView)findViewById(R.id.textView)).setTypeface(typeface);
+        ((TextView) findViewById(R.id.textView)).setTypeface(typeface);
 
 
         //mTypefaceContext = Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf");
-        ((TextView)findViewById(R.id.textView2)).setTypeface(typeface);
+        ((TextView) findViewById(R.id.textView2)).setTypeface(typeface);
     }
 
 
@@ -85,6 +85,7 @@ public class MainActivity extends ActionBarActivity {
         // clear info - very shortly
         helper.setThreeInfo("", "", "");
         helper.setBooleanPreferences("PROF", true);
+        scheduleGroup(null);
     }
 
     public void event(View v) {
@@ -97,7 +98,7 @@ public class MainActivity extends ActionBarActivity {
         startActivity(i);
     }
 
-    public void chair (View v) {
+    public void chair(View v) {
         Intent i = new Intent(this, ChairActivity.class);
         startActivity(i);
     }
