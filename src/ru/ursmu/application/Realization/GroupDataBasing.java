@@ -75,7 +75,7 @@ public class GroupDataBasing extends IDatabasingBehavior {
         EducationItem[] temp = (EducationItem[]) week;
         Long id = Math.abs(UUID.randomUUID().getLeastSignificantBits());
 
-        Log.d("URSMULOG", mFaculty + " " + mKurs + " " + mGroup);
+        Log.d("URSMULOG", "GroupDataBasing add " + mFaculty + " " + mKurs + " " + mGroup);
 
         mDataBase.beginTransaction();
 
