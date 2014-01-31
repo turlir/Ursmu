@@ -1,10 +1,8 @@
 package ru.ursmu.application.Activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
@@ -14,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import ru.ursmu.application.Realization.ProfessorDataBasing;
 import ru.ursmu.beta.application.R;
 
 public class MainActivity extends ActionBarActivity {
@@ -82,41 +79,12 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    private void citizenErased(ServiceHelper helper) {
+    private void citizenErased(final ServiceHelper helper) {
         Log.d("URSMULOG", "MainActivity scheduleGroup citizenErased");
-        //delete all info - very shortly
+
+        // clear info - very shortly
         helper.setThreeInfo("", "", "");
-
         helper.setBooleanPreferences("PROF", true);
-
-        //drop dataBase
-        new AsyncTask<Void, Void, Void>() {
-            ProgressDialog dialog;
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                dialog = new ProgressDialog(MainActivity.this);
-                dialog.setTitle("Подождите");
-                dialog.setMessage("Идет обработка");
-                dialog.show();
-            }
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                ProfessorDataBasing db_agent = ProfessorDataBasing.getInstance(getApplicationContext(), "");
-                db_agent.clearTable();    //.close() inclusive
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                dialog.dismiss();
-                scheduleGroup(null);       //open FindFaculty
-            }
-        }.execute(null, null, null);
     }
 
     public void event(View v) {

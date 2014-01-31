@@ -15,14 +15,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String UIN = "uin";
 
     public DataBaseHelper(Context context) {
-        super(context, "DataBaseHelper", null, 1);
+        super(context, "DataBaseHelper", null, 2);
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-        //db.execSQL("PRAGMA foreign_keys=ON;");
 
         Log.d("URSMULOG", "create DB table");
 
@@ -49,7 +47,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-          //db.execSQL("DROP TABLE ScheduleCommon, ScheduleDays");
+        Log.d("URSMULOG", "DataBaseHelper onUpgrade");
+        db.execSQL("DROP TABLE IF EXISTS ScheduleCommon");
+        db.execSQL("DROP TABLE IF EXISTS ScheduleDays");
+        onCreate(db);
     }
 
 
