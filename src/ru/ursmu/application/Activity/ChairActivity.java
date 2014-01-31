@@ -64,7 +64,7 @@ public class ChairActivity extends ActionBarActivity implements SearchView.OnQue
             Cursor c = prof.getDataBasingBehavior(getApplicationContext()).get();
 
             SuggestionsAdapter adapter = new SuggestionsAdapter(getSupportActionBar().getThemedContext(), c, "name",
-                    R.drawable.white_social_group);
+                    R.drawable.white_chair);
             mSearchView.setSuggestionsAdapter(adapter);
             return true;
         } else {
