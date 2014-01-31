@@ -22,10 +22,16 @@ public class QuestionDialog extends DialogFragment {
         mMessage = message;
     }
 
+    public QuestionDialog(DialogInterface.OnClickListener positiveHandler, String messages) {
+        mPositive = positiveHandler;
+        mMessage = messages;
+        mTitle = null;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Light_Dialog);
+        setStyle(mTitle == null ? DialogFragment.STYLE_NO_TITLE : DialogFragment.STYLE_NORMAL, android.R.style.Theme_Holo_Light_Dialog);
     }
 
 
@@ -33,7 +39,6 @@ public class QuestionDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                .setTitle(mTitle)
                 .setMessage(mMessage)
                 .setPositiveButton(android.R.string.ok, mPositive)
                 .setNegativeButton(android.R.string.cancel, null)
@@ -47,6 +52,9 @@ public class QuestionDialog extends DialogFragment {
                             return false;
                     }
                 });
+
+        if (mTitle != null)
+            builder.setTitle(mTitle);
 
         AlertDialog readyDialog = builder.create();
         readyDialog.setCanceledOnTouchOutside(false);

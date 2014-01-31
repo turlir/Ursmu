@@ -195,7 +195,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
             };
 
             DialogFragment quest_dialog = new QuestionDialog(positiveHandler,
-                    getResources().getString(R.string.subsrc_dialog_title), getResources().getString(R.string.subsrc_dialog_desc));
+                    getResources().getString(R.string.subsrc_dialog_title));
 
             quest_dialog.show(getSupportFragmentManager(), "quest_dialog");
             mHelper.setBooleanPreferences("IS_QUEST_PUSH_SUBSCRIPTION", false);
