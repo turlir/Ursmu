@@ -1,7 +1,6 @@
 package ru.ursmu.application.Activity;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -35,20 +34,12 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 
         if (mFlag) {
             Log.d("URSMULOG", "MyPagerAdapter ProfessorScheduleFragment getItem " + i);
-            Fragment fragment = new ProfessorScheduleFragment();
-            Bundle args = new Bundle();
             EducationItem[] value = mList.get(i);
-            args.putSerializable(GroupScheduleFragment.MAIN_ARG, value);
-            fragment.setArguments(args);
-            return fragment;
+            return ProfessorScheduleFragment.getInstance(value);
         } else {
             Log.d("URSMULOG", "MyPagerAdapter GroupScheduleFragment getItem " + i);
-            Fragment fragment = new GroupScheduleFragment();
-            Bundle args = new Bundle();
             EducationItem[] value = mList.get(i);
-            args.putSerializable(GroupScheduleFragment.MAIN_ARG, value);
-            fragment.setArguments(args);
-            return fragment;
+            return GroupScheduleFragment.getInstance(value);
         }
     }
 

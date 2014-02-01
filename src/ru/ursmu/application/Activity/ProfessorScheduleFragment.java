@@ -3,34 +3,39 @@ package ru.ursmu.application.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.*;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 import ru.ursmu.application.JsonObject.EducationItem;
 import ru.ursmu.beta.application.R;
 
 
-public class ProfessorScheduleFragment extends Fragment {
+public class ProfessorScheduleFragment extends ListFragment {
     public static final String MAIN_ARG = "MAIN_ARG";
-    private ScheduleAdapter mAdapter;
 
+    public static Fragment getInstance(EducationItem[] value) {
+        ProfessorScheduleFragment f = new ProfessorScheduleFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(MAIN_ARG, value);
+        f.setArguments(args);
+        return f;
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.schedule_fragment, container, false);
-
-        ListView list = (ListView) rootView.findViewById(R.id.schedule_fragment_list);
-        registerForContextMenu(list);
-
-        EducationItem[] data_list = (EducationItem[]) getArguments().getSerializable(MAIN_ARG);
-        mAdapter = new ScheduleAdapter(getActivity().getApplicationContext(), R.layout.schedule_adapter, data_list, true);
-
-        list.setAdapter(mAdapter);
-
-        return rootView;
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        EducationItem[] data = new EducationItem[0];
+        Bundle b;
+        if ((b = getArguments()) != null) {
+            data = (EducationItem[]) b.getSerializable(MAIN_ARG);
+        }
+        registerForContextMenu(getListView());
+        setListAdapter(new ScheduleAdapter(getActivity().getApplicationContext(), R.layout.schedule_adapter, data, true));
     }
 
     @Override
@@ -42,11 +47,15 @@ public class ProfessorScheduleFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
+        if (!getUserVisibleHint()) { //stupid, idiot! 4 hour i down
+            return false;
+        }
+
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
         switch (item.getItemId()) {
             case R.id.schedule_prof_item_group:
-                EducationItem selected = mAdapter.getItem(info.position);
+                EducationItem selected = (EducationItem) getListAdapter().getItem(info.position);
                 String groupName = selected.getGroupName();
                 String faculty = selected.getFaculty();
                 String kurs = selected.getKurs();
@@ -62,11 +71,13 @@ public class ProfessorScheduleFragment extends Fragment {
                 }
                 return true;
             case R.id.schedule_prof_item_alarm:
-                mAdapter.setAlarm(info.position);
+                ((ScheduleAdapter) getListAdapter()).setAlarm(info.position);
                 Log.d("URSMULOG", "onContextItemSelected R.id.schedule_prof_item_alarm" + info.position);
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
+
+
 }
