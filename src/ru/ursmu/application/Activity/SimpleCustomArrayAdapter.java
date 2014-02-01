@@ -24,7 +24,7 @@ public class SimpleCustomArrayAdapter extends ArrayAdapter<String> {
         View v = convertView;
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(android.content.Context.LAYOUT_INFLATER_SERVICE);
-            v = inflater.inflate(mResID, null);
+            v = inflater.inflate(mResID, parent, false);
         }
 
         TextView text = (TextView) v.findViewById(R.id.title_action_menu);
@@ -42,7 +42,7 @@ public class SimpleCustomArrayAdapter extends ArrayAdapter<String> {
         View v = convertView;
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(android.content.Context.LAYOUT_INFLATER_SERVICE);
-            v = inflater.inflate(R.layout.simple_action_menu_drop, null);
+            v = inflater.inflate(R.layout.simple_action_menu_drop, parent, false);
         }
 
         TextView title = (TextView) v.findViewById(R.id.title_drop_action_menu);
