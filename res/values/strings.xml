@@ -10,14 +10,14 @@
     <string name="quest_dialog_desc" type="id">Для продолжения работы необходимо обновление. Будет израсходовано 2 мегабайта трафика.</string>
     <string name="upd_dialog_title" type="id">Расписание обновляется</string>
     <string name="share_text_main_screen" type="id">
-        Расписание и новости УГГУ в одном Android приложении https://play.google.com/store/apps/details?id=ru.ursmu.application</string>
+        Расписание и новости УГГУ в одном Android приложении http://play.google.com/store/apps/details?id=ru.ursmu.application</string>
 
     <string name="share_text_schedule_screen" type="id">
         Мое расписание на сайте УГГУ</string>
 
     <string name="about_title" type="id">О приложении</string>
     <string name="about_text" type="id">
-        Идея и реализация: Осинцев Илья, ГМФ. \nОбратная связь:\nhttps://vk.com/turlir \nУчастие в процессе разработки:\nhttps://github.com/turlir/Ursmu\nЛицензия:GPLv2
+        Идея и реализация: Осинцев Илья, ГМФ. \nОбратная связь:\nhttp://vk.com/turlir
     </string>
     <string name="subsrc_dialog_title">Подписаться на push уведомления?</string>
 </resources>

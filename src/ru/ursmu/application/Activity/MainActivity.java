@@ -104,7 +104,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void vkLogoClick(View v) {
-        openLink("https://vk.com/ursmu_ru");
+        openLink("http://vk.com/ursmu_ru");
     }
 
     public void olenLogoClick(View v) {
