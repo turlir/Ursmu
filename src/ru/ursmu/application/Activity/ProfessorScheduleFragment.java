@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 import ru.ursmu.application.JsonObject.EducationItem;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 
 public class ProfessorScheduleFragment extends ListFragment {

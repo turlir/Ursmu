@@ -31,7 +31,7 @@ import ru.ursmu.application.Realization.EducationWeek;
 import ru.ursmu.application.Realization.PushReRegister;
 import ru.ursmu.application.Realization.PushRegister;
 import ru.ursmu.application.Realization.ScheduleGroup;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 import java.io.IOException;
 import java.io.Serializable;

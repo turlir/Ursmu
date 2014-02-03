@@ -8,7 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 public class AboutDialog extends DialogFragment {
     @Override

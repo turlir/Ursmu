@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--First Market Version-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="ru.ursmu.beta.application"
-          android:versionCode="5"
-          android:versionName="1.0">
+          package="ru.ursmu.application"
+          android:versionCode="6"
+          android:versionName="2.0">
     <uses-sdk
             android:targetSdkVersion="15"
             android:minSdkVersion="8"/>
@@ -58,7 +58,7 @@
                 android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="com.example.pushApp" />
+                <category android:name="ru.ursmu.application" />
             </intent-filter>
         </receiver>
         <service android:name="ru.ursmu.application.Activity.GcmIntentService" />
