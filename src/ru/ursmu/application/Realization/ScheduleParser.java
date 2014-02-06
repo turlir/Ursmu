@@ -1,6 +1,5 @@
 package ru.ursmu.application.Realization;
 
-import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,32 +33,21 @@ public class ScheduleParser extends IParserBehavior<EducationItem> {
         return coll.toArray(new EducationItem[coll.size()]);
     }
 
-    EducationItem[] parseObject(JSONArray item, int day, int para) throws JSONException {
-
+    private EducationItem[] parseObject(JSONArray item, int day, int para) throws JSONException {
         switch (item.length()) {
             case 3:
                 return new EducationItem[]{
                         new EducationItem(day, para + 1, item.getString(0), item.getString(1), item.getString(2))
                 };
-
-            case 2:
-                return new EducationItem[]{
-                        new EducationItem(day, para + 1, item.getString(0), item.getString(1), "")
-                };
             case 6:
                 //подряд - две пары одновременно
                 return new EducationItem[]{
-                        new EducationItem(day, para + 1, item.getString(0), item.getString(1), item.getString(2)),
-                        new EducationItem(day, para + 1, item.getString(3), item.getString(4), item.getString(5))
+                        new EducationItem(day, para + 1, item.getString(0), item.getString(1), item.getString(4)),
+                        new EducationItem(day, para + 1, item.getString(2), item.getString(3), item.getString(5))
                 };
-            case 5:
-                Log.d("URSMULOG", "parseObject 5");
-                return new EducationItem[]{
-                        new EducationItem(day, para + 1, item.getString(0), item.getString(2), item.getString(4))
-                };
+            default:
+                return null;
         }
-
-        return null;
     }
 
 }
