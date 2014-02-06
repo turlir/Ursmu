@@ -1,5 +1,6 @@
 package ru.ursmu.application.Realization;
 
+import android.text.TextUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,10 +42,24 @@ public class ScheduleParser extends IParserBehavior<EducationItem> {
                 };
             case 6:
                 //подряд - две пары одновременно
-                return new EducationItem[]{
-                        new EducationItem(day, para + 1, item.getString(0), item.getString(1), item.getString(4)),
-                        new EducationItem(day, para + 1, item.getString(2), item.getString(3), item.getString(5))
-                };
+                String s1 = item.getString(0);
+                String s2 = item.getString(1);
+                String s3 = item.getString(4);
+
+                String d1 = item.getString(2);
+                String d2 = item.getString(3);
+                String d3 = item.getString(5);
+
+                if (!TextUtils.isEmpty(s1) && !TextUtils.isEmpty(s2) && !TextUtils.isEmpty(s3)) {
+                    return new EducationItem[]{
+                            new EducationItem(day, para + 1, s1, s2, s3),
+                            new EducationItem(day, para + 1, d1, d2, d3)
+                    };
+                } else {
+                    if (TextUtils.isEmpty(s1) && TextUtils.isEmpty(s3) && TextUtils.isEmpty(d1)) {
+                        return new EducationItem[]{new EducationItem(day, para + 1, s2, d2, d3)};
+                    }
+                }
             default:
                 return null;
         }
