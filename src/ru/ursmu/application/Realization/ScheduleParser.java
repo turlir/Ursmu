@@ -51,9 +51,9 @@ public class ScheduleParser extends IParserBehavior<EducationItem> {
                 String d3 = item.getString(5);
 
                 if (!TextUtils.isEmpty(s1) && !TextUtils.isEmpty(s2) && !TextUtils.isEmpty(s3)) {
-                    return new EducationItem[]{
-                            new EducationItem(day, para + 1, s1, s2, s3),
-                            new EducationItem(day, para + 1, d1, d2, d3)
+                    return new EducationItem[] {
+                            new EducationItem(day, para + 1, s1, d1, s3),
+                            new EducationItem(day, para + 1, s2, d2, d3)
                     };
                 } else {
                     if (TextUtils.isEmpty(s1) && TextUtils.isEmpty(s3) && TextUtils.isEmpty(d1)) {
