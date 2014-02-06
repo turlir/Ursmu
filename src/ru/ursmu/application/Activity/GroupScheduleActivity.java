@@ -38,6 +38,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 public class GroupScheduleActivity extends ActionBarActivity implements ActionBar.OnNavigationListener {
+    public static final int NOTIFY_INTENT = 32;
     private ScheduleGroup mObject;
     private ProgressBar mBar;
     private ServiceHelper mHelper;
@@ -141,9 +142,11 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                if (getIntent().getFlags() != NOTIFY_INTENT) {
+                    Intent intent = new Intent(this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
                 return true;
             case R.id.schedule_group_update:
                 if (mRequestId == 0) {

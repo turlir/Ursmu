@@ -75,6 +75,7 @@ public class GcmIntentService extends IntentService {
         i.putExtra(ServiceHelper.FACULTY, info[0]);
         i.putExtra(ServiceHelper.KURS, info[1]);
         i.putExtra(ServiceHelper.GROUP, info[2]);
+        i.setFlags(GroupScheduleActivity.NOTIFY_INTENT);
         return i;
     }
 }
