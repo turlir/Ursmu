@@ -58,9 +58,9 @@ public class FindGroupActivity extends ActionBarActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             String selected_group = (String) parent.getItemAtPosition(position);
 
-            String current_fac = mHelper.getPreference(ServiceHelper.FACULTY);
+            String current_group = mHelper.getPreference(ServiceHelper.GROUP);
             boolean re_register = false;
-            if (!current_fac.equals(mFaculty) && !current_fac.equals("")) {
+            if (!current_group.equals(selected_group) && !current_group.equals("")) {
                 Log.d("URSMULOG", "FindGroupActivity re Register push flag");
                 re_register = true;
             }
