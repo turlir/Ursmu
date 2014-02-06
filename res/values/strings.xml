@@ -19,5 +19,5 @@
     <string name="about_text" type="id">
         Идея и реализация: Осинцев Илья, ГМФ. \nОбратная связь:\nhttp://vk.com/turlir
     </string>
-    <string name="subsrc_dialog_title">Подписаться на push уведомления?</string>
+    <string name="subsrc_dialog_title">Подписаться на уведомления об обновлении расписания?</string>
 </resources>

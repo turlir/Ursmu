@@ -58,6 +58,8 @@ public class ScheduleParser extends IParserBehavior<EducationItem> {
                 } else {
                     if (TextUtils.isEmpty(s1) && TextUtils.isEmpty(s3) && TextUtils.isEmpty(d1)) {
                         return new EducationItem[]{new EducationItem(day, para + 1, s2, d2, d3)};
+                    } else {
+                        return new EducationItem[]{new EducationItem(day, para + 1, s1, s3, d1)};
                     }
                 }
             default:
