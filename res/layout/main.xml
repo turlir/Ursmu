@@ -10,7 +10,7 @@
                   android:orientation="vertical">
         <ImageView android:layout_width="300dp" android:layout_height="150dp"
 
-                android:layout_gravity="center_horizontal" android:background="@android:color/holo_purple"/>
+                android:layout_gravity="center_horizontal" android:src="@drawable/out2"/>
 
         <RelativeLayout
                 android:layout_width="fill_parent"
