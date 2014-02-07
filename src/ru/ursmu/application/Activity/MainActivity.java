@@ -12,7 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import ru.ursmu.application.R;
+import ru.ursmu.beta.application.R;
 
 public class MainActivity extends ActionBarActivity {
     @Override

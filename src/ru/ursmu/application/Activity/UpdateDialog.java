@@ -9,7 +9,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.Realization.ScheduleGroupFactory;
-import ru.ursmu.application.R;
+import ru.ursmu.beta.application.R;
 
 import java.io.Serializable;
 
