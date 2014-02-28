@@ -215,7 +215,7 @@ public class ProfessorScheduleActivity extends ActionBarActivity implements Sear
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 mLight = true;
-                invalidateOptionsMenu();
+                supportInvalidateOptionsMenu();
                 mRequestId = null;
                 nextStep();
             }
