@@ -15,8 +15,9 @@ import ru.ursmu.application.JsonObject.EducationItem;
 import ru.ursmu.beta.application.R;
 
 
-public class ProfessorScheduleFragment extends ListFragment {
+public class ProfessorScheduleFragment extends ListFragment implements AdapterView.OnItemClickListener {
     public static final String MAIN_ARG = "MAIN_ARG";
+    private int mClickedPosition;
 
     public static Fragment getInstance(EducationItem[] value) {
         ProfessorScheduleFragment f = new ProfessorScheduleFragment();
@@ -34,7 +35,7 @@ public class ProfessorScheduleFragment extends ListFragment {
         if ((b = getArguments()) != null) {
             data = (EducationItem[]) b.getSerializable(MAIN_ARG);
         }
-        registerForContextMenu(getListView());
+        getListView().setOnItemClickListener(this);
         setListAdapter(new ScheduleAdapter(getActivity().getApplicationContext(), R.layout.schedule_adapter, data, true));
     }
 
@@ -51,11 +52,9 @@ public class ProfessorScheduleFragment extends ListFragment {
             return false;
         }
 
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
         switch (item.getItemId()) {
             case R.id.schedule_prof_item_group:
-                EducationItem selected = (EducationItem) getListAdapter().getItem(info.position);
+                EducationItem selected = (EducationItem) getListAdapter().getItem(mClickedPosition);
                 String groupName = selected.getGroupName();
                 String faculty = selected.getFaculty();
                 String kurs = selected.getKurs();
@@ -71,8 +70,8 @@ public class ProfessorScheduleFragment extends ListFragment {
                 }
                 return true;
             case R.id.schedule_prof_item_alarm:
-                ((ScheduleAdapter) getListAdapter()).setAlarm(info.position);
-                Log.d("URSMULOG", "onContextItemSelected R.id.schedule_prof_item_alarm" + info.position);
+                ((ScheduleAdapter) getListAdapter()).setAlarm(mClickedPosition);
+                Log.d("URSMULOG", "onContextItemSelected R.id.schedule_prof_item_alarm" + mClickedPosition);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -80,4 +79,11 @@ public class ProfessorScheduleFragment extends ListFragment {
     }
 
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        registerForContextMenu(view);
+        mClickedPosition = position;
+        getActivity().openContextMenu(view);
+        unregisterForContextMenu(view);
+    }
 }

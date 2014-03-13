@@ -12,8 +12,9 @@ import android.widget.Toast;
 import ru.ursmu.application.JsonObject.EducationItem;
 import ru.ursmu.beta.application.R;
 
-public class GroupScheduleFragment extends ListFragment {
+public class GroupScheduleFragment extends ListFragment implements AdapterView.OnItemClickListener {
     public static final String MAIN_ARG = "MAIN_ARG";
+    private int mClickedPosition;
 
     public static Fragment getInstance(EducationItem[] value) {
         GroupScheduleFragment f = new GroupScheduleFragment();
@@ -31,7 +32,7 @@ public class GroupScheduleFragment extends ListFragment {
         if ((b = getArguments()) != null) {
             data = (EducationItem[]) b.getSerializable(MAIN_ARG);
         }
-        registerForContextMenu(getListView());
+        getListView().setOnItemClickListener(this);
         setListAdapter(new ScheduleAdapter(getActivity().getApplicationContext(), R.layout.schedule_adapter, data, false));
     }
 
@@ -42,11 +43,9 @@ public class GroupScheduleFragment extends ListFragment {
             return false;
         }
 
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
         switch (item.getItemId()) {
             case R.id.schedule_item_professor:
-                String normalProfessor = ((EducationItem) getListAdapter().getItem(info.position)).getNormalProfessor();
+                String normalProfessor = ((EducationItem) getListAdapter().getItem(mClickedPosition)).getNormalProfessor();
                 if (!TextUtils.isEmpty(normalProfessor)) {
                     Intent i = new Intent(getActivity().getApplicationContext(), ProfessorScheduleActivity.class);
                     i.putExtra("PROFESSOR", normalProfessor);
@@ -56,7 +55,7 @@ public class GroupScheduleFragment extends ListFragment {
                 }
                 return true;
             case R.id.schedule_item_alarm:
-                ((ScheduleAdapter) getListAdapter()).setAlarm(info.position);
+                ((ScheduleAdapter) getListAdapter()).setAlarm(mClickedPosition);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -69,4 +68,11 @@ public class GroupScheduleFragment extends ListFragment {
         getActivity().getMenuInflater().inflate(R.menu.schedule_item_group, menu);
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        registerForContextMenu(view);
+        mClickedPosition = position;
+        getActivity().openContextMenu(view);
+        unregisterForContextMenu(view);
+    }
 }
