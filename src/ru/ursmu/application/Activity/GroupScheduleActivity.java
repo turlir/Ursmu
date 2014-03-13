@@ -44,7 +44,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
     private ProgressBar mBar;
     private ServiceHelper mHelper;
     private long mRequestId;
-    private String mFaculty;
+    private String mFaculty, mKurs, mGroup;
 
     private UniversalCallback mHandler = new UniversalCallback() {
         @Override
@@ -80,7 +80,6 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
             findViewById(R.id.viewpager).setVisibility(View.INVISIBLE);
         }
     };
-    private String mGroup;
     private Context mContext;
 
 
@@ -90,11 +89,11 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
 
         Intent info = getIntent();
         mFaculty = info.getStringExtra(ServiceHelper.FACULTY);
-        String kurs = info.getStringExtra(ServiceHelper.KURS);
+        mKurs = info.getStringExtra(ServiceHelper.KURS);
         mGroup = info.getStringExtra(ServiceHelper.GROUP);
         boolean isHard = info.getBooleanExtra(ServiceHelper.IS_HARD, true);
 
-        mObject = new ScheduleGroup(mFaculty, kurs, mGroup, isHard);
+        mObject = new ScheduleGroup(mFaculty, mKurs, mGroup, isHard);
         mContext = getApplicationContext();
         start();
 
@@ -131,6 +130,22 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
     protected void onPause() {
         super.onPause();
         ScheduleAdapter.clearIconPair();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.d("URSMULOG", "onSaveInstanceState");
+        outState.putString(ServiceHelper.FACULTY, mFaculty);
+        outState.putString(ServiceHelper.KURS,mKurs );
+        outState.putString(ServiceHelper.GROUP, mGroup);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        Log.d("URSMULOG", "onRestoreInstanceState");
+        mFaculty = savedInstanceState.getString(ServiceHelper.FACULTY);
+        mKurs    = savedInstanceState.getString(ServiceHelper.KURS);
+        mGroup   = savedInstanceState.getString(ServiceHelper.GROUP);
     }
 
     @Override
