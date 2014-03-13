@@ -103,12 +103,8 @@ public class MainActivity extends ActionBarActivity {
         startActivity(i);
     }
 
-    public void vkLogoClick(View v) {
-        openLink("http://vk.com/ursmu_ru");
-    }
-
-    public void olenLogoClick(View v) {
-        openLink("http://vk.com/overhear_uggu");
+    public void happyClick(View v) {
+        openLink("http://100.ursmu.ru/fond.html");
     }
 
     private void openLink(String s) {

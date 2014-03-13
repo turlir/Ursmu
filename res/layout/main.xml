@@ -104,17 +104,14 @@
                       android:id="@+id/footer" android:orientation="horizontal"
                       android:gravity="bottom" android:layout_gravity="bottom">
             <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="300dp"
+                    android:layout_height="150dp"
                     android:id="@+id/imageView"
-                    android:layout_gravity="center_horizontal|bottom" android:clickable="true"
-                    android:onClick="vkLogoClick" android:layout_weight="1" android:layout_marginRight="18dp"
-                    android:src="@drawable/new_vk"/>
-            <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageView1" android:src="@drawable/olen" android:layout_weight="1"
-                    android:onClick="olenLogoClick"/>
+                    android:layout_gravity="center_horizontal"
+                    android:clickable="true"
+                    android:onClick="happyClick" android:layout_weight="1"
+                    android:layout_marginRight="18dp"
+                    android:src="@drawable/happy"/>
         </LinearLayout>
 
     </LinearLayout>
