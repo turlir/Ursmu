@@ -145,7 +145,7 @@ public class ChairActivity extends ActionBarActivity implements SearchView.OnQue
 
     private void postProcessing(ChairItem[] data) {
         ListView list = (ListView) findViewById(R.id.chair_listView);
-        ArrayAdapter<ChairItem> adapter = new ChairAdapter(this, R.layout.chair_adapter, data);
+        ArrayAdapter<ChairItem> adapter = new ChairAdapter(this, R.layout.card_chair_adapter, data);
         list.setAdapter(adapter);
     }
 
