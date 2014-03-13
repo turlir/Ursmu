@@ -2,6 +2,7 @@ package ru.ursmu.application.Activity;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +24,13 @@ import java.util.ArrayList;
 public class NewsAdapter extends ArrayAdapter<ListItem> {
 
     private final ImageLoader mImageLoader;
-    //private GroupScheduleActivity mContext;
-    //private ArrayList<ListItem> mData;
+    private final Typeface mTypefaceDesc;
+    private final Typeface mTypefaceTitle;
     private int mLayout;
 
     public NewsAdapter(Context context, int textViewResourceId, ArrayList<ListItem> objects) {
         super(context, textViewResourceId, objects);
-        //mContext = context;
+
         mLayout = textViewResourceId;
 
         mImageLoader = ImageLoader.getInstance();
@@ -60,6 +61,8 @@ public class NewsAdapter extends ArrayAdapter<ListItem> {
 
         mImageLoader.init(config);
 
+        mTypefaceDesc = Typeface.createFromAsset(context.getAssets(), "Roboto-Light.ttf");
+        mTypefaceTitle = Typeface.createFromAsset(context.getAssets(), "Roboto-Regular.ttf");
 
     }
 
@@ -78,11 +81,13 @@ public class NewsAdapter extends ArrayAdapter<ListItem> {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-
         ListItem item = getItem(position);
 
         holder.mTitle.setText(item.getTitle());
+        holder.mTitle.setTypeface(mTypefaceTitle);
+
         holder.mDesc.setText(item.getDesc());
+        holder.mDesc.setTypeface(mTypefaceDesc);
 
         mImageLoader.displayImage(item.getImage(), holder.mImage);
 

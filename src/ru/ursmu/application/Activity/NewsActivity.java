@@ -65,7 +65,7 @@ public class NewsActivity extends ActionBarActivity {
         mSource = new ArrayList<ListItem>(19);
         ListView newsList = (ListView) findViewById(R.id.list_news);
         newsList.setOnItemClickListener(mItemItemClickListener);
-        mAdapter = new NewsAdapter(getApplicationContext(), R.layout.news_adapter, mSource);
+        mAdapter = new NewsAdapter(getApplicationContext(), R.layout.card_news_adapter, mSource);
         newsList.setAdapter(mAdapter);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
