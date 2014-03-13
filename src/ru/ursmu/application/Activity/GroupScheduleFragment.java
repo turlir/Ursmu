@@ -33,6 +33,7 @@ public class GroupScheduleFragment extends ListFragment implements AdapterView.O
             data = (EducationItem[]) b.getSerializable(MAIN_ARG);
         }
         getListView().setOnItemClickListener(this);
+        registerForContextMenu(getListView());
         setListAdapter(new ScheduleAdapter(getActivity().getApplicationContext(), R.layout.schedule_adapter, data, false));
     }
 
@@ -70,9 +71,7 @@ public class GroupScheduleFragment extends ListFragment implements AdapterView.O
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        registerForContextMenu(view);
         mClickedPosition = position;
         getActivity().openContextMenu(view);
-        unregisterForContextMenu(view);
     }
 }
