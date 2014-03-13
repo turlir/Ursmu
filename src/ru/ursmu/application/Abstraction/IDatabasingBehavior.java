@@ -2,6 +2,8 @@ package ru.ursmu.application.Abstraction;
 
 import android.database.Cursor;
 
+import java.io.Serializable;
+
 public abstract class IDatabasingBehavior {
 
     public void add(Object[] week) throws Exception {
@@ -12,7 +14,7 @@ public abstract class IDatabasingBehavior {
 
     public abstract void close();
 
-    public abstract Object getSchedule();
+    public abstract Serializable getSchedule();
 
     public Cursor get() {
         return null;

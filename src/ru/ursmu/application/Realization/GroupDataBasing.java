@@ -141,7 +141,8 @@ public class GroupDataBasing extends IDatabasingBehavior {
         if (mUIN != null && mGroup.equals(mLastGroup)) {
             return;
         }
-        Cursor c = mDataBase.rawQuery("SELECT " + DataBaseHelper.UIN + " FROM ScheduleCommon WHERE (" + DataBaseHelper.GROUP + " = ?)", new String[]{mGroup});
+        Cursor c = mDataBase.rawQuery("SELECT " + DataBaseHelper.UIN + " FROM ScheduleCommon WHERE (" + DataBaseHelper.GROUP + " = ?)",
+                new String[]{mGroup});
         try {
             int uin_index = c.getColumnIndexOrThrow(DataBaseHelper.UIN);
             if (c.moveToFirst()) {
@@ -151,9 +152,12 @@ public class GroupDataBasing extends IDatabasingBehavior {
                 Log.d("URSMULOG", "getUINCurrentGroup()" + mUIN);
                 mLastGroup = mGroup;
                 Log.d("URSMULOG", "getUINCurrentGroup() mLastGroup" + mLastGroup);
+            } else {
+                mUIN = null;
             }
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
+            mUIN = null;
         }
     }
 
@@ -194,21 +198,29 @@ public class GroupDataBasing extends IDatabasingBehavior {
 
 
     public EducationWeek getGroupSchedule() {
-        EducationWeek week = new EducationWeek();
+        if (mUIN == null || mDataBase == null) {
+            return null;
+        }
 
         Cursor cursor = mDataBase.rawQuery(mQuerySchedule, new String[]{String.valueOf(mUIN)});
+
+        if (cursor == null)
+            return null;
+
         int count = cursor.getCount();
 
         if (count != 0 && cursor.moveToFirst()) {
             EducationItem item;
+            EducationWeek week = new EducationWeek();
             do {
                 item = new EducationItem(cursor, false);
                 week.set(item.getDayOfTheWeek(), item);
             } while (cursor.moveToNext());
+            return week;
+        } else
+            return null;
 
-        }
 
-        return week;
     }
 
 

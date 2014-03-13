@@ -10,6 +10,7 @@ import ru.ursmu.application.Activity.UrsmuService;
 import ru.ursmu.beta.application.R;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 public class DBProcessor extends AbstractProcessor {
     IUrsmuDBObject mObject;
@@ -84,7 +85,7 @@ public class DBProcessor extends AbstractProcessor {
 
     public void start(IDatabasingBehavior db_agent) {
         Log.d("URSMULOG", "DBProcessor streamStart");
-        Object items = getDataBaseBehavior().getSchedule();
+        Serializable items = getDataBaseBehavior().getSchedule();
         if (items == null) {
             sendFailure(mContext.getResources().getString(R.string.null_error));
             return;
