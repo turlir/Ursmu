@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import ru.ursmu.application.Abstraction.AbsPush;
 import ru.ursmu.beta.application.R;
 
 /**
@@ -22,7 +23,7 @@ import ru.ursmu.beta.application.R;
 public class GcmIntentService extends IntentService {
 
     public GcmIntentService() {
-        super(ServiceHelper.SENDER_ID);
+        super(AbsPush.SENDER_ID);
     }
 
     public static final String TAG = "URSMULOG";

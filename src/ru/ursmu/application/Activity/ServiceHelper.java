@@ -6,10 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.util.Log;
-import ru.ursmu.application.Abstraction.IGroupDBUrsmuObject;
-import ru.ursmu.application.Abstraction.IUrsmuDBObject;
-import ru.ursmu.application.Abstraction.IUrsmuObject;
-import ru.ursmu.application.Abstraction.UniversalCallback;
+import ru.ursmu.application.Abstraction.*;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -35,11 +32,7 @@ public class ServiceHelper {
     public static final String MIDDLE_NOTIFY = "MIDDLE_NOTIFY";
     public static final String ERROR_NOTIFY = "ERROR_NOTIFY";
 
-    ///google cloud messages
-    public static final String PROPERTY_REG_ID = "";
-    public static final String PROPERTY_APP_VERSION = "1.0";
-    public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-    public static final String SENDER_ID = "";
+
 
     private static final String URSMU_PREFERENCES = "UrsmuPreferences";
     private static ServiceHelper ourInstance = new ServiceHelper();
@@ -190,7 +183,7 @@ public class ServiceHelper {
     public void setPreferences(String name, String value) {
         mActivity.getSharedPreferences(URSMU_PREFERENCES, Context.MODE_PRIVATE)
                 .edit().
-                putString(ServiceHelper.PROPERTY_REG_ID, value).commit();
+                putString(AbsPush.PROPERTY_REG_ID, value).commit();
     }
 
     public void setBooleanPreferences(String name, Boolean value) {

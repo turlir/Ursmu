@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import ru.ursmu.application.Abstraction.AbsPush;
 import ru.ursmu.application.Abstraction.IUrsmuObject;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.Realization.EducationWeek;
@@ -228,7 +229,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
                 try {
                     GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
 
-                    regid = gcm.register(ServiceHelper.SENDER_ID);
+                    regid = gcm.register(AbsPush.SENDER_ID);
 
                     storeRegistrationId(context, regid);
                 } catch (IOException ex) {
@@ -290,8 +291,8 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
             mHelper = ServiceHelper.getInstance(getApplicationContext());
         }
 
-        mHelper.setPreferences(ServiceHelper.PROPERTY_REG_ID, regId);
-        mHelper.setIntPreference(ServiceHelper.PROPERTY_APP_VERSION, appVersion);
+        mHelper.setPreferences(AbsPush.PROPERTY_REG_ID, regId);
+        mHelper.setIntPreference(AbsPush.PROPERTY_APP_VERSION, appVersion);
     }
 
     private boolean checkPlayServices() {
@@ -300,7 +301,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
 
                 GooglePlayServicesUtil.getErrorDialog(resultCode, this,
-                        ServiceHelper.PLAY_SERVICES_RESOLUTION_REQUEST).show();
+                        AbsPush.PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
                 Log.i("URSMULOG", "This device is not supported.");
                 finish();
@@ -315,13 +316,13 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
             mHelper = ServiceHelper.getInstance(getApplicationContext());
         }
 
-        String registrationId = mHelper.getPreference(ServiceHelper.PROPERTY_REG_ID);
+        String registrationId = mHelper.getPreference(AbsPush.PROPERTY_REG_ID);
 
         if (TextUtils.isEmpty(registrationId)) {
             Log.i("URSMULOG", "Registration not found.");
             return "";
         }
-        int registeredVersion = mHelper.getIntPreference(ServiceHelper.PROPERTY_APP_VERSION, Integer.MIN_VALUE);
+        int registeredVersion = mHelper.getIntPreference(AbsPush.PROPERTY_APP_VERSION, Integer.MIN_VALUE);
         int currentVersion = getAppVersion(context);
         if (registeredVersion != currentVersion) {
             Log.i("URSMULOG", "App version changed.");
