@@ -28,11 +28,11 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import ru.ursmu.application.Abstraction.AbsPush;
 import ru.ursmu.application.Abstraction.IUrsmuObject;
 import ru.ursmu.application.Abstraction.UniversalCallback;
+import ru.ursmu.application.R;
 import ru.ursmu.application.Realization.EducationWeek;
 import ru.ursmu.application.Realization.PushReRegister;
 import ru.ursmu.application.Realization.PushRegister;
 import ru.ursmu.application.Realization.ScheduleGroup;
-import ru.ursmu.application.R;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -136,7 +136,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
     protected void onSaveInstanceState(Bundle outState) {
         Log.d("URSMULOG", "onSaveInstanceState");
         outState.putString(ServiceHelper.FACULTY, mFaculty);
-        outState.putString(ServiceHelper.KURS,mKurs );
+        outState.putString(ServiceHelper.KURS, mKurs);
         outState.putString(ServiceHelper.GROUP, mGroup);
     }
 
@@ -144,8 +144,8 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         Log.d("URSMULOG", "onRestoreInstanceState");
         mFaculty = savedInstanceState.getString(ServiceHelper.FACULTY);
-        mKurs    = savedInstanceState.getString(ServiceHelper.KURS);
-        mGroup   = savedInstanceState.getString(ServiceHelper.GROUP);
+        mKurs = savedInstanceState.getString(ServiceHelper.KURS);
+        mGroup = savedInstanceState.getString(ServiceHelper.GROUP);
     }
 
     @Override
@@ -218,10 +218,8 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
 
             quest_dialog.show(getSupportFragmentManager(), "quest_dialog");
             mHelper.setBooleanPreferences("IS_QUEST_PUSH_SUBSCRIPTION", false);
-
-        } else if (getIntent().getBooleanExtra("RE_REGISTER", false) && !(current_id = getRegistrationId(mContext)).equals("")) {
-            Log.d("URSMULOG", "GroupScheduleActivity push re Register init");
-            sendRegistrationIdToBackend(current_id, true);
+        } else {
+            pushSubscribe();
         }
     }
 
@@ -232,6 +230,10 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
         if (TextUtils.isEmpty(regid) ||
                 !ApplicationVersionHelper.isApplicationVersionCodeEqualsSavedApplicationVersionCode(getApplicationContext())) {
             registerInBackground();
+        } else {
+            if (getIntent().getBooleanExtra("RE_REGISTER", false))
+                sendRegistrationIdToBackend(regid, true);
+
         }
     }
 
