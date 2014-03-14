@@ -227,8 +227,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
         Log.d("URSMULOG", "pushSubscribe");
         String regid = getRegistrationId(getApplicationContext());
 
-        if (TextUtils.isEmpty(regid) ||
-                !ApplicationVersionHelper.isApplicationVersionCodeEqualsSavedApplicationVersionCode(getApplicationContext())) {
+        if (TextUtils.isEmpty(regid)) {
             registerInBackground();
         } else {
             if (getIntent().getBooleanExtra("RE_REGISTER", false))
