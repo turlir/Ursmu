@@ -11,7 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import ru.ursmu.application.Abstraction.AbsPush;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 /**
  * This {@code IntentService} does the actual handling of the GCM message.

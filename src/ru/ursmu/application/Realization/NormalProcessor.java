@@ -6,7 +6,7 @@ import android.util.Log;
 import org.json.JSONException;
 import ru.ursmu.application.Abstraction.AbstractProcessor;
 import ru.ursmu.application.Abstraction.IUrsmuObject;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 import java.io.IOException;
 import java.io.Serializable;
