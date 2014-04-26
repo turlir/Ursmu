@@ -183,7 +183,7 @@ public class ServiceHelper {
     public void setPreferences(String name, String value) {
         mActivity.getSharedPreferences(URSMU_PREFERENCES, Context.MODE_PRIVATE)
                 .edit().
-                putString(AbsPush.PROPERTY_REG_ID, value).commit();
+                putString(name, value).commit();
     }
 
     public void setBooleanPreferences(String name, Boolean value) {
