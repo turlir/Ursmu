@@ -61,6 +61,8 @@ public class ProfessorDataBasing extends IDatabasingBehavior {
 
     @Override
     public void clearTable() {
+        if(mDataBase==null)
+            return;
         if (!mDataBase.isDbLockedByCurrentThread() && !mDataBase.isDbLockedByOtherThreads()) {
             Log.d("URSMULOG", "ProfessorDataBasing clearTable");
             mDataBase.delete("ScheduleCommon", "", new String[]{});
