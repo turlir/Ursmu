@@ -28,7 +28,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import ru.ursmu.application.Abstraction.AbsPush;
 import ru.ursmu.application.Abstraction.IUrsmuObject;
 import ru.ursmu.application.Abstraction.UniversalCallback;
-import ru.ursmu.application.R;
+import ru.ursmu.beta.application.R;
 import ru.ursmu.application.Realization.EducationWeek;
 import ru.ursmu.application.Realization.PushReRegister;
 import ru.ursmu.application.Realization.PushRegister;

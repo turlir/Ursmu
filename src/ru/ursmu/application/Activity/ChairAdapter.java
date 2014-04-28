@@ -20,7 +20,7 @@ import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import ru.ursmu.application.JsonObject.ChairItem;
 import ru.ursmu.application.JsonObject.Faculty;
 import ru.ursmu.application.Realization.FacultyFactory;
-import ru.ursmu.application.R;
+import ru.ursmu.beta.application.R;
 
 
 public class ChairAdapter extends ArrayAdapter<ChairItem> {

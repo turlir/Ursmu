@@ -7,7 +7,7 @@ import org.json.JSONException;
 import ru.ursmu.application.Abstraction.AbstractProcessor;
 import ru.ursmu.application.Abstraction.IGroupDBUrsmuObject;
 import ru.ursmu.application.Abstraction.IUrsmuDBObject;
-import ru.ursmu.application.R;
+import ru.ursmu.beta.application.R;
 
 import java.io.IOException;
 

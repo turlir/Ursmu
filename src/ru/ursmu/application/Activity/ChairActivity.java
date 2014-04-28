@@ -19,7 +19,7 @@ import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.JsonObject.ChairItem;
 import ru.ursmu.application.Realization.SpecificChairList;
 import ru.ursmu.application.Realization.RandomChairList;
-import ru.ursmu.application.R;
+import ru.ursmu.beta.application.R;
 
 import java.io.Serializable;
 

@@ -109,7 +109,7 @@
                     android:id="@+id/imageView"
                     android:clickable="true"
                     android:onClick="happyClick"
-                    android:src="@drawable/happy" android:layout_gravity="center_horizontal"/>
+                    android:src="@drawable/out2" android:layout_gravity="center_horizontal"/>
         </LinearLayout>
 
     </LinearLayout>

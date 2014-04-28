@@ -7,7 +7,7 @@ import android.util.Log;
 import org.json.JSONException;
 import ru.ursmu.application.Abstraction.*;
 import ru.ursmu.application.Activity.UrsmuService;
-import ru.ursmu.application.R;
+import ru.ursmu.beta.application.R;
 
 import java.io.IOException;
 import java.io.Serializable;
