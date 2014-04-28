@@ -25,45 +25,65 @@ public class GroupDBProcessor extends AbstractProcessor {
     protected Object[] doInBackground(Void... params) {
         Log.d("URSMULOG", "GroupDBProcessor start");
         sendStart();
-
+        ScheduleGroup next = null;
         getDataBaseBehavior().clearTable();
+
 
         try {
             object.first();
-            ScheduleGroup next;
+            //next = (ScheduleGroup) object.next();
+        } catch (JSONException e) {
+            sendFailure(mContext.getResources().getString(R.string.parse_error));
+        } catch (IOException e) {
+            sendFailure(mContext.getResources().getString(R.string.null_error));
+        }
 
-            Object[] q;
-            String uri, param, s;
-            UrsmuPostDownload down_agent = new UrsmuPostDownload();
-            ScheduleParser parse_agent = new ScheduleParser();
 
-            while ((next = (ScheduleGroup) object.next()) != null) {
-                if (!next.getGroup().equals("ПБ.к-11з") && !next.getGroup().equals("ГИГ-4з") && !next.getGroup().equals("ГИГ-5з")) {
-                    uri = next.getUri();
-                    param = next.getParameters();
+        Object[] q = null;
+        String uri, param, s;
+        UrsmuPostDownload down_agent = new UrsmuPostDownload();
+        ScheduleParser parse_agent = new ScheduleParser();
+        short error_parse = 0;
 
-                    s = down_agent.Download(uri, param);
-                    q = parse_agent.parse(s);
 
-                    next.getDataBasingBehavior(mContext).add(q);
+        while ((next = (ScheduleGroup) object.next()) != null) {
+            uri = next.getUri();
+            param = next.getParameters();
 
-                    sendMiddle(next.getFaculty());
-                }
+            try {
+                s = down_agent.Download(uri, param);
+            } catch (IOException e) {
+                sendFailure(mContext.getResources().getString(R.string.network_error));
+                return null;
             }
 
-            object.setCheck(mContext);
-            super.sendComplete(new String[]{});
+            try {
+                q = parse_agent.parse(s);
+            } catch (JSONException e) {
+                error_parse++;
+                if (error_parse > 15) {
+                    sendFailure(mContext.getResources().getString(R.string.parse_error));
+                    next.getDataBasingBehavior(mContext).clearTable();
+                    return null;
+                }
+                Log.d("URSMULOG", "GroupDBProcessor parse JSONException " + error_parse);
+                continue;
+            }
 
-        } catch (IOException ex) {
-            sendFailure(mContext.getResources().getString(R.string.network_error));
-            ex.printStackTrace();
-        } catch (JSONException ex) {
-            sendFailure(mContext.getResources().getString(R.string.parse_error));
-            ex.printStackTrace();
-        } catch (Exception ex) {
-            sendFailure(mContext.getResources().getString(R.string.null_error));
-            ex.printStackTrace();
+            try {
+                next.getDataBasingBehavior(mContext).add(q);
+            } catch (Exception e) {
+                sendFailure(mContext.getResources().getString(R.string.null_error));
+                return null;
+            }
+
+            sendMiddle(next.getFaculty());
         }
+
+
+        object.setCheck(mContext);
+        super.sendComplete(new String[]{});
+
 
         return null;
     }

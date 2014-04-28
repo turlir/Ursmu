@@ -28,7 +28,7 @@ public class ScheduleGroupFactory implements IGroupDBUrsmuObject<ScheduleGroup> 
 
     int f, k, g;
 
-    public boolean first() throws IOException, JSONException {
+    public void first() throws IOException, JSONException {
         FacultyList f_list = new FacultyList();
         facultys = parseBehavior.parse(downloadBehavior.Download(f_list.getUri(), f_list.getParameters()));
         f = 0;
@@ -42,10 +42,9 @@ public class ScheduleGroupFactory implements IGroupDBUrsmuObject<ScheduleGroup> 
         g = -1;  //first next() run
 
         //return new ScheduleGroup(facultys[f], kurs[k], groups[g]);
-        return true;
     }
 
-    public ScheduleGroup next() throws IOException, JSONException {
+    public ScheduleGroup next() {
         if (g < groups.length - 1) {
             g++;
             return new ScheduleGroup(facultys[f], kurs[k], groups[g], false);
@@ -53,18 +52,29 @@ public class ScheduleGroupFactory implements IGroupDBUrsmuObject<ScheduleGroup> 
             if (k < kurs.length - 1) {
                 k++;
                 GroupList g_list = new GroupList(facultys[f], kurs[k]);
-                groups = parseBehavior.parse(downloadBehavior.Download(g_list.getUri(), g_list.getParameters()));
+                try {
+                    groups = parseBehavior.parse(downloadBehavior.Download(g_list.getUri(), g_list.getParameters()));
+                } catch (Exception e) {
+                    return null;
+                }
                 g = -1;
                 return next();
             } else {
                 if (f < facultys.length - 1) {
                     f++;
                     KursList k_list = new KursList(facultys[f]);
-                    kurs = parseBehavior.parse(downloadBehavior.Download(k_list.getUri(), k_list.getParameters()));
+                    try {
+                        kurs = parseBehavior.parse(downloadBehavior.Download(k_list.getUri(), k_list.getParameters()));
+                    } catch (Exception e) {
+                        return null;
+                    }
                     k = 0;
-
                     GroupList g_list = new GroupList(facultys[f], kurs[k]);
-                    groups = parseBehavior.parse(downloadBehavior.Download(g_list.getUri(), g_list.getParameters()));
+                    try {
+                        groups = parseBehavior.parse(downloadBehavior.Download(g_list.getUri(), g_list.getParameters()));
+                    } catch (Exception e) {
+                        return null;
+                    }
                     g = -1;
                     return next();
                 } else {

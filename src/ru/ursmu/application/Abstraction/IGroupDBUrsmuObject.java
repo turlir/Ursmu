@@ -13,9 +13,9 @@ public interface IGroupDBUrsmuObject<T extends IUrsmuDBObject> extends Parcelabl
 
     void setCheck(Context c);
 
-    public boolean first() throws IOException, JSONException;
+    public void first() throws IOException, JSONException;
 
-    public T next() throws IOException, JSONException;
+    public T next();
 
     public IDatabasingBehavior getDataBasingBehavior(Context context);
 }
