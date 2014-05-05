@@ -64,9 +64,6 @@ public class QuestionDialog extends DialogFragment {
 
     private void closeDialogOpenMainActivity() {
         getDialog().dismiss();
-        Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
     }
 
 }

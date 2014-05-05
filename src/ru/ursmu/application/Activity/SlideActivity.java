@@ -29,11 +29,17 @@ public class SlideActivity extends ActionBarActivity {
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private Intent mStartGroupScheduleParam, mStartProfScheduleParam;
+    private int mOldSelectedPosition;
 
     private AdapterView.OnItemClickListener mSlideMenuItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if (mOldSelectedPosition == position) {
+                mDrawerLayout.closeDrawer(mDrawerView);
+                return;
+            }
             selectItem(position);
+            mOldSelectedPosition = position;
         }
     };
     private String mTitle;
@@ -85,11 +91,11 @@ public class SlideActivity extends ActionBarActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         analyzeStartIntent();
+        mOldSelectedPosition = 2;
     }
 
     private void analyzeStartIntent() {
         Intent info = getIntent();
-        if (info == null) return;
         String f = info.getStringExtra(ServiceHelper.FACULTY);
         if (f != null) {
             Log.d("URSMULOG", "proxy start GroupScheduleActivity");
@@ -101,7 +107,9 @@ public class SlideActivity extends ActionBarActivity {
         if (prof != null) {
             mStartProfScheduleParam = info;
             selectItem(5);
+            return;
         }
+        selectItem(2);
     }
 
     @Override
@@ -129,9 +137,6 @@ public class SlideActivity extends ActionBarActivity {
     }
 
     private void openActivity(int position) {
-        if (mDrawerList.getSelectedItemPosition() == position) {
-            return;
-        }
         Fragment fragment = null;
         switch (position) {
             case 1:      //кафедры
