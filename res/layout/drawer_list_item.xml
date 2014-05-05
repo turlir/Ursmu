@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="48dp"
+                android:paddingRight="16dp"
+                android:id="@+id/RelativeLayout_drawer"
+                android:background="@drawable/menu_item_state_background">
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:id="@+id/slide_item_image" android:src="@drawable/chair" android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/slide_item_text"
+            android:layout_alignParentBottom="false"
+            android:layout_toRightOf="@+id/slide_item_image"
+            android:layout_centerVertical="true"
+            android:gravity="fill_vertical" android:layout_marginLeft="12dp"/>
+</RelativeLayout>

@@ -1,59 +1,63 @@
 package ru.ursmu.application.Activity;
 
-import android.content.Intent;
+import android.app.Activity;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
+import android.view.*;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.JsonObject.ChairItem;
-import ru.ursmu.application.Realization.SpecificChairList;
 import ru.ursmu.application.Realization.RandomChairList;
+import ru.ursmu.application.Realization.SpecificChairList;
 import ru.ursmu.beta.application.R;
 
 import java.io.Serializable;
 
 
-public class ChairActivity extends ActionBarActivity implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
+public class ChairActivity extends Fragment implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
     ServiceHelper mHelper;
     boolean mLight = true;
     SearchView mSearchView;
+    ActionBar mParentBar;
+
+
+    public ChairActivity(ActionBar b) {
+        mParentBar = b;
+    }
+
     private UniversalCallback mCallback = new UniversalCallback() {
         @Override
         public void sendError(String notify) {
-            findViewById(R.id.chair_listView).setVisibility(View.VISIBLE);
-            setProgressBarIndeterminateVisibility(false);
+            getActivity().findViewById(R.id.chair_listView).setVisibility(View.VISIBLE);
+            getActivity().setProgressBarIndeterminateVisibility(false);
             showNotification(notify);
         }
 
         @Override
         public void sendComplete(Serializable data) {
-            findViewById(R.id.chair_listView).setVisibility(View.VISIBLE);
-            setProgressBarIndeterminateVisibility(false);
+            getActivity().findViewById(R.id.chair_listView).setVisibility(View.VISIBLE);
+            getActivity().setProgressBarIndeterminateVisibility(false);
             postProcessing((ChairItem[]) data);
         }
 
         @Override
         public void sendStart(long id) {
-            setProgressBarIndeterminateVisibility(true);
-            findViewById(R.id.chair_listView).setVisibility(View.INVISIBLE);
+            getActivity().setProgressBarIndeterminateVisibility(true);
+            getActivity().findViewById(R.id.chair_listView).setVisibility(View.INVISIBLE);
         }
     };
 
     //<editor-fold desc="SearchRegion">
     @Override
     public boolean onQueryTextSubmit(String s) {
-        Toast.makeText(getApplicationContext(), "Выберите элемент из списка", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity().getBaseContext(), "Выберите элемент из списка", Toast.LENGTH_SHORT).show();
         return false;
     }
 
@@ -61,9 +65,8 @@ public class ChairActivity extends ActionBarActivity implements SearchView.OnQue
     public boolean onQueryTextChange(String newText) {
         if (newText.length() > 6) {
             SpecificChairList prof = new SpecificChairList(newText); //Upper Case
-            Cursor c = prof.getDataBasingBehavior(getApplicationContext()).get();
-
-            SuggestionsAdapter adapter = new SuggestionsAdapter(getSupportActionBar().getThemedContext(), c, "name",
+            Cursor c = prof.getDataBasingBehavior(getActivity().getApplicationContext()).get();
+            SuggestionsAdapter adapter = new SuggestionsAdapter(mParentBar.getThemedContext(), c, "name",
                     R.drawable.white_chair);
             mSearchView.setSuggestionsAdapter(adapter);
             return true;
@@ -82,13 +85,14 @@ public class ChairActivity extends ActionBarActivity implements SearchView.OnQue
         Cursor all_item = mSearchView.getSuggestionsAdapter().getCursor();
         if (all_item.moveToPosition(position)) {
 
+            ChairItem selected = new ChairItem(all_item);
             postProcessing(new ChairItem[]{
-                    new ChairItem(all_item)
+                    selected
             });
 
             Log.d("URSMULOG onSuggestionClick", String.valueOf(position));
+            mSearchView.setQuery(selected.getName(), false);
             mSearchView.clearFocus();
-
             return true;
         }
         return false;
@@ -96,56 +100,48 @@ public class ChairActivity extends ActionBarActivity implements SearchView.OnQue
     //</editor-fold>
 
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.chair_activity, container, false);
+    }
 
-        setContentView(R.layout.chair_activity);
-
-        mHelper = ServiceHelper.getInstance(getApplicationContext());
-
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mHelper = ServiceHelper.getInstance(getActivity().getApplicationContext());
         mHelper.getUrsmuDBObject(new RandomChairList(5), mCallback);
     }
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        setHasOptionsMenu(true);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
-            getMenuInflater().inflate(R.menu.action_bar_faculty, menu);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.action_bar_faculty, menu);
 
-            MenuItem searchItem = menu.findItem(R.id.search_professor_faculty_list);
-            searchItem.setEnabled(mLight);
-            searchItem.setIcon(!mLight ? R.drawable.ic_search_inverse : R.drawable.abc_ic_search);
+        MenuItem searchItem = menu.findItem(R.id.search_professor_faculty_list);
+        if (searchItem == null) return;
+        searchItem.setEnabled(mLight);
+        searchItem.setIcon(!mLight ? R.drawable.ic_search_inverse : R.drawable.abc_ic_search);
 
-            mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-            mSearchView.setQueryHint("Поиск кафедры");
-            mSearchView.setOnQueryTextListener(this);
-            mSearchView.setOnSuggestionListener(this);
-        }
-        return super.onCreateOptionsMenu(menu);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        mSearchView.setQueryHint("Поиск кафедры");
+        mSearchView.setOnQueryTextListener(this);
+        mSearchView.setOnSuggestionListener(this);
     }
 
     private void showNotification(String notify) {
-        Toast.makeText(getApplicationContext(), notify, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity().getBaseContext(), notify, Toast.LENGTH_SHORT).show();
     }
 
     private void postProcessing(ChairItem[] data) {
-        ListView list = (ListView) findViewById(R.id.chair_listView);
-        ArrayAdapter<ChairItem> adapter = new ChairAdapter(this, R.layout.card_chair_adapter, data);
+        ListView list = (ListView) getActivity().findViewById(R.id.chair_listView);
+        ArrayAdapter<ChairItem> adapter = new ChairAdapter(getActivity().getBaseContext(), R.layout.card_chair_adapter, data);
         list.setAdapter(adapter);
     }
 

@@ -70,13 +70,12 @@ public class GcmIntentService extends IntentService {
     private Intent getIntentNotify() {
         ServiceHelper helper = ServiceHelper.getInstance(getApplicationContext());
 
-        Intent i = new Intent(this, GroupScheduleActivity.class);
+        Intent i = new Intent(this, SlideActivity.class);
         String[] info = helper.getThreeInfo();
         i.putExtra(ServiceHelper.IS_HARD, true);               //only true - special update
         i.putExtra(ServiceHelper.FACULTY, info[0]);
         i.putExtra(ServiceHelper.KURS, info[1]);
         i.putExtra(ServiceHelper.GROUP, info[2]);
-        i.setFlags(GroupScheduleActivity.NOTIFY_INTENT);
         return i;
     }
 }

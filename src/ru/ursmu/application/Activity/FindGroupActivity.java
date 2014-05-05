@@ -67,7 +67,8 @@ public class FindGroupActivity extends ActionBarActivity {
 
             mHelper.setThreeInfo(mFaculty, mKurs, selected_group);
 
-            Intent i = new Intent(getApplicationContext(), GroupScheduleActivity.class);
+            Intent i = new Intent(getApplicationContext(), SlideActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             i.putExtra(ServiceHelper.FACULTY, mFaculty);
             i.putExtra(ServiceHelper.KURS, mKurs);
             i.putExtra(ServiceHelper.GROUP, selected_group);

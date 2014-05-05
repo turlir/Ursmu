@@ -10,8 +10,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="0dp"
             android:singleLine="false"
-            android:text=""
             android:textColor="@android:color/white"
-            android:textAppearance="?android:attr/textAppearanceMediumInverse"/>
+            android:textAppearance="?android:attr/textAppearanceMediumInverse" android:gravity="fill_vertical"/>
 
 </LinearLayout>

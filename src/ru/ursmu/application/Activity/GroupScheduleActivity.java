@@ -1,5 +1,6 @@
 package ru.ursmu.application.Activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,15 +11,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -28,23 +27,29 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import ru.ursmu.application.Abstraction.AbsPush;
 import ru.ursmu.application.Abstraction.IUrsmuObject;
 import ru.ursmu.application.Abstraction.UniversalCallback;
-import ru.ursmu.beta.application.R;
 import ru.ursmu.application.Realization.EducationWeek;
 import ru.ursmu.application.Realization.PushReRegister;
 import ru.ursmu.application.Realization.PushRegister;
 import ru.ursmu.application.Realization.ScheduleGroup;
+import ru.ursmu.beta.application.R;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
 
-public class GroupScheduleActivity extends ActionBarActivity implements ActionBar.OnNavigationListener {
-    public static final int NOTIFY_INTENT = 32;
+public class GroupScheduleActivity extends Fragment implements ActionBar.OnNavigationListener {
     private ScheduleGroup mObject;
     private ProgressBar mBar;
     private ServiceHelper mHelper;
     private long mRequestId;
+    private ActionBar mParentBar;
     private String mFaculty, mKurs, mGroup;
+    private Intent mStartParam;
+
+    public GroupScheduleActivity(ActionBar b, Intent i) {
+        mParentBar = b;
+        mStartParam = i;
+    }
 
     private UniversalCallback mHandler = new UniversalCallback() {
         @Override
@@ -52,21 +57,21 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
             changeIndicatorVisible(View.INVISIBLE);
             showNotification(notify);
             mRequestId = 0;
-            findViewById(R.id.viewpager).setVisibility(View.VISIBLE);
+            getActivity().findViewById(R.id.viewpager).setVisibility(View.VISIBLE);
         }
 
         @Override
         public void sendComplete(Serializable data) {
             changeIndicatorVisible(View.INVISIBLE);
             mRequestId = 0;
-            MyPagerAdapter pager_adapter = new MyPagerAdapter(getSupportFragmentManager(), (EducationWeek) data, getApplicationContext(), false);
+            MyPagerAdapter pager_adapter = new MyPagerAdapter(getActivity().getSupportFragmentManager(), (EducationWeek) data, getActivity().getBaseContext(), false);
 
-            ViewPager view_pager = (ViewPager) findViewById(R.id.viewpager);
+            ViewPager view_pager = (ViewPager) getActivity().findViewById(R.id.viewpager);
             view_pager.setVisibility(View.VISIBLE);
             view_pager.setAdapter(pager_adapter);
             view_pager.setCurrentItem(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2, true);
 
-            PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pagerTabStrip);
+            PagerTabStrip pagerTabStrip = (PagerTabStrip) getActivity().findViewById(R.id.pagerTabStrip);
             pagerTabStrip.setDrawFullUnderline(true);
             pagerTabStrip.setTabIndicatorColor(Color.parseColor("#0099CC"));
 
@@ -77,42 +82,49 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
         public void sendStart(long id) {
             changeIndicatorVisible(View.VISIBLE);
             mRequestId = id;
-            findViewById(R.id.viewpager).setVisibility(View.INVISIBLE);
+            getActivity().findViewById(R.id.viewpager).setVisibility(View.INVISIBLE);
         }
     };
     private Context mContext;
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.group_schedule, container, false);
+    }
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.group_schedule);
-
-        Intent info = getIntent();
-        mFaculty = info.getStringExtra(ServiceHelper.FACULTY);
-        mKurs = info.getStringExtra(ServiceHelper.KURS);
-        mGroup = info.getStringExtra(ServiceHelper.GROUP);
-        boolean isHard = info.getBooleanExtra(ServiceHelper.IS_HARD, true);
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mFaculty = mStartParam.getStringExtra(ServiceHelper.FACULTY);
+        mKurs = mStartParam.getStringExtra(ServiceHelper.KURS);
+        mGroup = mStartParam.getStringExtra(ServiceHelper.GROUP);
+        boolean isHard = mStartParam.getBooleanExtra(ServiceHelper.IS_HARD, true);
 
         mObject = new ScheduleGroup(mFaculty, mKurs, mGroup, isHard);
-        mContext = getApplicationContext();
+        mContext = getActivity().getApplicationContext();
         start();
 
         String[] list_navigation = new String[]{"Поиск", mGroup};
 
-        ActionBar bar = getSupportActionBar();
-        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        ArrayAdapter<String> adapter = new SimpleCustomArrayAdapter(this,
+        mParentBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        ArrayAdapter<String> adapter = new SimpleCustomArrayAdapter(getActivity().getApplicationContext(),
                 R.layout.simple_action_menu, list_navigation);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        bar.setListNavigationCallbacks(adapter, this);
-        bar.setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mParentBar.setListNavigationCallbacks(adapter, this);
+        mParentBar.setDisplayHomeAsUpEnabled(true);
+        mParentBar.setDisplayShowTitleEnabled(false);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        setHasOptionsMenu(true);
     }
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
         if (itemPosition == 0) {
-            Intent i = new Intent(this, FindFacultyActivity.class);
+            Intent i = new Intent(getActivity(), FindFacultyActivity.class);
             startActivity(i);
             return true;
         }
@@ -121,56 +133,49 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
-        getSupportActionBar().setSelectedNavigationItem(1);
+        mParentBar.setSelectedNavigationItem(1);
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         ScheduleAdapter.clearIconPair();
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(Bundle outState) {
         Log.d("URSMULOG", "onSaveInstanceState");
         outState.putString(ServiceHelper.FACULTY, mFaculty);
         outState.putString(ServiceHelper.KURS, mKurs);
         outState.putString(ServiceHelper.GROUP, mGroup);
     }
 
-    @Override
+  /*  @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         Log.d("URSMULOG", "onRestoreInstanceState");
         mFaculty = savedInstanceState.getString(ServiceHelper.FACULTY);
         mKurs = savedInstanceState.getString(ServiceHelper.KURS);
         mGroup = savedInstanceState.getString(ServiceHelper.GROUP);
-    }
+    }*/
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.action_bar_group_schedule, menu);
-        return super.onCreateOptionsMenu(menu);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.action_bar_group_schedule, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                if (getIntent().getFlags() != NOTIFY_INTENT) {
-                    Intent intent = new Intent(this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }
-                return true;
             case R.id.schedule_group_update:
                 if (mRequestId == 0) {
                     mObject.setHard(true);
                     start();
                     return true;
                 } else {
-                    Toast.makeText(getApplicationContext(), "Дождитесь завершения операции", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getBaseContext(), "Дождитесь завершения операции", Toast.LENGTH_SHORT).show();
                 }
             case R.id.schedule_group_site:
                 if (mObject != null) {
@@ -216,23 +221,19 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
             DialogFragment quest_dialog = new QuestionDialog(positiveHandler,
                     getResources().getString(R.string.subsrc_dialog_title));
 
-            quest_dialog.show(getSupportFragmentManager(), "quest_dialog");
+            quest_dialog.show(getActivity().getSupportFragmentManager(), "quest_dialog");
             mHelper.setBooleanPreferences("IS_QUEST_PUSH_SUBSCRIPTION", false);
-        } else {
-            pushSubscribe();
         }
+        if (mStartParam.getBooleanExtra("RE_REGISTER", false))
+            sendRegistrationIdToBackend(getRegistrationId(mContext), true);
     }
 
     private void pushSubscribe() {
         Log.d("URSMULOG", "pushSubscribe");
-        String regid = getRegistrationId(getApplicationContext());
+        String regid = getRegistrationId(getActivity().getApplicationContext());
 
         if (TextUtils.isEmpty(regid)) {
             registerInBackground();
-        } else {
-            if (getIntent().getBooleanExtra("RE_REGISTER", false))
-                sendRegistrationIdToBackend(regid, true);
-
         }
     }
 
@@ -240,7 +241,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
-                Context context = getApplicationContext();
+                Context context = getActivity().getApplicationContext();
                 String regid = null;
                 try {
                     GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
@@ -287,7 +288,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
         };
 
         if (mHelper == null) {
-            mHelper = ServiceHelper.getInstance(getApplicationContext());
+            mHelper = ServiceHelper.getInstance(getActivity().getApplicationContext());
         }
 
         IUrsmuObject reg_obj;
@@ -304,7 +305,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
         int appVersion = getAppVersion(context);
         Log.i("URSMULOG", "Saving regId on app version " + appVersion);
         if (mHelper == null) {
-            mHelper = ServiceHelper.getInstance(getApplicationContext());
+            mHelper = ServiceHelper.getInstance(getActivity().getApplicationContext());
         }
 
         mHelper.setPreferences(AbsPush.PROPERTY_REG_ID, regId);
@@ -312,15 +313,15 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
     }
 
     private boolean checkPlayServices() {
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
 
-                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                GooglePlayServicesUtil.getErrorDialog(resultCode, getActivity(),
                         AbsPush.PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
                 Log.i("URSMULOG", "This device is not supported.");
-                finish();
+                getActivity().finish();
             }
             return false;
         }
@@ -329,7 +330,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
 
     private String getRegistrationId(Context context) {
         if (mHelper == null) {
-            mHelper = ServiceHelper.getInstance(getApplicationContext());
+            mHelper = ServiceHelper.getInstance(getActivity().getApplicationContext());
         }
 
         String registrationId = mHelper.getPreference(AbsPush.PROPERTY_REG_ID);
@@ -360,7 +361,7 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
 
     protected void changeIndicatorVisible(int visibility) {
         if (mBar == null) {
-            mBar = (ProgressBar) findViewById(R.id.schedule_bar);
+            mBar = (ProgressBar) getActivity().findViewById(R.id.schedule_bar);
         }
         mBar.setVisibility(visibility);
         if (visibility == View.INVISIBLE) {
@@ -369,6 +370,6 @@ public class GroupScheduleActivity extends ActionBarActivity implements ActionBa
     }
 
     private void showNotification(String notify) {
-        Toast.makeText(getApplicationContext(), notify, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity().getBaseContext(), notify, Toast.LENGTH_SHORT).show();
     }
 }

@@ -20,4 +20,6 @@
         Идея и реализация: Осинцев Илья, ГМФ. \nОбратная связь:\nhttp://vk.com/turlir
     </string>
     <string name="subsrc_dialog_title">Подписаться на уведомления об обновлении расписания?</string>
+    <string name="drawer_open">open</string>
+    <string name="drawer_close">close</string>
 </resources>

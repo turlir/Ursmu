@@ -1,5 +1,6 @@
 package ru.ursmu.application.Activity;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,7 @@ public class SimpleCustomArrayAdapter extends ArrayAdapter<String> {
     private int mResID;
     android.content.Context mContext;
 
-    public SimpleCustomArrayAdapter(GroupScheduleActivity Context, int resId, String[] data) {
+    public SimpleCustomArrayAdapter(Context Context, int resId, String[] data) {
         super(Context, resId, data);
         mResID = resId;
         mContext = Context;
