@@ -47,6 +47,9 @@ public class GroupDBProcessor extends AbstractProcessor {
 
 
         while ((next = (ScheduleGroup) object.next()) != null) {
+            if (next.getFaculty().equals("ФЗО") || next.getFaculty().equals("ФСПО-з")) {
+                continue;
+            }
             uri = next.getUri();
             param = next.getParameters();
 
