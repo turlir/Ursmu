@@ -48,11 +48,11 @@ public class GroupScheduleFragment extends ListFragment implements AdapterView.O
             case R.id.schedule_item_professor:
                 String normalProfessor = ((EducationItem) getListAdapter().getItem(mClickedPosition)).getNormalProfessor();
                 if (!TextUtils.isEmpty(normalProfessor)) {
-                    Intent i = new Intent(getActivity().getApplicationContext(), ProfessorScheduleActivity.class);
+                    Intent i = new Intent(getActivity().getApplicationContext(), SlideActivity.class);
                     i.putExtra("PROFESSOR", normalProfessor);
                     startActivity(i);
                 } else {
-                    Toast.makeText(getActivity().getApplicationContext(), "Выберите пару", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getBaseContext(), "Выберите пару", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case R.id.schedule_item_alarm:

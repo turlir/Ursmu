@@ -1,22 +1,21 @@
 package ru.ursmu.application.Activity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +28,7 @@ import ru.ursmu.beta.application.R;
 import java.io.Serializable;
 import java.util.Calendar;
 
-public class ProfessorScheduleActivity extends ActionBarActivity implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
+public class ProfessorScheduleActivity extends Fragment implements SearchView.OnQueryTextListener, SearchView.OnSuggestionListener {
     String mProfessor;
     ServiceHelper mHelper;
     private ProgressBar mBar;
@@ -37,13 +36,19 @@ public class ProfessorScheduleActivity extends ActionBarActivity implements Sear
     private boolean mLight = false;
     private SearchView mSearchView;
     private Long mRequestId;
+    private ActionBar mParentBar;
+    private Intent mStartParam;
 
+    public ProfessorScheduleActivity(ActionBar b, Intent p) {
+        mParentBar = b;
+        mStartParam = p;
+    }
 
     private UniversalCallback mHandlerTwo = new UniversalCallback() {
         @Override
         public void sendError(String notify) {
-            Toast.makeText(getApplicationContext(), notify, Toast.LENGTH_SHORT).show();
-            findViewById(R.id.viewpager).setVisibility(View.VISIBLE);
+            Toast.makeText(getActivity().getBaseContext(), notify, Toast.LENGTH_SHORT).show();
+            getActivity().findViewById(R.id.viewpager).setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -51,14 +56,14 @@ public class ProfessorScheduleActivity extends ActionBarActivity implements Sear
             changeIndicatorVisible(View.INVISIBLE);
             mRequestId = null;
             if (data != null) {
-                MyPagerAdapter pager_adapter = new MyPagerAdapter(getSupportFragmentManager(), (EducationWeek) data, getApplicationContext(), true);
+                MyPagerAdapter pager_adapter = new MyPagerAdapter(getActivity().getSupportFragmentManager(), (EducationWeek) data, getActivity().getApplicationContext(), true);
 
-                ViewPager view_pager = (ViewPager) findViewById(R.id.professor_viewpager);
+                ViewPager view_pager = (ViewPager) getActivity().findViewById(R.id.professor_viewpager);
                 view_pager.setVisibility(View.VISIBLE);
                 view_pager.setAdapter(pager_adapter);
                 view_pager.setCurrentItem(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2, true);
 
-                PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.professor_pagerTabStrip);
+                PagerTabStrip pagerTabStrip = (PagerTabStrip) getActivity().findViewById(R.id.professor_pagerTabStrip);
                 pagerTabStrip.setDrawFullUnderline(true);
                 pagerTabStrip.setTabIndicatorColor(Color.parseColor("#0099CC"));
                 pagerTabStrip.setVisibility(View.VISIBLE);
@@ -70,7 +75,7 @@ public class ProfessorScheduleActivity extends ActionBarActivity implements Sear
             changeIndicatorVisible(View.VISIBLE);
             changeDescText(null);
             mRequestId = id;
-            findViewById(R.id.professor_viewpager).setVisibility(View.INVISIBLE);
+            getActivity().findViewById(R.id.professor_viewpager).setVisibility(View.INVISIBLE);
         }
 
 
@@ -80,18 +85,18 @@ public class ProfessorScheduleActivity extends ActionBarActivity implements Sear
     //<editor-fold desc="SearchSuggestion">
     @Override
     public boolean onQueryTextSubmit(String query) {
-        Toast.makeText(getApplicationContext(), "Выбрите элемент из списка", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity().getBaseContext(), "Выбрите элемент из списка", Toast.LENGTH_SHORT).show();
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        findViewById(R.id.path_to_icon).setVisibility(View.INVISIBLE);
+        getActivity().findViewById(R.id.path_to_icon).setVisibility(View.INVISIBLE);
         if (newText.length() > 4) {
             ProfessorSchedule prof = new ProfessorSchedule(newText.toLowerCase());
-            Cursor suggestion = prof.getDataBasingBehavior(getApplicationContext()).get();
+            Cursor suggestion = prof.getDataBasingBehavior(getActivity().getApplicationContext()).get();
 
-            SuggestionsAdapter adapter = new SuggestionsAdapter(getSupportActionBar().getThemedContext(),
+            SuggestionsAdapter adapter = new SuggestionsAdapter(mParentBar.getThemedContext(),
                     suggestion, "normalProfessor", R.drawable.white_social_person);
             mSearchView.setSuggestionsAdapter(adapter);
             return true;
@@ -115,31 +120,44 @@ public class ProfessorScheduleActivity extends ActionBarActivity implements Sear
     //</editor-fold>
 
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.professor_schedule);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.professor_schedule, container, false);
+    }
 
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         ScheduleGroupFactory object = new ScheduleGroupFactory();
 
-        mProfessor = getIntent().getStringExtra("PROFESSOR");
+        if (mStartParam != null) {
+            mProfessor = mStartParam.getStringExtra("PROFESSOR");
+        }
 
-        if (!(mLight = object.check(getApplicationContext()))) {
+        if (!(mLight = object.check(getActivity().getApplicationContext()))) {
             startQuestDialog();
         } else {
             nextStep();
         }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mParentBar.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
-    protected void onPause() {
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onPause() {
         super.onPause();
         ScheduleAdapter.clearIconPair();
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (mBar != null) {
             outState.putInt("PROGRESS_BAR_STATE", mBar.getVisibility());
@@ -150,42 +168,37 @@ public class ProfessorScheduleActivity extends ActionBarActivity implements Sear
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        changeIndicatorVisible(savedInstanceState.getInt("PROGRESS_BAR_STATE"));
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            changeIndicatorVisible(savedInstanceState.getInt("PROGRESS_BAR_STATE"));
+        }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
-            getMenuInflater().inflate(R.menu.action_bar_professor_schedule, menu);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.action_bar_professor_schedule, menu);
 
-            MenuItem searchItem = menu.findItem(R.id.search_professor_activity);
-            searchItem.setEnabled(mLight);
-            searchItem.setIcon(!mLight ? R.drawable.ic_search_inverse : R.drawable.abc_ic_search);
+        MenuItem searchItem = menu.findItem(R.id.search_professor_activity);
+        searchItem.setEnabled(mLight);
+        searchItem.setIcon(!mLight ? R.drawable.ic_search_inverse : R.drawable.abc_ic_search);
 
-            mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-            mSearchView.setQueryHint("Поиск преподавателя");
-            mSearchView.setOnQueryTextListener(this);
-            mSearchView.setOnSuggestionListener(this);
-        }
-        return super.onCreateOptionsMenu(menu);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        mSearchView.setQueryHint("Поиск преподавателя");
+        mSearchView.setOnQueryTextListener(this);
+        mSearchView.setOnSuggestionListener(this);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
-                return true;
             case R.id.global_update:
                 if (mRequestId == null) {
                     startQuestDialog();
                     return true;
                 } else {
-                    Toast.makeText(getApplicationContext(), "Дождитесь окончания операции", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getBaseContext(), "Дождитесь окончания операции", Toast.LENGTH_SHORT).show();
                     return false;
                 }
             default:
@@ -207,7 +220,7 @@ public class ProfessorScheduleActivity extends ActionBarActivity implements Sear
         DialogFragment quest_dialog = new QuestionDialog(positiveHandler,
                 getResources().getString(R.string.quest_dialog_title), getResources().getString(R.string.quest_dialog_desc));
 
-        quest_dialog.show(getSupportFragmentManager(), "quest_dialog");
+        quest_dialog.show(getActivity().getSupportFragmentManager(), "quest_dialog");
     }
 
     private void startUpdDialog() {
@@ -215,30 +228,34 @@ public class ProfessorScheduleActivity extends ActionBarActivity implements Sear
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 mLight = true;
-                supportInvalidateOptionsMenu();
+                getActivity().supportInvalidateOptionsMenu();
                 mRequestId = null;
                 nextStep();
             }
         });
-        upd_dialog.show(getSupportFragmentManager(), "upd_dialog");
+        upd_dialog.show(getActivity().getSupportFragmentManager(), "upd_dialog");
     }
 
     private void nextStep() {
         if (mProfessor != null) {
             setTitle(mProfessor);
             if (mHelper == null)
-                mHelper = ServiceHelper.getInstance(getApplicationContext());
+                mHelper = ServiceHelper.getInstance(getActivity().getApplicationContext());
 
             mHelper.getUrsmuDBObject(new ProfessorSchedule(mProfessor), mHandlerTwo);
         } else {
-            findViewById(R.id.path_to_icon).setVisibility(View.VISIBLE);
+            getActivity().findViewById(R.id.path_to_icon).setVisibility(View.VISIBLE);
             changeDescText(getResources().getString(R.string.offline_search_help));
         }
     }
 
+    private void setTitle(String mProfessor) {
+        mParentBar.setTitle(mProfessor);
+    }
+
     protected void changeIndicatorVisible(int visibility) {
         if (mBar == null) {
-            mBar = (ProgressBar) findViewById(R.id.schedule_prof_bar);
+            mBar = (ProgressBar) getActivity().findViewById(R.id.schedule_prof_bar);
         }
         mBar.setVisibility(visibility);
         if (visibility == View.INVISIBLE) {
@@ -248,7 +265,7 @@ public class ProfessorScheduleActivity extends ActionBarActivity implements Sear
 
     private void changeDescText(String txt) {
         if (mDesc == null) {
-            mDesc = (TextView) findViewById(R.id.schedule_prof_desc);
+            mDesc = (TextView) getActivity().findViewById(R.id.schedule_prof_desc);
             //mDesc.setTypeface(Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf"));
         }
         if (txt != null) {

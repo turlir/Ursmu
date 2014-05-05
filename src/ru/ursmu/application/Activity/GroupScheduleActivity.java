@@ -152,13 +152,16 @@ public class GroupScheduleActivity extends Fragment implements ActionBar.OnNavig
         outState.putString(ServiceHelper.GROUP, mGroup);
     }
 
-  /*  @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        Log.d("URSMULOG", "onRestoreInstanceState");
-        mFaculty = savedInstanceState.getString(ServiceHelper.FACULTY);
-        mKurs = savedInstanceState.getString(ServiceHelper.KURS);
-        mGroup = savedInstanceState.getString(ServiceHelper.GROUP);
-    }*/
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            Log.d("URSMULOG", "onRestoreInstanceState");
+            mFaculty = savedInstanceState.getString(ServiceHelper.FACULTY);
+            mKurs = savedInstanceState.getString(ServiceHelper.KURS);
+            mGroup = savedInstanceState.getString(ServiceHelper.GROUP);
+        }
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

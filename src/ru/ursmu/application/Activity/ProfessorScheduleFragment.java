@@ -60,14 +60,14 @@ public class ProfessorScheduleFragment extends ListFragment implements AdapterVi
                 String faculty = selected.getFaculty();
                 String kurs = selected.getKurs();
                 if (!TextUtils.isEmpty(groupName) && !TextUtils.isEmpty(faculty) && !TextUtils.isEmpty(kurs)) {
-                    Intent i = new Intent(getActivity().getApplicationContext(), GroupScheduleActivity.class);
+                    Intent i = new Intent(getActivity().getApplicationContext(), SlideActivity.class);
                     i.putExtra(ServiceHelper.FACULTY, faculty);
                     i.putExtra(ServiceHelper.KURS, kurs);
                     i.putExtra(ServiceHelper.GROUP, groupName);
                     i.putExtra(ServiceHelper.IS_HARD, false);
                     startActivity(i);
                 } else {
-                    Toast.makeText(getActivity().getApplicationContext(), "Выберите пару", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getBaseContext(), "Выберите пару", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case R.id.schedule_prof_item_alarm:

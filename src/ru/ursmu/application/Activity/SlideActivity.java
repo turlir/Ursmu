@@ -3,6 +3,7 @@ package ru.ursmu.application.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -27,7 +28,7 @@ public class SlideActivity extends ActionBarActivity {
     private View mDrawerView;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-    private Intent mStartGroupScheduleParam;
+    private Intent mStartGroupScheduleParam, mStartProfScheduleParam;
 
     private AdapterView.OnItemClickListener mSlideMenuItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -90,14 +91,16 @@ public class SlideActivity extends ActionBarActivity {
         Intent info = getIntent();
         if (info == null) return;
         String f = info.getStringExtra(ServiceHelper.FACULTY);
-        String k = info.getStringExtra(ServiceHelper.KURS);
-        String g = info.getStringExtra(ServiceHelper.GROUP);
-        boolean h = info.getBooleanExtra(ServiceHelper.IS_HARD, true);
-        boolean reg = info.getBooleanExtra("RE_REGISTER", false);
-        if (f != null && k != null && g != null) {
+        if (f != null) {
             Log.d("URSMULOG", "proxy start GroupScheduleActivity");
             mStartGroupScheduleParam = info;
             selectItem(4);
+            return;
+        }
+        String prof = info.getStringExtra("PROFESSOR");
+        if (prof != null) {
+            mStartProfScheduleParam = info;
+            selectItem(5);
         }
     }
 
@@ -144,6 +147,7 @@ public class SlideActivity extends ActionBarActivity {
                 break;
 
             case 5:     //профессора
+                fragment = openProfessorSchedule();
                 break;
         }
 
@@ -151,6 +155,10 @@ public class SlideActivity extends ActionBarActivity {
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
         }
+    }
+
+    private Fragment openProfessorSchedule() {
+        return new ProfessorScheduleActivity(getSupportActionBar(), mStartProfScheduleParam);
     }
 
     private Fragment openGroupSchedule() {
@@ -185,5 +193,10 @@ public class SlideActivity extends ActionBarActivity {
         b.setDisplayShowTitleEnabled(true);
         b.setTitle(mTitle);
         //supportInvalidateOptionsMenu();
+    }
+
+    public void aboutDialog(View v) {
+        DialogFragment about_dialog = new AboutDialog();
+        about_dialog.show(getSupportFragmentManager(), "about_dialog");
     }
 }
