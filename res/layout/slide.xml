@@ -16,11 +16,20 @@
             android:id="@+id/imageView" android:src="@drawable/out2"/>
     <ListView
             android:id="@+id/left_drawer"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:choiceMode="singleChoice"
             android:divider="#bebebe"
             android:dividerHeight="1dp"
             />
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView2"
+            android:src="@drawable/ic_action_about"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:clickable="true"
+            android:onClick="aboutDialog"/>
 </LinearLayout>
