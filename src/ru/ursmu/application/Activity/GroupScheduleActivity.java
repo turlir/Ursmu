@@ -12,6 +12,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -45,6 +47,8 @@ public class GroupScheduleActivity extends Fragment implements ActionBar.OnNavig
     private ActionBar mParentBar;
     private String mFaculty, mKurs, mGroup;
     private Intent mStartParam;
+    private MyPagerAdapter mPagerAdapter;
+    private ViewPager mViewPager;
 
     public GroupScheduleActivity(ActionBar b, Intent i) {
         mParentBar = b;
@@ -64,12 +68,12 @@ public class GroupScheduleActivity extends Fragment implements ActionBar.OnNavig
         public void sendComplete(Serializable data) {
             changeIndicatorVisible(View.INVISIBLE);
             mRequestId = 0;
-            MyPagerAdapter pager_adapter = new MyPagerAdapter(getActivity().getSupportFragmentManager(), (EducationWeek) data, getActivity().getBaseContext(), false);
+            mPagerAdapter = new MyPagerAdapter(getActivity().getSupportFragmentManager(), (EducationWeek) data, getActivity().getBaseContext(), false);
 
-            ViewPager view_pager = (ViewPager) getActivity().findViewById(R.id.viewpager);
-            view_pager.setVisibility(View.VISIBLE);
-            view_pager.setAdapter(pager_adapter);
-            view_pager.setCurrentItem(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2, true);
+            mViewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
+            mViewPager.setVisibility(View.VISIBLE);
+            mViewPager.setAdapter(mPagerAdapter);
+            mViewPager.setCurrentItem(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 2, true);
 
             PagerTabStrip pagerTabStrip = (PagerTabStrip) getActivity().findViewById(R.id.pagerTabStrip);
             pagerTabStrip.setDrawFullUnderline(true);
@@ -119,6 +123,12 @@ public class GroupScheduleActivity extends Fragment implements ActionBar.OnNavig
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         setHasOptionsMenu(true);
+    }
+
+    @Override
+         public void onDetach() {
+        super.onDetach();
+        mPagerAdapter.clear(mViewPager);
     }
 
     @Override
