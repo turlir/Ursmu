@@ -29,20 +29,18 @@ public class SlideActivity extends ActionBarActivity {
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private Intent mStartGroupScheduleParam, mStartProfScheduleParam;
-    private int mOldSelectedPosition;
+    private int mNewsSelectedPosition, mOldSelectedPosition;
+    private String mTitle;
 
     private AdapterView.OnItemClickListener mSlideMenuItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (mOldSelectedPosition == position) {
+            if (mNewsSelectedPosition != position) {
+                mNewsSelectedPosition = position;
                 mDrawerLayout.closeDrawer(mDrawerView);
-                return;
             }
-            selectItem(position);
-            mOldSelectedPosition = position;
         }
     };
-    private String mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +73,15 @@ public class SlideActivity extends ActionBarActivity {
                 R.string.drawer_close
         ) {
             public void onDrawerClosed(View view) {
-                getSupportActionBar().setTitle(mTitle);
-                supportInvalidateOptionsMenu();
+                if (mNewsSelectedPosition != mOldSelectedPosition) {
+                    supportInvalidateOptionsMenu();
+                    selectItem(mNewsSelectedPosition);
+                }
             }
 
             public void onDrawerOpened(View drawerView) {
-                getSupportActionBar().setTitle(mTitle);
                 supportInvalidateOptionsMenu();
+                mOldSelectedPosition = mDrawerList.getCheckedItemPosition();
             }
         };
 
@@ -92,6 +92,7 @@ public class SlideActivity extends ActionBarActivity {
 
         analyzeStartIntent();
         mOldSelectedPosition = 2;
+        mNewsSelectedPosition = mOldSelectedPosition;
     }
 
     private void analyzeStartIntent() {
@@ -132,7 +133,6 @@ public class SlideActivity extends ActionBarActivity {
         mTitle = ((EntryDrawer) mSlideItems.get(position)).getText();
         setTitle(mTitle);
         mDrawerLayout.closeDrawer(mDrawerView);
-
         openActivity(position);
     }
 
@@ -197,7 +197,6 @@ public class SlideActivity extends ActionBarActivity {
         b.setNavigationMode(ActionBar.DISPLAY_SHOW_TITLE);
         b.setDisplayShowTitleEnabled(true);
         b.setTitle(mTitle);
-        //supportInvalidateOptionsMenu();
     }
 
     public void aboutDialog(View v) {
