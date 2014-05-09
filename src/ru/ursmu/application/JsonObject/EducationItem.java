@@ -12,9 +12,9 @@ public class EducationItem implements Serializable {
     private String mKurs;
 
     private int mDayNumber;
-    private String mPredmet = "";
-    private String mTeacher = "";
-    private String mRoom = "";
+    private String mPredmet;
+    private String mTeacher;
+    private String mRoom;
     private int mNumberPar = 1;
 
     public static final String[] DayOfTheWeek = new String[]{"Понедельник",
@@ -67,6 +67,12 @@ public class EducationItem implements Serializable {
 
     public EducationItem(int dayIndex, int para, String predmet, String prepod, String aud) {  //json
         //Log.d("URSMULOG", "dayIndex=" + dayIndex + "para=" + para);
+        if (aud.length() > prepod.length()) {
+            String q;
+            q = aud;
+            aud = prepod;
+            prepod = q;
+        }
         mDayNumber = dayIndex;
         mNumberPar = para;
         mPredmet = predmet;
