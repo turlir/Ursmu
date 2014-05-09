@@ -40,7 +40,6 @@ public class AudienceInfoView extends RelativeLayout {
         building_number.setText(z.getBuild());
 
         ((TextView) findViewById(R.id.building_address)).setText(z.getAddress());
-        //findViewById(R.id.building_face_image).setBackgroundDrawable(z.getFaceImage());
 
         TextView floor_number = (TextView) findViewById(R.id.floor_number);
         floor_number.setTypeface(mRobotoRegular);
