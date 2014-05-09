@@ -35,28 +35,6 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
         return 6;
     }
 
-    public void clear(ViewGroup container) {
-        if (mCurTransaction == null) {
-            mCurTransaction = mFragmentManager.beginTransaction();
-        }
-
-        for (int i = 0; i < getCount(); i++) {
-
-            final long itemId = getItemId(i);
-
-            // Do we already have this fragment?
-            String name = makeFragmentName(container.getId(), itemId);
-            Fragment fragment = mFragmentManager.findFragmentByTag(name);
-
-            if (fragment != null) {
-                mCurTransaction.detach(fragment);
-            }
-        }
-        mCurTransaction.commitAllowingStateLoss();
-        mCurTransaction = null;
-    }
-
-
     @Override
     public void startUpdate(ViewGroup container) {
     }
@@ -88,11 +66,11 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
         String name = makeFragmentName(container.getId(), itemId);
         Fragment fragment = mFragmentManager.findFragmentByTag(name);
         if (fragment != null) {
-             Log.v("URSMULOG", "Attaching item #" + itemId + ": f=" + fragment);
+            Log.d("URSMULOG", "Attaching item #" + itemId + ": f=" + fragment);
             mCurTransaction.attach(fragment);
         } else {
             fragment = getItem(position);
-             Log.v("URSMULOG", "Adding item #" + itemId + ": f=" + fragment);
+            Log.d("URSMULOG", "Adding item #" + itemId + ": f=" + fragment);
             mCurTransaction.add(container.getId(), fragment,
                     makeFragmentName(container.getId(), itemId));
         }
@@ -106,17 +84,18 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
+        super.destroyItem(container, position, object);
         if (mCurTransaction == null) {
             mCurTransaction = mFragmentManager.beginTransaction();
         }
-        Log.v("URSMULOG", "Detaching item #" + getItemId(position) + ": f=" + object
+        Log.d("URSMULOG", "Detaching item #" + getItemId(position) + ": f=" + object
                 + " v=" + ((Fragment) object).getView());
         mCurTransaction.detach((Fragment) object);
     }
 
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
-        Fragment fragment = (Fragment)object;
+        Fragment fragment = (Fragment) object;
         if (fragment != mCurrentPrimaryItem) {
             if (mCurrentPrimaryItem != null) {
                 mCurrentPrimaryItem.setMenuVisibility(false);
@@ -141,7 +120,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return ((Fragment)object).getView() == view;
+        return ((Fragment) object).getView() == view;
     }
 
 
