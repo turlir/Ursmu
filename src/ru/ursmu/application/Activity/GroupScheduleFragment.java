@@ -58,6 +58,17 @@ public class GroupScheduleFragment extends ListFragment implements AdapterView.O
             case R.id.schedule_item_alarm:
                 ((ScheduleAdapter) getListAdapter()).setAlarm(mClickedPosition);
                 return true;
+            case R.id.schedule_item_gendalf:
+                String audience = ((EducationItem) getListAdapter().getItem(mClickedPosition)).getAud();
+                UrsmuBuilding info = UrsmuBuildingFactory.get(audience, getActivity().getApplicationContext());
+                if (info != null) {
+                    GendalfDialog magic = new GendalfDialog(info);
+                    magic.show(getActivity().getSupportFragmentManager(), "gendalf_gialog");
+                    return true;
+                } else {
+                    Toast.makeText(getActivity().getBaseContext(), "Выберите пару", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
             default:
                 return super.onContextItemSelected(item);
         }
