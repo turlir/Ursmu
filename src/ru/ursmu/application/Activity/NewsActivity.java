@@ -33,18 +33,14 @@ public class NewsActivity extends Fragment {
     UniversalCallback mCallback = new UniversalCallback() {
         @Override
         public void sendError(String notify) {
-            changeIndicatorVisible(View.INVISIBLE);
-            //Toast.makeText(getActivity().getBaseContext(), notify, Toast.LENGTH_SHORT).show();
-            getActivity().findViewById(R.id.error_card).setVisibility(View.VISIBLE);
-            getActivity().findViewById(R.id.list_news).setVisibility(View.INVISIBLE);
+            changeIndicatorVisible(View.INVISIBLE, true);
+
             mRequest = 0;
         }
 
         @Override
         public void sendComplete(Serializable data) {
-            getActivity().findViewById(R.id.error_card).setVisibility(View.INVISIBLE);
-            getActivity().findViewById(R.id.list_news).setVisibility(View.VISIBLE);
-            changeIndicatorVisible(View.INVISIBLE);
+            changeIndicatorVisible(View.INVISIBLE, false);
             Collections.addAll(mSource, (ListItem[]) data);
             mAdapter.notifyDataSetChanged();
             mRequest = 0;
@@ -52,7 +48,7 @@ public class NewsActivity extends Fragment {
 
         @Override
         public void sendStart(long id) {
-            changeIndicatorVisible(View.VISIBLE);
+            changeIndicatorVisible(View.VISIBLE, false);
             mRequest = id;
         }
     };
@@ -123,10 +119,19 @@ public class NewsActivity extends Fragment {
         mHelper.getUrsmuObject(object, mCallback);
     }
 
-    protected void changeIndicatorVisible(int visibility) {
+    protected void changeIndicatorVisible(int visibility, boolean isError) {
         if (mBar == null) {
             mBar = (ProgressBar) getActivity().findViewById(R.id.progress_news);
         }
         mBar.setVisibility(visibility);
+        if (visibility == View.INVISIBLE) {
+            if (isError) {
+                getActivity().findViewById(R.id.error_card).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.list_news).setVisibility(View.INVISIBLE);
+            } else {
+                getActivity().findViewById(R.id.error_card).setVisibility(View.INVISIBLE);
+                getActivity().findViewById(R.id.list_news).setVisibility(View.VISIBLE);
+            }
+        }
     }
 }
