@@ -1,13 +1,12 @@
 package ru.ursmu.application.Activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
 import ru.ursmu.application.Abstraction.IUrsmuObject;
 import ru.ursmu.application.Abstraction.UniversalCallback;
@@ -24,6 +23,7 @@ public class NewsActivity extends Fragment {
     ServiceHelper mHelper;
     ArrayList<ListItem> mSource;
     ProgressBar mBar;
+    long mRequest;
 
     public NewsActivity(ActionBar bar) {
         mParentBar = bar;
@@ -34,19 +34,26 @@ public class NewsActivity extends Fragment {
         @Override
         public void sendError(String notify) {
             changeIndicatorVisible(View.INVISIBLE);
-            Toast.makeText(getActivity().getBaseContext(), notify, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity().getBaseContext(), notify, Toast.LENGTH_SHORT).show();
+            getActivity().findViewById(R.id.error_card).setVisibility(View.VISIBLE);
+            getActivity().findViewById(R.id.list_news).setVisibility(View.INVISIBLE);
+            mRequest = 0;
         }
 
         @Override
         public void sendComplete(Serializable data) {
+            getActivity().findViewById(R.id.error_card).setVisibility(View.INVISIBLE);
+            getActivity().findViewById(R.id.list_news).setVisibility(View.VISIBLE);
             changeIndicatorVisible(View.INVISIBLE);
             Collections.addAll(mSource, (ListItem[]) data);
             mAdapter.notifyDataSetChanged();
+            mRequest = 0;
         }
 
         @Override
         public void sendStart(long id) {
             changeIndicatorVisible(View.VISIBLE);
+            mRequest = id;
         }
     };
 
@@ -71,15 +78,49 @@ public class NewsActivity extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mHelper = ServiceHelper.getInstance(getActivity().getApplicationContext());
-        IUrsmuObject object = new UrsmuNews(1);
-        mHelper.getUrsmuObject(object, mCallback);
-
+        start();
         mSource = new ArrayList<ListItem>(19);
         ListView newsList = (ListView) getActivity().findViewById(R.id.list_news);
         newsList.setOnItemClickListener(mItemItemClickListener);
         mAdapter = new NewsAdapter(getActivity().getBaseContext(), R.layout.card_news_adapter, mSource);
         newsList.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        setHasOptionsMenu(true);
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.action_bar_news, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.news_update:
+                if (mRequest == 0) {
+                    start();
+                } else {
+                    Toast.makeText(getActivity().getBaseContext(), getResources().getString(R.string.wait),
+                            Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void start() {
+        if (mHelper == null) {
+            mHelper = ServiceHelper.getInstance(getActivity().getApplicationContext());
+        }
+        IUrsmuObject object = new UrsmuNews(1);
+        mHelper.getUrsmuObject(object, mCallback);
     }
 
     protected void changeIndicatorVisible(int visibility) {
