@@ -97,6 +97,7 @@ public class GroupScheduleActivity extends Fragment implements ActionBar.OnNavig
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.d("URSMULOG", "GroupScheduleActivity onActivityCreated");
         mFaculty = mStartParam.getStringExtra(ServiceHelper.FACULTY);
         mKurs = mStartParam.getStringExtra(ServiceHelper.KURS);
         mGroup = mStartParam.getStringExtra(ServiceHelper.GROUP);
@@ -104,17 +105,8 @@ public class GroupScheduleActivity extends Fragment implements ActionBar.OnNavig
 
         mObject = new ScheduleGroup(mFaculty, mKurs, mGroup, isHard);
         mContext = getActivity().getApplicationContext();
+
         start();
-
-        String[] list_navigation = new String[]{"Поиск", mGroup};
-
-        mParentBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        ArrayAdapter<String> adapter = new SimpleCustomArrayAdapter(getActivity().getApplicationContext(),
-                R.layout.simple_action_menu, list_navigation);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mParentBar.setListNavigationCallbacks(adapter, this);
-        mParentBar.setDisplayHomeAsUpEnabled(true);
-        mParentBar.setDisplayShowTitleEnabled(false);
     }
 
     @Override
@@ -137,7 +129,19 @@ public class GroupScheduleActivity extends Fragment implements ActionBar.OnNavig
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("URSMULOG", "GroupScheduleActivity onResume " + mGroup);
+
+        String[] list_navigation = new String[]{"Поиск", mGroup};
+
+        mParentBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        ArrayAdapter<String> adapter = new SimpleCustomArrayAdapter(getActivity().getApplicationContext(),
+                R.layout.simple_action_menu, list_navigation);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mParentBar.setListNavigationCallbacks(adapter, this);
+        mParentBar.setDisplayHomeAsUpEnabled(true);
+        mParentBar.setDisplayShowTitleEnabled(false);
         mParentBar.setSelectedNavigationItem(1);
+        this.getActivity().supportInvalidateOptionsMenu(); // change navigation mode
     }
 
     @Override
@@ -216,7 +220,6 @@ public class GroupScheduleActivity extends Fragment implements ActionBar.OnNavig
             mHelper = ServiceHelper.getInstance(mContext);
         }
 
-        String current_id;
         if (mHelper.getBooleanPreference("IS_QUEST_PUSH_SUBSCRIPTION")) {
             DialogInterface.OnClickListener positiveHandler = new DialogInterface.OnClickListener() {
                 @Override

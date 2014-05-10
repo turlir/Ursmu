@@ -31,6 +31,7 @@ public class SlideActivity extends ActionBarActivity {
     private Intent mStartGroupScheduleParam, mStartProfScheduleParam;
     private int mNewsSelectedPosition, mOldSelectedPosition;
     private String mTitle;
+    private static  ActionBar mCurrentActionBar;
 
     private AdapterView.OnItemClickListener mSlideMenuItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -74,21 +75,21 @@ public class SlideActivity extends ActionBarActivity {
         ) {
             public void onDrawerClosed(View view) {
                 if (mNewsSelectedPosition != mOldSelectedPosition) {
-                    supportInvalidateOptionsMenu();
                     selectItem(mNewsSelectedPosition);
                 }
             }
 
             public void onDrawerOpened(View drawerView) {
-                supportInvalidateOptionsMenu();
+                //supportInvalidateOptionsMenu();
                 mOldSelectedPosition = mDrawerList.getCheckedItemPosition();
             }
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        mCurrentActionBar = getSupportActionBar();
+        mCurrentActionBar.setDisplayHomeAsUpEnabled(true);
+        mCurrentActionBar.setHomeButtonEnabled(true);
 
         analyzeStartIntent();
         mOldSelectedPosition = 2;
@@ -140,11 +141,11 @@ public class SlideActivity extends ActionBarActivity {
         Fragment fragment = null;
         switch (position) {
             case 1:      //кафедры
-                fragment = new ChairActivity(getSupportActionBar());
+                fragment = new ChairActivity(mCurrentActionBar);
                 break;
 
             case 2:      //новости
-                fragment = new NewsActivity(getSupportActionBar());
+                fragment = new NewsActivity(mCurrentActionBar);
                 break;
 
             case 4:     //группы
@@ -159,11 +160,12 @@ public class SlideActivity extends ActionBarActivity {
         if (fragment != null) {
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+            supportInvalidateOptionsMenu();
         }
     }
 
     private Fragment openProfessorSchedule() {
-        return new ProfessorScheduleActivity(getSupportActionBar(), mStartProfScheduleParam);
+        return new ProfessorScheduleActivity(mCurrentActionBar, mStartProfScheduleParam);
     }
 
     private Fragment openGroupSchedule() {
@@ -187,16 +189,15 @@ public class SlideActivity extends ActionBarActivity {
         } else {
             i = mStartGroupScheduleParam;
         }
-        fragment = new GroupScheduleActivity(getSupportActionBar(), i);
+        fragment = new GroupScheduleActivity(mCurrentActionBar, i);
         return fragment;
     }
 
     @Override
     public void setTitle(CharSequence title) {
-        ActionBar b = getSupportActionBar();
-        b.setNavigationMode(ActionBar.DISPLAY_SHOW_TITLE);
-        b.setDisplayShowTitleEnabled(true);
-        b.setTitle(mTitle);
+        mCurrentActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        mCurrentActionBar.setDisplayShowTitleEnabled(true);
+        mCurrentActionBar.setTitle(mTitle);
     }
 
     public void aboutDialog(View v) {

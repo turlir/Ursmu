@@ -56,7 +56,10 @@ public class ProfessorScheduleActivity extends Fragment implements SearchView.On
             changeIndicatorVisible(View.INVISIBLE);
             mRequestId = null;
             if (data != null) {
-                MyPagerAdapter pager_adapter = new MyPagerAdapter(getActivity().getSupportFragmentManager(), (EducationWeek) data, getActivity().getApplicationContext(), true);
+                MyPagerAdapter pager_adapter = new MyPagerAdapter(getChildFragmentManager(),
+                        (EducationWeek) data,
+                        getActivity().getApplicationContext(),
+                        true);
 
                 ViewPager view_pager = (ViewPager) getActivity().findViewById(R.id.professor_viewpager);
                 view_pager.setVisibility(View.VISIBLE);
@@ -114,6 +117,7 @@ public class ProfessorScheduleActivity extends Fragment implements SearchView.On
         mProfessor = ((SuggestionsAdapter) mSearchView.getSuggestionsAdapter()).getString(position);
         Log.d("URSMULOG", mProfessor);
         nextStep();
+        mSearchView.setQuery(mProfessor, false);
         mSearchView.clearFocus();
         return true;
     }
@@ -142,12 +146,13 @@ public class ProfessorScheduleActivity extends Fragment implements SearchView.On
         }
 
         mParentBar.setDisplayHomeAsUpEnabled(true);
+        setHasOptionsMenu(true);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        setHasOptionsMenu(true);
+       // setHasOptionsMenu(true);
     }
 
     @Override
