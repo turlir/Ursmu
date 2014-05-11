@@ -46,7 +46,6 @@ public class SlideActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);  //before adding content
         setContentView(R.layout.slide_activity);
         mTitle = getApplication().getString(R.string.app_name);
 

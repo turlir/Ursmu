@@ -12,7 +12,7 @@
     <item android:id="@+id/search_professor_activity"
           android:title="Поиск"
           android:icon="@drawable/abs_action_search"
-          myapp:showAsAction="always"
+          myapp:showAsAction="ifRoom|collapseActionView"
           myapp:actionViewClass="android.support.v7.widget.SearchView" />
 
 </menu>
