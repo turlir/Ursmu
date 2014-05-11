@@ -50,7 +50,7 @@ public class ChairAdapter extends ArrayAdapter<ChairItem> {
                 .build();
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-                .memoryCacheExtraOptions(140, 187) // default = device screen dimensions
+                .memoryCacheExtraOptions(100, 140) // default = device screen dimensions
                 .discCacheExtraOptions(140, 187, Bitmap.CompressFormat.JPEG, 100, null)
                 .threadPoolSize(3) // default
                 .threadPriority(Thread.NORM_PRIORITY - 1) // default
@@ -101,11 +101,11 @@ public class ChairAdapter extends ArrayAdapter<ChairItem> {
             address.setText(item.getAddress());
 
 
-            TextView faculty = (TextView) v.findViewById(R.id.faculty_chair);
+          /*  TextView faculty = (TextView) v.findViewById(R.id.faculty_chair);
             Faculty fac_item = FacultyFactory.create(item.getFaculty());
             faculty.setText(fac_item.getOriginalName());
             faculty.setTypeface(mTypefaceDesc);
-            faculty.setBackgroundColor(Color.parseColor(fac_item.getColor()));
+            faculty.setBackgroundColor(Color.parseColor(fac_item.getColor()));*/
 
             mImageLoader.displayImage(item.getCoverSrc(), (ImageView) v.findViewById(R.id.cover_src_chair));
         }

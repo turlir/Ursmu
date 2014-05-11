@@ -16,19 +16,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Кафедра автоматики и компьютерных технологий"
-                android:id="@+id/name_chair" android:layout_marginBottom="8dp"
-                android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
+                android:id="@+id/name_chair"
                 android:textAppearance="?android:attr/textAppearanceLarge" android:textColor="@android:color/black"/>
         <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
+                android:layout_height="wrap_content"
                 android:paddingBottom="4dp">
             <ImageView
                     android:layout_width="100dp"
                     android:layout_height="140dp"
-                    android:id="@+id/cover_src_chair" android:src="@drawable/abc_list_pressed_holo_dark"
-                    android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
-                    />
+                    android:id="@+id/cover_src_chair"
+                    android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:src="#ffe165"/>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -38,7 +36,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_toRightOf="@+id/cover_src_chair"
                     android:gravity="right" android:singleLine="false"
-                    android:layout_marginLeft="8dp" android:autoLink="phone"
+                    android:autoLink="phone"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
             <TextView
                     android:layout_width="wrap_content"
@@ -52,7 +50,6 @@
                     android:gravity="right"
                     android:singleLine="false"
                     android:autoLink="email"
-                    android:layout_marginLeft="8dp"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
             <TextView
                     android:layout_width="wrap_content"
@@ -64,6 +61,18 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="8dp"
                     android:singleLine="true" android:textColor="@android:color/black"/>
+           <!-- <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textStyle="bold"
+                    android:text="ГМФ"
+                    android:id="@+id/faculty_chair"
+                    android:layout_below="@+id/cover_title_chair"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="8dp"
+                    android:background="#046ab4"
+                    android:textColor="@android:color/white" android:visibility="visible"/>-->
             <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -74,18 +83,6 @@
                     android:singleLine="true"
                     android:layout_alignParentLeft="true"
                     android:layout_below="@+id/cover_src_chair" android:textColor="@android:color/black"/>
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textStyle="bold"
-                    android:text="ГМФ"
-                    android:id="@+id/faculty_chair"
-                    android:layout_below="@+id/audition_chair"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="8dp"
-                    android:background="#046ab4"
-                    android:textColor="@android:color/white"/>
         </RelativeLayout>
 
     </LinearLayout>
