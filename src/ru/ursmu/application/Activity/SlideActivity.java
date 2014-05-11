@@ -200,6 +200,7 @@ public class SlideActivity extends ActionBarActivity {
     }
 
     public void aboutDialog(View v) {
+        mDrawerLayout.closeDrawer(mDrawerView);
         DialogFragment about_dialog = new AboutDialog();
         about_dialog.show(getSupportFragmentManager(), "about_dialog");
     }
