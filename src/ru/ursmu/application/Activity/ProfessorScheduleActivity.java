@@ -32,7 +32,6 @@ public class ProfessorScheduleActivity extends Fragment implements SearchView.On
     String mProfessor;
     ServiceHelper mHelper;
     private ProgressBar mBar;
-    private TextView mDesc;
     private boolean mLight = false;
     private SearchView mSearchView;
     private Long mRequestId;
@@ -54,6 +53,7 @@ public class ProfessorScheduleActivity extends Fragment implements SearchView.On
         @Override
         public void sendComplete(Serializable data) {
             changeIndicatorVisible(View.INVISIBLE);
+            getActivity().findViewById(R.id.desc_card).setVisibility(View.INVISIBLE);
             mRequestId = null;
             if (data != null) {
                 MyPagerAdapter pager_adapter = new MyPagerAdapter(getChildFragmentManager(),
@@ -76,7 +76,7 @@ public class ProfessorScheduleActivity extends Fragment implements SearchView.On
         @Override
         public void sendStart(long id) {
             changeIndicatorVisible(View.VISIBLE);
-            changeDescText(null);
+            getActivity().findViewById(R.id.desc_card).setVisibility(View.INVISIBLE);
             mRequestId = id;
             getActivity().findViewById(R.id.professor_viewpager).setVisibility(View.INVISIBLE);
         }
@@ -94,7 +94,7 @@ public class ProfessorScheduleActivity extends Fragment implements SearchView.On
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        getActivity().findViewById(R.id.path_to_icon).setVisibility(View.INVISIBLE);
+        //getActivity().findViewById(R.id.desc_card).setVisibility(View.INVISIBLE);
         if (newText.length() > 4) {
             ProfessorSchedule prof = new ProfessorSchedule(newText.toLowerCase());
             Cursor suggestion = prof.getDataBasingBehavior(getActivity().getApplicationContext()).get();
@@ -166,9 +166,6 @@ public class ProfessorScheduleActivity extends Fragment implements SearchView.On
         super.onSaveInstanceState(outState);
         if (mBar != null) {
             outState.putInt("PROGRESS_BAR_STATE", mBar.getVisibility());
-        }
-        if (mDesc != null) {
-            outState.putString("DESC_BAR_TEXT", (String) mDesc.getText());
         }
     }
 
@@ -249,13 +246,13 @@ public class ProfessorScheduleActivity extends Fragment implements SearchView.On
 
             mHelper.getUrsmuDBObject(new ProfessorSchedule(mProfessor), mHandlerTwo);
         } else {
-            getActivity().findViewById(R.id.path_to_icon).setVisibility(View.VISIBLE);
-            changeDescText(getResources().getString(R.string.offline_search_help));
+            getActivity().findViewById(R.id.desc_card).setVisibility(View.VISIBLE);
         }
     }
 
     private void setTitle(String mProfessor) {
         mParentBar.setTitle(mProfessor);
+        getActivity().supportInvalidateOptionsMenu();
     }
 
     protected void changeIndicatorVisible(int visibility) {
@@ -265,19 +262,6 @@ public class ProfessorScheduleActivity extends Fragment implements SearchView.On
         mBar.setVisibility(visibility);
         if (visibility == View.INVISIBLE) {
             mBar = null;
-        }
-    }
-
-    private void changeDescText(String txt) {
-        if (mDesc == null) {
-            mDesc = (TextView) getActivity().findViewById(R.id.schedule_prof_desc);
-            //mDesc.setTypeface(Typeface.createFromAsset(getAssets(), "Roboto-Regular.ttf"));
-        }
-        if (txt != null) {
-            mDesc.setVisibility(View.VISIBLE);
-            mDesc.setText(txt);
-        } else {
-            mDesc.setVisibility(View.INVISIBLE);
         }
     }
 
