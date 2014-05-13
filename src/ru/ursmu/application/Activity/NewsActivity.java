@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import ru.ursmu.application.Abstraction.IUrsmuObject;
@@ -24,6 +25,7 @@ public class NewsActivity extends Fragment {
     ArrayList<ListItem> mSource;
     ProgressBar mBar;
     long mRequest;
+    int mPage;
 
     public NewsActivity(ActionBar bar) {
         mParentBar = bar;
@@ -48,7 +50,9 @@ public class NewsActivity extends Fragment {
 
         @Override
         public void sendStart(long id) {
-            changeIndicatorVisible(View.VISIBLE, false);
+            if (mPage == 1)
+                changeIndicatorVisible(View.VISIBLE, false);
+
             mRequest = id;
         }
     };
@@ -74,10 +78,20 @@ public class NewsActivity extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mPage = 1;
+        mRequest = 0;
         start();
         mSource = new ArrayList<ListItem>(19);
         ListView newsList = (ListView) getActivity().findViewById(R.id.list_news);
         newsList.setOnItemClickListener(mItemItemClickListener);
+        newsList.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                Log.d("URSMULOG", "NewsActvity setOnScrollListener" + page);
+                mPage = page;
+                start();
+            }
+        });
         mAdapter = new NewsAdapter(getActivity().getBaseContext(), R.layout.card_news_adapter, mSource);
         newsList.setAdapter(mAdapter);
     }
@@ -112,10 +126,14 @@ public class NewsActivity extends Fragment {
     }
 
     private void start() {
+        if (mRequest != 0) {
+            return;
+        }
         if (mHelper == null) {
             mHelper = ServiceHelper.getInstance(getActivity().getApplicationContext());
         }
-        IUrsmuObject object = new UrsmuNews(1);
+        Log.d("URSMULOG", "NewsActivity start mPage = " + mPage);
+        IUrsmuObject object = new UrsmuNews(mPage);
         mHelper.getUrsmuObject(object, mCallback);
     }
 
