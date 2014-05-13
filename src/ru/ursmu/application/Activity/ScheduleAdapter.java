@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import ru.ursmu.application.JsonObject.EducationItem;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -98,7 +98,7 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
     }
 
     private String getTime(int numberPair, boolean f) {
-        //Log.d("URSMULOG", "getTime(" + numberPair + ")");
+        ////Log.d("URSMULOG", "getTime(" + numberPair + ")");
         int n = (numberPair == 0 ? 0 : numberPair - 1);
         String s;
         Double t;
@@ -122,7 +122,7 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
     protected static boolean getIcon(int numberPair, int current_hour, int current_min) {
         if (ScheduleAdapter.mCurrentIconPair != -1) {
             if (ScheduleAdapter.mCurrentIconPair == numberPair) {
-                Log.d("URSMULOG", "getIcon shor " + (numberPair - 1));
+                //Log.d("URSMULOG", "getIcon shor " + (numberPair - 1));
                 return true;
             } else {
                 return false;
@@ -144,7 +144,7 @@ public class ScheduleAdapter extends ArrayAdapter<EducationItem> {
 
                 //current >= begin &&  current <= stop
                 if (i2 >= i1 && i2 <= i3) {
-                    Log.d("URSMULOG", "getIcon(" + numberPair + ")" + i2 + " >= " + i1 + " && " + i2 + " <= " + i3 + " n=" + n);
+                    //Log.d("URSMULOG", "getIcon(" + numberPair + ")" + i2 + " >= " + i1 + " && " + i2 + " <= " + i3 + " n=" + n);
                     //mCurrentIconPair = new WeakReference<Integer>(numberPair);
                     ScheduleAdapter.mCurrentIconPair = numberPair;
                     return true;

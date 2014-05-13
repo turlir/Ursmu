@@ -48,7 +48,7 @@ public class GroupDataBasing extends IDatabasingBehavior {
 
     public static GroupDataBasing getInstance(Context c, String f, String k, String g) {
         if (mContext == null || mDataBase == null) {
-            Log.d("URSMULOG", "GroupDataBasing getInstance");
+            //Log.d("URSMULOG", "GroupDataBasing getInstance");
             mContext = c;
             DataBaseHelper dbHelper = new DataBaseHelper(mContext);
             mDataBase = dbHelper.getWritableDatabase();
@@ -57,7 +57,7 @@ public class GroupDataBasing extends IDatabasingBehavior {
                 common = mDataBase.compileStatement("INSERT INTO ScheduleCommon VALUES(?, ?, ?, ?, ?)");
                 day = mDataBase.compileStatement("INSERT INTO ScheduleDays VALUES(?,?,?,?,?,?,?,?)");
             } catch (SQLException e) {
-                Log.d("URSMULOG", "compileStatement error");
+                //Log.d("URSMULOG", "compileStatement error");
             }
         }
         return new GroupDataBasing(f, k, g);
@@ -75,7 +75,7 @@ public class GroupDataBasing extends IDatabasingBehavior {
         EducationItem[] temp = (EducationItem[]) week;
         Long id = Math.abs(UUID.randomUUID().getLeastSignificantBits());
 
-        Log.d("URSMULOG", "GroupDataBasing add " + mFaculty + " " + mKurs + " " + mGroup);
+        //Log.d("URSMULOG", "GroupDataBasing add " + mFaculty + " " + mKurs + " " + mGroup);
 
         mDataBase.beginTransaction();
 
@@ -149,9 +149,9 @@ public class GroupDataBasing extends IDatabasingBehavior {
                 Long uin = c.getLong(uin_index);
                 c.close();
                 mUIN = uin;
-                Log.d("URSMULOG", "getUINCurrentGroup()" + mUIN);
+                //Log.d("URSMULOG", "getUINCurrentGroup()" + mUIN);
                 mLastGroup = mGroup;
-                Log.d("URSMULOG", "getUINCurrentGroup() mLastGroup" + mLastGroup);
+                //Log.d("URSMULOG", "getUINCurrentGroup() mLastGroup" + mLastGroup);
             } else {
                 mUIN = null;
             }
@@ -169,7 +169,7 @@ public class GroupDataBasing extends IDatabasingBehavior {
                 mDataBase.delete("ScheduleCommon", "UIN=?", new String[]{String.valueOf(mUIN)});
                 mDataBase.delete("ScheduleDays", "GroupID=?", new String[]{String.valueOf(mUIN)});
             } else {
-                Log.d("URSMULOG", "GroupDataBasing update mUIN != null");
+                //Log.d("URSMULOG", "GroupDataBasing update mUIN != null");
             }
             mUIN = null;
             mLastGroup = null;
@@ -186,12 +186,12 @@ public class GroupDataBasing extends IDatabasingBehavior {
     @Override
     public void clearTable() {
         if (!mDataBase.isDbLockedByCurrentThread() && !mDataBase.isDbLockedByOtherThreads()) {
-            Log.d("URSMULOG", "GroupDataBasing clearTable");
+            //Log.d("URSMULOG", "GroupDataBasing clearTable");
             mDataBase.delete("ScheduleCommon", "", new String[]{});
             mDataBase.delete("ScheduleDays", "", new String[]{});
         } else {
             String s = "GroupDataBasing blocked";
-            Log.d("URSMULOG", s);
+            //Log.d("URSMULOG", s);
         }
         close();
     }

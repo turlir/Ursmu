@@ -10,7 +10,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.Realization.KursList;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 import java.io.Serializable;
 

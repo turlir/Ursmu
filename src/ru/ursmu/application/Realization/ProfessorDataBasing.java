@@ -64,12 +64,12 @@ public class ProfessorDataBasing extends IDatabasingBehavior {
         if(mDataBase==null)
             return;
         if (!mDataBase.isDbLockedByCurrentThread() && !mDataBase.isDbLockedByOtherThreads()) {
-            Log.d("URSMULOG", "ProfessorDataBasing clearTable");
+            //Log.d("URSMULOG", "ProfessorDataBasing clearTable");
             mDataBase.delete("ScheduleCommon", "", new String[]{});
             mDataBase.delete("ScheduleDays", "", new String[]{});
         } else {
             String s = "ProfessorDataBasing blocked";
-            Log.d("URSMULOG", s);
+            //Log.d("URSMULOG", s);
         }
         close();
     }

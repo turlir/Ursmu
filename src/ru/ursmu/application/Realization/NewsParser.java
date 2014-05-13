@@ -10,7 +10,7 @@ public class NewsParser extends IParserBehavior<ListItem> {
 
     @Override
     public ListItem[] parse(String json) throws JSONException {
-        Log.d("URSMULOG", "NewsParser start");
+        //Log.d("URSMULOG", "NewsParser start");
 
         JSONObject jsonArray = new JSONObject(json);
         int count = jsonArray.length();  //21

@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 import java.util.Locale;
 
@@ -52,7 +52,7 @@ public class AudienceInfoView extends RelativeLayout {
         findViewById(R.id.building_go_to_map_icon).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("URSMULOG", "onClick");
+                //Log.d("URSMULOG", "onClick");
                 goToMap();
             }
         });

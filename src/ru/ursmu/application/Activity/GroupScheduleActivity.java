@@ -31,7 +31,7 @@ import ru.ursmu.application.Realization.EducationWeek;
 import ru.ursmu.application.Realization.PushReRegister;
 import ru.ursmu.application.Realization.PushRegister;
 import ru.ursmu.application.Realization.ScheduleGroup;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -97,7 +97,7 @@ public class GroupScheduleActivity extends Fragment implements ActionBar.OnNavig
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("URSMULOG", "GroupScheduleActivity onActivityCreated");
+        //Log.d("URSMULOG", "GroupScheduleActivity onActivityCreated");
         mFaculty = mStartParam.getStringExtra(ServiceHelper.FACULTY);
         mKurs = mStartParam.getStringExtra(ServiceHelper.KURS);
         mGroup = mStartParam.getStringExtra(ServiceHelper.GROUP);
@@ -129,7 +129,7 @@ public class GroupScheduleActivity extends Fragment implements ActionBar.OnNavig
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("URSMULOG", "GroupScheduleActivity onResume " + mGroup);
+        //Log.d("URSMULOG", "GroupScheduleActivity onResume " + mGroup);
 
         String[] list_navigation = new String[]{"Поиск", mGroup};
 
@@ -152,7 +152,7 @@ public class GroupScheduleActivity extends Fragment implements ActionBar.OnNavig
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.d("URSMULOG", "onSaveInstanceState");
+        //Log.d("URSMULOG", "onSaveInstanceState");
         outState.putString(ServiceHelper.FACULTY, mFaculty);
         outState.putString(ServiceHelper.KURS, mKurs);
         outState.putString(ServiceHelper.GROUP, mGroup);
@@ -162,7 +162,7 @@ public class GroupScheduleActivity extends Fragment implements ActionBar.OnNavig
     public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         if (savedInstanceState != null) {
-            Log.d("URSMULOG", "onRestoreInstanceState");
+            //Log.d("URSMULOG", "onRestoreInstanceState");
             mFaculty = savedInstanceState.getString(ServiceHelper.FACULTY);
             mKurs = savedInstanceState.getString(ServiceHelper.KURS);
             mGroup = savedInstanceState.getString(ServiceHelper.GROUP);
@@ -239,7 +239,7 @@ public class GroupScheduleActivity extends Fragment implements ActionBar.OnNavig
     }
 
     private void pushSubscribe() {
-        Log.d("URSMULOG", "pushSubscribe");
+        //Log.d("URSMULOG", "pushSubscribe");
         String regid = getRegistrationId(getActivity().getApplicationContext());
 
         if (TextUtils.isEmpty(regid)) {
@@ -261,7 +261,7 @@ public class GroupScheduleActivity extends Fragment implements ActionBar.OnNavig
                     storeRegistrationId(context, regid);
                 } catch (IOException ex) {
                     String msg = "Error :" + ex.getMessage();
-                    Log.d("URSMULOG", "registerInBackground " + msg);
+                    //Log.d("URSMULOG", "registerInBackground " + msg);
                 } finally {
                     return regid;
                 }
@@ -270,30 +270,32 @@ public class GroupScheduleActivity extends Fragment implements ActionBar.OnNavig
             @Override
             protected void onPostExecute(String msg) {
                 if (msg != null) {
-                    Log.d("URSMULOG registerInBackground onPostExecute", msg);
+                    //Log.d("URSMULOG registerInBackground onPostExecute", msg);
                     sendRegistrationIdToBackend(msg, false);
-                } else
-                    Log.d("URSMULOG", "onPostExecute error msg != null");
+                } else {
+                    //Log.d("URSMULOG", "onPostExecute error msg != null");
+                }
+
             }
         }.execute(null, null, null);
     }
 
     private void sendRegistrationIdToBackend(String regid, boolean re_register) {
-        Log.d("URSMULOG", "sendRegistrationIdToBackend " + regid);
+        //Log.d("URSMULOG", "sendRegistrationIdToBackend " + regid);
         UniversalCallback push_reg_callback = new UniversalCallback() {
             @Override
             public void sendError(String notify) {
-                Log.d("URSMULOG", "push_reg_callback sendError" + notify);
+                //Log.d("URSMULOG", "push_reg_callback sendError" + notify);
             }
 
             @Override
             public void sendComplete(Serializable data) {
-                Log.d("URSMULOG", "push_reg_callback sendComplete");
+                //Log.d("URSMULOG", "push_reg_callback sendComplete");
             }
 
             @Override
             public void sendStart(long id) {
-                Log.d("URSMULOG", "push_reg_callback sendStart");
+                //Log.d("URSMULOG", "push_reg_callback sendStart");
             }
         };
 

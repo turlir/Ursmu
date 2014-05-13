@@ -41,7 +41,7 @@ public class ChairDataBasing extends IDatabasingBehavior {
 
     private static void init(Context c) {
         if (mContext == null || mDataBase == null) {
-            Log.d("URSMULOG", "GroupDataBasing getInstance");
+            //Log.d("URSMULOG", "GroupDataBasing getInstance");
             mContext = c;
             LocalDataBaseHelper temp = new LocalDataBaseHelper(mContext);
             try {

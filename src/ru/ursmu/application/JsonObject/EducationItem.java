@@ -45,7 +45,7 @@ public class EducationItem implements Serializable {
         }
 
         if (teacher_in == 0 || lastPredict != f) {
-            Log.d("URSMULOG ", "Create index column");
+            //Log.d("URSMULOG ", "Create index column");
 
             name_in = cursor.getColumnIndex("name");
             teacher_in = cursor.getColumnIndex("teacher");
@@ -66,7 +66,7 @@ public class EducationItem implements Serializable {
 
 
     public EducationItem(int dayIndex, int para, String predmet, String prepod, String aud) {  //json
-        //Log.d("URSMULOG", "dayIndex=" + dayIndex + "para=" + para);
+        ////Log.d("URSMULOG", "dayIndex=" + dayIndex + "para=" + para);
         if (aud.length() > prepod.length()) {
             String q;
             q = aud;

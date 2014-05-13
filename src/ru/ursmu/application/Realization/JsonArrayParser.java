@@ -8,7 +8,7 @@ import org.json.JSONException;
 public class JsonArrayParser extends IParserBehavior<String> {
     @Override
     public String[] parse(String json) throws JSONException {
-        Log.d("URSMULOG", "JsonArrayParser start");
+        //Log.d("URSMULOG", "JsonArrayParser start");
         return parseArray(json);
     }
 
@@ -19,7 +19,7 @@ public class JsonArrayParser extends IParserBehavior<String> {
         for (int i = 0; i < jsonArray.length(); i++) {
             ok[i] = jsonArray.getString(i);
         }
-        Log.d("URSMULOG", "JsonArrayParser stop");
+        //Log.d("URSMULOG", "JsonArrayParser stop");
         return ok;
     }
 

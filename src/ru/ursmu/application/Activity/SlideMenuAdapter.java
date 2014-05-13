@@ -11,7 +11,7 @@ import android.widget.TextView;
 import ru.ursmu.application.Abstraction.DrawerItem;
 import ru.ursmu.application.Realization.EntryDrawer;
 import ru.ursmu.application.Realization.SectionDrawer;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 import java.util.ArrayList;
 

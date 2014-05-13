@@ -14,7 +14,7 @@ import ru.ursmu.application.JsonObject.Faculty;
 import ru.ursmu.application.Realization.FacultyFactory;
 import ru.ursmu.application.Realization.FacultyList;
 import ru.ursmu.application.Realization.ScheduleGroupFactory;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 import java.io.Serializable;
 

@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 import ru.ursmu.application.JsonObject.EducationItem;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 
 public class ProfessorScheduleFragment extends ListFragment implements AdapterView.OnItemClickListener {
@@ -72,7 +72,7 @@ public class ProfessorScheduleFragment extends ListFragment implements AdapterVi
                 return true;
             case R.id.schedule_prof_item_alarm:
                 ((ScheduleAdapter) getListAdapter()).setAlarm(mClickedPosition);
-                Log.d("URSMULOG", "onContextItemSelected R.id.schedule_prof_item_alarm" + mClickedPosition);
+                //Log.d("URSMULOG", "onContextItemSelected R.id.schedule_prof_item_alarm" + mClickedPosition);
                 return true;
             default:
                 return super.onContextItemSelected(item);

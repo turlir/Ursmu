@@ -30,7 +30,7 @@ public class UrsmuService extends Service {    //hands new Thread
         int type = intent.getIntExtra(ServiceHelper.IS_DB, 1);
 
         if (type == 2) {       //download+data base - insert + select
-            Log.d("URSMULOG", "UrsmuService type 2");
+            //Log.d("URSMULOG", "UrsmuService type 2");
             ResultReceiver callback = intent.getParcelableExtra(ServiceHelper.CALLBACK);
             long id = intent.getLongExtra(ServiceHelper.REQUEST_ID, 0);
             IUrsmuDBObject to = (IUrsmuDBObject) intent.getSerializableExtra(ServiceHelper.TRANSFER_OBJECT);
@@ -38,7 +38,7 @@ public class UrsmuService extends Service {    //hands new Thread
             AbstractProcessor processor = new DBProcessor(to, callback, id, getApplicationContext());
             processor.execute();
         } else if (type == 1) {    //only download
-            Log.d("URSMULOG", "UrsmuService type 1");
+            //Log.d("URSMULOG", "UrsmuService type 1");
             ResultReceiver callback = intent.getParcelableExtra(ServiceHelper.CALLBACK);
             long id = intent.getLongExtra(ServiceHelper.REQUEST_ID, 0);
             IUrsmuObject to = (IUrsmuObject) intent.getSerializableExtra(ServiceHelper.TRANSFER_OBJECT);
@@ -46,7 +46,7 @@ public class UrsmuService extends Service {    //hands new Thread
             AbstractProcessor processor = new NormalProcessor(to, callback, id, getApplicationContext());
             processor.execute();
         } else if (type == 3) {  //get DB object`s -> service
-            Log.d("URSMULOG", "UrsmuService type 3");
+            //Log.d("URSMULOG", "UrsmuService type 3");
             ResultReceiver callback = intent.getParcelableExtra(ServiceHelper.CALLBACK);
             long id = intent.getLongExtra(ServiceHelper.REQUEST_ID, 0);
             IGroupDBUrsmuObject<IUrsmuDBObject> to = intent.getParcelableExtra(ServiceHelper.TRANSFER_OBJECT);
@@ -62,6 +62,6 @@ public class UrsmuService extends Service {    //hands new Thread
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d("URSMULOG", "UrsmuService onDestroy");
+        //Log.d("URSMULOG", "UrsmuService onDestroy");
     }
 }

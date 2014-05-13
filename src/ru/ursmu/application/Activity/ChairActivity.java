@@ -16,7 +16,7 @@ import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.JsonObject.ChairItem;
 import ru.ursmu.application.Realization.RandomChairList;
 import ru.ursmu.application.Realization.SpecificChairList;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 import java.io.Serializable;
 
@@ -90,7 +90,7 @@ public class ChairActivity extends Fragment implements SearchView.OnQueryTextLis
                     selected
             });
 
-            Log.d("URSMULOG onSuggestionClick", String.valueOf(position));
+            //Log.d("URSMULOG onSuggestionClick", String.valueOf(position));
             mSearchView.setQuery(selected.getName(), false);
             mSearchView.clearFocus();
             return true;

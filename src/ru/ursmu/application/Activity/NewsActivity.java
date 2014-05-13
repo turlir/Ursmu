@@ -13,7 +13,7 @@ import ru.ursmu.application.Abstraction.IUrsmuObject;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.JsonObject.ListItem;
 import ru.ursmu.application.Realization.UrsmuNews;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -87,7 +87,7 @@ public class NewsActivity extends Fragment {
         newsList.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                Log.d("URSMULOG", "NewsActvity setOnScrollListener" + page);
+                //Log.d("URSMULOG", "NewsActvity setOnScrollListener" + page);
                 mPage = page;
                 start();
             }
@@ -132,7 +132,7 @@ public class NewsActivity extends Fragment {
         if (mHelper == null) {
             mHelper = ServiceHelper.getInstance(getActivity().getApplicationContext());
         }
-        Log.d("URSMULOG", "NewsActivity start mPage = " + mPage);
+        //Log.d("URSMULOG", "NewsActivity start mPage = " + mPage);
         IUrsmuObject object = new UrsmuNews(mPage);
         mHelper.getUrsmuObject(object, mCallback);
     }

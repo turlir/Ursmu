@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 public class SuggestionsAdapter extends CursorAdapter {
 
@@ -40,7 +40,7 @@ public class SuggestionsAdapter extends CursorAdapter {
             }
             text.setText(cursor.getString(textIndex));
             image.setImageDrawable(mContext.getResources().getDrawable(mImageRes));
-            //Log.d("URSMULOG", image.getDrawable().getIntrinsicWidth() + "x" + image.getDrawable().getIntrinsicWidth());
+            ////Log.d("URSMULOG", image.getDrawable().getIntrinsicWidth() + "x" + image.getDrawable().getIntrinsicWidth());
         }
     }
 

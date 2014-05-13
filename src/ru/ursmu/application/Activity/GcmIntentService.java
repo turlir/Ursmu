@@ -11,7 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import ru.ursmu.application.Abstraction.AbsPush;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 /**
  * This {@code IntentService} does the actual handling of the GCM message.
@@ -31,16 +31,16 @@ public class GcmIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d(TAG, "GcmIntentService onHandleIntent");
+        //Log.d(TAG, "GcmIntentService onHandleIntent");
         Bundle extras = intent.getExtras();
         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
         String messageType = gcm.getMessageType(intent);
 
         if (!extras.isEmpty()) {
             if (GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-                Log.d("URSMULOG", "GcmIntentService GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR");
+                //Log.d("URSMULOG", "GcmIntentService GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR");
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_DELETED.equals(messageType)) {
-                Log.d("URSMULOG", "GcmIntentService GoogleCloudMessaging.MESSAGE_TYPE_DELETED");
+                //Log.d("URSMULOG", "GcmIntentService GoogleCloudMessaging.MESSAGE_TYPE_DELETED");
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                 sendNotification(extras.getString("param1"), extras.getString("param2"));
                 Log.i(TAG, "Received: " + extras.toString());

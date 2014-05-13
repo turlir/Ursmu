@@ -52,7 +52,7 @@ public class UrsmuPostDownload implements IDownloadBehavior {
         } else {
             throw new IOException();
         }
-        // Log.d("URSMULOG", "UrsmuPostDownload stop");
+        // //Log.d("URSMULOG", "UrsmuPostDownload stop");
         return resultString;
     }
 }

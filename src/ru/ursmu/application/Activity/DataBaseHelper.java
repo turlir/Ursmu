@@ -22,7 +22,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        Log.d("URSMULOG", "create DB table");
+        //Log.d("URSMULOG", "create DB table");
 
         db.execSQL("create table ScheduleDays(" +
                 BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +    //1
@@ -47,7 +47,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.d("URSMULOG", "DataBaseHelper onUpgrade");
+        //Log.d("URSMULOG", "DataBaseHelper onUpgrade");
         db.execSQL("DROP TABLE IF EXISTS ScheduleCommon");
         db.execSQL("DROP TABLE IF EXISTS ScheduleDays");
         onCreate(db);

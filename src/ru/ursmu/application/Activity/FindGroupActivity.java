@@ -11,7 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.Realization.GroupList;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 import java.io.Serializable;
 
@@ -61,7 +61,7 @@ public class FindGroupActivity extends ActionBarActivity {
             String current_group = mHelper.getPreference(ServiceHelper.GROUP);
             boolean re_register = false;
             if (!current_group.equals(selected_group) && !current_group.equals("")) {
-                Log.d("URSMULOG", "FindGroupActivity re Register push flag");
+                //Log.d("URSMULOG", "FindGroupActivity re Register push flag");
                 re_register = true;
             }
 

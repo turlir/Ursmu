@@ -7,7 +7,7 @@ import android.util.Log;
 import org.json.JSONException;
 import ru.ursmu.application.Abstraction.*;
 import ru.ursmu.application.Activity.UrsmuService;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -28,13 +28,13 @@ public class DBProcessor extends AbstractProcessor {
 
     @Override
     protected Object[] doInBackground(Void... params) {
-        Log.d("URSMULOG", "DBProcessor start");
+        //Log.d("URSMULOG", "DBProcessor start");
 
         sendStart();
 
         IDatabasingBehavior dbAgent = getDataBaseBehavior();
         if (dbAgent.check() && !mHard) {
-            Log.d("URSMULOG", "DBProcessor check true");
+            //Log.d("URSMULOG", "DBProcessor check true");
             start(dbAgent); //есть в базе И не обновляем
             return null;
         }
@@ -49,7 +49,7 @@ public class DBProcessor extends AbstractProcessor {
             IDownloadBehavior down_agent = getDownloadBehavior();
             IParserBehavior parse_agent = getParseBehavior();
 
-            Log.d("URSMULOG", "DBProcessor begin");
+            //Log.d("URSMULOG", "DBProcessor begin");
 
             uri = mObject.getUri();
             param = mObject.getParameters();
@@ -84,7 +84,7 @@ public class DBProcessor extends AbstractProcessor {
 
 
     public void start(IDatabasingBehavior db_agent) {
-        Log.d("URSMULOG", "DBProcessor streamStart");
+        //Log.d("URSMULOG", "DBProcessor streamStart");
         Serializable items = getDataBaseBehavior().getSchedule();
         if (items == null) {
             sendFailure(mContext.getResources().getString(R.string.null_error));
@@ -93,6 +93,6 @@ public class DBProcessor extends AbstractProcessor {
         super.sendComplete(items);
         db_agent.close();
         mContext.stopService(new Intent(mContext, UrsmuService.class));
-        Log.d("URSMULOG", "DBProcessor stop");
+        //Log.d("URSMULOG", "DBProcessor stop");
     }
 }

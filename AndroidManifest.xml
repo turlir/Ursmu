@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--First Market Version-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="ru.ursmu.beta.application"
-          android:versionCode="9"
-          android:versionName="2.1">
+          package="ru.ursmu.application"
+          android:versionCode="10"
+          android:versionName="2.5">
     <uses-sdk
             android:targetSdkVersion="15"
             android:minSdkVersion="8"/>
@@ -15,8 +15,8 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <permission android:name="ru.ursmu.beta.application.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-    <uses-permission android:name="ru.ursmu.beta.application.permission.C2D_MESSAGE" />
+    <permission android:name="ru.ursmu.application.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission android:name="ru.ursmu.application.permission.C2D_MESSAGE" />
 
     <supports-screens
             android:largeScreens="false"
@@ -24,7 +24,8 @@
 
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher"
                  android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            android:allowBackup="false">
+            android:allowBackup="false"
+            android:debuggable="false">
 
 
         <activity android:name="ru.ursmu.application.Activity.SlideActivity">
@@ -48,7 +49,7 @@
                 android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="ru.ursmu.beta.application" />
+                <category android:name="ru.ursmu.application" />
             </intent-filter>
         </receiver>
         <service android:name="ru.ursmu.application.Activity.GcmIntentService" />

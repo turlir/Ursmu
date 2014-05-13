@@ -7,7 +7,7 @@ import org.json.JSONException;
 import ru.ursmu.application.Abstraction.AbstractProcessor;
 import ru.ursmu.application.Abstraction.IGroupDBUrsmuObject;
 import ru.ursmu.application.Abstraction.IUrsmuDBObject;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 import java.io.IOException;
 
@@ -23,7 +23,7 @@ public class GroupDBProcessor extends AbstractProcessor {
 
     @Override
     protected Object[] doInBackground(Void... params) {
-        Log.d("URSMULOG", "GroupDBProcessor start");
+        //Log.d("URSMULOG", "GroupDBProcessor start");
         sendStart();
         ScheduleGroup next = null;
         getDataBaseBehavior().clearTable();
@@ -69,7 +69,7 @@ public class GroupDBProcessor extends AbstractProcessor {
                     next.getDataBasingBehavior(mContext).clearTable();
                     return null;
                 }
-                Log.d("URSMULOG", "GroupDBProcessor parse JSONException " + error_parse);
+                //Log.d("URSMULOG", "GroupDBProcessor parse JSONException " + error_parse);
                 continue;
             }
 

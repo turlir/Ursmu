@@ -23,7 +23,7 @@ import ru.ursmu.application.Abstraction.UniversalCallback;
 import ru.ursmu.application.Realization.EducationWeek;
 import ru.ursmu.application.Realization.ProfessorSchedule;
 import ru.ursmu.application.Realization.ScheduleGroupFactory;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -115,7 +115,7 @@ public class ProfessorScheduleActivity extends Fragment implements SearchView.On
     @Override
     public boolean onSuggestionClick(int position) {
         mProfessor = ((SuggestionsAdapter) mSearchView.getSuggestionsAdapter()).getString(position);
-        Log.d("URSMULOG", mProfessor);
+        //Log.d("URSMULOG", mProfessor);
         nextStep();
         mSearchView.setQuery(mProfessor, false);
         mSearchView.clearFocus();

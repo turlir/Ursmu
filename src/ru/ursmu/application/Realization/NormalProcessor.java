@@ -6,7 +6,7 @@ import android.util.Log;
 import org.json.JSONException;
 import ru.ursmu.application.Abstraction.AbstractProcessor;
 import ru.ursmu.application.Abstraction.IUrsmuObject;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -40,7 +40,7 @@ public class NormalProcessor extends AbstractProcessor {
         String s;
         Object[] q;
         try {
-            Log.d("URSMULOG", item.getParameters());
+            //Log.d("URSMULOG", item.getParameters());
             s = getDownloadBehavior().Download(item.getUri(), item.getParameters());
             q = getParseBehavior().parse(s);
             return q;

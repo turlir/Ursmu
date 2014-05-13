@@ -26,7 +26,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
         mFragmentManager = fm;
 
         mList = pages;
-        Log.d("URSMULOG", "MyPagerAdapter create");
+        //Log.d("URSMULOG", "MyPagerAdapter create");
         mFlag = isProfessor;
     }
 
@@ -44,11 +44,11 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
         //ScheduleAdapter.clearIconPair();
 
         if (mFlag) {
-            Log.d("URSMULOG", "MyPagerAdapter ProfessorScheduleFragment getItem " + i);
+            //Log.d("URSMULOG", "MyPagerAdapter ProfessorScheduleFragment getItem " + i);
             EducationItem[] value = mList.get(i);
             return ProfessorScheduleFragment.getInstance(value);
         } else {
-            Log.d("URSMULOG", "MyPagerAdapter GroupScheduleFragment getItem " + i);
+            //Log.d("URSMULOG", "MyPagerAdapter GroupScheduleFragment getItem " + i);
             EducationItem[] value = mList.get(i);
             return GroupScheduleFragment.getInstance(value);
         }
@@ -66,11 +66,11 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
         String name = makeFragmentName(container.getId(), itemId);
         Fragment fragment = mFragmentManager.findFragmentByTag(name);
         if (fragment != null) {
-            Log.d("URSMULOG", "Attaching item #" + itemId + ": f=" + fragment);
+            //Log.d("URSMULOG", "Attaching item #" + itemId + ": f=" + fragment);
             mCurTransaction.attach(fragment);
         } else {
             fragment = getItem(position);
-            Log.d("URSMULOG", "Adding item #" + itemId + ": f=" + fragment);
+            //Log.d("URSMULOG", "Adding item #" + itemId + ": f=" + fragment);
             mCurTransaction.add(container.getId(), fragment,
                     makeFragmentName(container.getId(), itemId));
         }
@@ -88,8 +88,8 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
         if (mCurTransaction == null) {
             mCurTransaction = mFragmentManager.beginTransaction();
         }
-        Log.d("URSMULOG", "Detaching item #" + getItemId(position) + ": f=" + object
-                + " v=" + ((Fragment) object).getView());
+        //Log.d("URSMULOG", "Detaching item #" + getItemId(position) + ": f=" + object
+               // + " v=" + ((Fragment) object).getView());
         mCurTransaction.detach((Fragment) object);
     }
 

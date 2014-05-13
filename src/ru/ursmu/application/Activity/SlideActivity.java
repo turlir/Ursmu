@@ -18,7 +18,7 @@ import android.widget.ListView;
 import ru.ursmu.application.Abstraction.DrawerItem;
 import ru.ursmu.application.Realization.EntryDrawer;
 import ru.ursmu.application.Realization.SectionDrawer;
-import ru.ursmu.beta.application.R;
+import ru.ursmu.application.R;
 
 import java.util.ArrayList;
 
@@ -99,7 +99,7 @@ public class SlideActivity extends ActionBarActivity {
         Intent info = getIntent();
         String f = info.getStringExtra(ServiceHelper.FACULTY);
         if (f != null) {
-            Log.d("URSMULOG", "proxy start GroupScheduleActivity");
+            //Log.d("URSMULOG", "proxy start GroupScheduleActivity");
             mStartGroupScheduleParam = info;
             selectItem(4);
             return;

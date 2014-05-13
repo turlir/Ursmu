@@ -112,7 +112,7 @@ public class ServiceHelper {
 
     //<editor-fold desc="Callback">
     private ResultReceiver generationCallback() {
-        Log.d("URSMULOG", "ServiceHelper generationCallback");
+        //Log.d("URSMULOG", "ServiceHelper generationCallback");
         //proxy
 
         IntermediateCallback re = new IntermediateCallback(new Handler());
@@ -153,7 +153,7 @@ public class ServiceHelper {
     }
 
     public static void removeCallback(long id) {
-        Log.d("URSMULOG", "ServiceHelper removeCallback");
+        //Log.d("URSMULOG", "ServiceHelper removeCallback");
         handlers.remove(id);
     }
 

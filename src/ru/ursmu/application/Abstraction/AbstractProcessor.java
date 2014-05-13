@@ -45,19 +45,19 @@ public abstract class AbstractProcessor extends AsyncTask<Void, Void, Object[]> 
         super.cancel(true);
         super.onPostExecute(objects);
         onCancelled();
-        Log.d("URSMULOG", "onPostExecute isCancelled " + isCancelled());
+        //Log.d("URSMULOG", "onPostExecute isCancelled " + isCancelled());
         ServiceHelper.removeCallback(mReqId);
     }
 
     public void sendStart() {
-        Log.d("URSMULOG", "AbstractProcessor sendStart()");
+        //Log.d("URSMULOG", "AbstractProcessor sendStart()");
         Bundle b = new Bundle(1);
         b.putLong(ServiceHelper.REQUEST_ID, mReqId);
         mCallback.send(ServiceHelper.DOWNLOAD_START, b);
     }
 
     public void sendFailure(String msg) {
-        Log.d("URSMULOG", "AbstractProcessor sendFailure() " + msg);
+        //Log.d("URSMULOG", "AbstractProcessor sendFailure() " + msg);
         Bundle b = new Bundle(1);
         b.putLong(ServiceHelper.REQUEST_ID, mReqId);
         b.putString(ServiceHelper.ERROR_NOTIFY, msg);
@@ -65,7 +65,7 @@ public abstract class AbstractProcessor extends AsyncTask<Void, Void, Object[]> 
     }
 
     public void sendComplete(Object data) {
-        Log.d("URSMULOG", "AbstractProcessor sendComplete()");
+        //Log.d("URSMULOG", "AbstractProcessor sendComplete()");
         Bundle bundle = new Bundle(2);
         bundle.putLong(ServiceHelper.REQUEST_ID, mReqId);
         bundle.putSerializable(ServiceHelper.PARSE_DATA, (Serializable) data);
@@ -73,7 +73,7 @@ public abstract class AbstractProcessor extends AsyncTask<Void, Void, Object[]> 
     }
 
     public void sendComplete(Serializable[] data) {
-        Log.d("URSMULOG", "AbstractProcessor sendComplete()");
+        //Log.d("URSMULOG", "AbstractProcessor sendComplete()");
         Bundle bundle = new Bundle(2);
         bundle.putLong(ServiceHelper.REQUEST_ID, mReqId);
         bundle.putSerializable(ServiceHelper.PARSE_DATA, data);
