@@ -1,4 +1,5 @@
 .idea/*
 gen/*
 out/*
+key/*
 src/ru/ursmu/application/Abstraction/AbsPush.java
