@@ -14,11 +14,11 @@
     <orderEntry type="jdk" jdkName="Android API 15 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="universal-image-loader-1.8.6" level="project" />
-    <orderEntry type="library" name="google-play-services" level="project" />
-    <orderEntry type="module" module-name="appcompat" />
-    <orderEntry type="module" module-name="google-play-services_lib" />
-    <orderEntry type="library" name="android-support-v7-appcompat" level="project" />
     <orderEntry type="library" name="android-support-v4" level="project" />
+    <orderEntry type="module" module-name="appcompat" />
+    <orderEntry type="library" name="android-support-v7-appcompat" level="project" />
+    <orderEntry type="module" module-name="google-play-services_lib" />
+    <orderEntry type="library" name="google-play-services" level="project" />
   </component>
 </module>
 
