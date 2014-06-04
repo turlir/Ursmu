@@ -3,11 +3,15 @@ package ru.ursmu.application.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import ru.ursmu.beta.application.R;
@@ -49,13 +53,16 @@ public class AudienceInfoView extends RelativeLayout {
         floor_number.setTypeface(mRobotoRegular);
         audience_number.setText(z.getAudience());
 
-        findViewById(R.id.building_go_to_map_icon).setOnClickListener(new OnClickListener() {
+        View mapIcon = findViewById(R.id.building_go_to_map_icon);
+        mapIcon.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("URSMULOG", "onClick");
                 goToMap();
             }
         });
+        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.red_map_icon);
+        mapIcon.startAnimation(animation);
     }
 
     public void goToMap() {
