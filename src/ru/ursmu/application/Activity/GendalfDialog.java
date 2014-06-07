@@ -13,10 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import com.google.android.gms.maps.StreetViewPanoramaOptions;
 import com.google.android.gms.maps.SupportStreetViewPanoramaFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.StreetViewPanoramaCamera;
 import ru.ursmu.beta.application.R;
 
 import java.util.Locale;
@@ -101,8 +103,13 @@ public class GendalfDialog extends DialogFragment {
     }
 
     private void initStreetView() {
+        StreetViewPanoramaCamera camera = new StreetViewPanoramaCamera.Builder()
+                .bearing(mInfo.getAngle())
+                .build();
+
         StreetViewPanoramaOptions options = new StreetViewPanoramaOptions()
                 .position(new LatLng(mInfo.getLatitude(), mInfo.getLongitude()))
+                .panoramaCamera(camera)
                 .userNavigationEnabled(false);
 
         Fragment instance_street_view = SupportStreetViewPanoramaFragment.newInstance(options);

@@ -5,9 +5,10 @@ public class UrsmuBuilding implements java.io.Serializable {
     private int build, floor;
     private String audience, mapFlagName, mOriginal;
     private double lat, longit;
+    private float angle;
 
     public UrsmuBuilding(Integer number_build, Integer floor, String aud, String mapText, String original,
-                         double lat, double longit) {
+                         double lat, double longit, float angle) {
         this.build = number_build;
         this.floor = floor;
         this.audience = aud;
@@ -15,6 +16,7 @@ public class UrsmuBuilding implements java.io.Serializable {
         this.mOriginal = original;
         this.lat = lat;
         this.longit = longit;
+        this.angle = angle;
     }
 
     public String getBuild() {
@@ -47,5 +49,9 @@ public class UrsmuBuilding implements java.io.Serializable {
 
     public double getLongitude() {
         return longit;
+    }
+
+    public float getAngle() {
+        return angle;
     }
 }

@@ -20,31 +20,36 @@ public class UrsmuBuildingFactory {
             if (build > 0 && build < 5 && floor < 1000 && audience.length() < 4) {
                 String map_text;
                 double lat, lot;
+                float angle = 0;
                 switch (build) {
                     case 1:
                         map_text = "ул.Куйбышева, 30";
-                        lat =  56.825091;
-                        lot = 60.596252;
+                        lat = 56.826360;
+                        lot = 60.595759;
+                        angle = 175f;
                         break;
                     case 2:
                         map_text = "пер.Университетский, 9";
-                        lat = 56.823777;
-                        lot = 60.601772;
+                        lat = 56.82376;
+                        lot = 60.601447;
+                        angle = 79.43f;
                         break;
                     case 3:
                         map_text = "ул.Хохрякова, 85";
-                        lat = 56.827068;
-                        lot = 60.595235;
+                        lat = 56.826752;
+                        lot = 60.594949;
+                        angle = 80.86f;
                         break;
                     case 4:
                         map_text = "пер.Университетский, 7";
-                        lat = 56.824187;
-                        lot = 60.601676;
+                        lat = 56.824202;
+                        lot = 60.601266;
+                        angle = 65.78f;
                         break;
                     default:
                         return null;
                 }
-                return new UrsmuBuilding(build, floor, audience, map_text, s, lat, lot);
+                return new UrsmuBuilding(build, floor, audience, map_text, s, lat, lot, angle);
             } else
                 return null;
 
