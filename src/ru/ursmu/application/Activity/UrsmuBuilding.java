@@ -1,16 +1,20 @@
 package ru.ursmu.application.Activity;
 
-public class UrsmuBuilding {
+public class UrsmuBuilding implements java.io.Serializable {
 
     private int build, floor;
     private String audience, mapFlagName, mOriginal;
+    private double lat, longit;
 
-    public UrsmuBuilding(Integer number_build, Integer floor, String aud, String mapText, String original) {
+    public UrsmuBuilding(Integer number_build, Integer floor, String aud, String mapText, String original,
+                         double lat, double longit) {
         this.build = number_build;
         this.floor = floor;
         this.audience = aud;
         this.mapFlagName = mapText;
         this.mOriginal = original;
+        this.lat = lat;
+        this.longit = longit;
     }
 
     public String getBuild() {
@@ -35,5 +39,13 @@ public class UrsmuBuilding {
 
     public String getOriginal() {
         return mOriginal;
+    }
+
+    public double getLatitude() {
+        return lat;
+    }
+
+    public double getLongitude() {
+        return longit;
     }
 }
