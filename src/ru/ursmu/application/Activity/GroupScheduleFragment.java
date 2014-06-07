@@ -60,7 +60,7 @@ public class GroupScheduleFragment extends ListFragment implements AdapterView.O
                 return true;
             case R.id.schedule_item_gendalf:
                 String audience = ((EducationItem) getListAdapter().getItem(mClickedPosition)).getAud();
-                UrsmuBuilding info = UrsmuBuildingFactory.get(audience, getActivity().getApplicationContext());
+                UrsmuBuilding info = new UrsmuBuildingFactory(getActivity().getApplicationContext()).get(audience);
                 if (info != null) {
                     GendalfDialog magic = GendalfDialog.newInstance(info);
                     magic.show(getActivity().getSupportFragmentManager(), "gendalf_gialog");

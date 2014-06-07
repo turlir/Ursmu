@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import com.google.android.gms.maps.StreetViewPanoramaOptions;
 import com.google.android.gms.maps.SupportStreetViewPanoramaFragment;
@@ -98,7 +97,9 @@ public class GendalfDialog extends DialogFragment {
         String f = "geo:0,0?q=Екатеринбург, %s";
         String uri = String.format(new Locale("ru", "RU"), f, mInfo.getMapFlagName());
 
-        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
         getActivity().getBaseContext().startActivity(i);
     }
 

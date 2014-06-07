@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="coordinates">
+        <item>ул.Куйбышева, 30</item>
+        <item>56.826360</item>
+        <item>60.595759</item>
+        <item>175</item>
+
+        <item>пер.Университетский, 9</item>
+        <item>56.82376</item>
+        <item>60.601447</item>
+        <item>79.43</item>
+
+        <item>ул.Хохрякова, 85</item>
+        <item>56.826752</item>
+        <item>60.594949</item>
+        <item>80.86</item>
+
+        <item>"пер.Университетский, 7</item>
+        <item>56.824202</item>
+        <item>60.601266</item>
+        <item>65.78</item>
+    </array>
+</resources>
